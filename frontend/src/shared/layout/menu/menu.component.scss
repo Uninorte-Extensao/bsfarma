@@ -1,0 +1,99 @@
+.container-menu {
+    background: var(--bg-menu);
+    width: 100% !important;
+    height: 100dvh !important;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-perfil {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 20px 10px;
+    justify-content: space-between;
+}
+
+.container-perfil img {
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.container-items {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.text-yellow {
+    color: yellow;
+}
+
+.container-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+.container-items::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.container-items:hover::-webkit-scrollbar-thumb {
+    // background: rgba(25, 118, 210, 0.8);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.icon-toggle {
+    position: absolute;
+}
+
+:host ::ng-deep .p-panelmenu {
+    width: 100% !important;
+    // height: 100dvh !important;
+    // padding: 0 20px;
+}
+
+:host ::ng-deep .p-panelmenu-panel {
+    background: var(--bg-menu);
+    border: none !important;
+}
+
+:host ::ng-deep .p-menuitem-link-active {
+    background: var(--color-blue) !important;
+    color: 000 !important;
+}
+
+:host ::ng-deep .p-menuitem-link-active .pi {
+    color: white !important;
+}
+
+:host ::ng-deep .pi {
+    color: #fff !important;
+}
+
+:host ::ng-deep .p-panelmenu-header-link {
+    color: #fff !important;
+}
+
+:host ::ng-deep .p-panelmenu-submenu-icon {
+    color: #fff !important;
+}
+
+:host ::ng-deep .p-panelmenu-header-content {
+    width: 100%;
+    padding: 5px 10px;
+}
+
+:host ::ng-deep .p-panelmenu-header-content:hover {
+    background: #03A9F5 !important;
+}
+
+.container-items a.active {
+    background: #03A9F5;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.container-items a.active i {
+    color: #fff !important;
+}

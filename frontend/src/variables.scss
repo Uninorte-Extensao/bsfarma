@@ -1,0 +1,28 @@
+:root {
+    --ocean-blue: #4C8EA9;
+    --border-green: 1px solid #01A768;
+    --border-blue: 1px solid #03A9F5;
+    --border-yellow:1px solid #FED600;
+    --border-red: 1px solid #F0483E;
+
+    --color-green: #01A7684D;
+    --color-blue: #03A9F54D;
+    --color-yellow: #FED6004D;
+    --color-red: #F0483E4D;
+
+    --color-white: #fff;
+
+    --bg-menu: var(--ocean-blue);
+    --bg-header: var(--ocean-blue);
+    --bg-color: var(--color-white);
+
+    --bg-card-green: var(--color-green);
+    --bg-card-blue: var(--color-blue);
+    --bg-card-yellow: var(--color-yellow);
+    --bg-card-red: var(--color-red);
+
+    --border-green: var(--border-green);
+    --border-blue: var(--border-blue);
+    --border-yellow: var(--border-yellow);
+    --border-red: var(--border-red);
+}
