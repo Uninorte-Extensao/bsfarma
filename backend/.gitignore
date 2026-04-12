@@ -1,0 +1,28 @@
+# Ambiente
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Poetry
+dist/
+*.egg-info/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Alembic (nunca versione dados de migration gerados localmente sem revisão)
+app/db/migrations/versions/*.py
+
+# OS
+.DS_Store
+Thumbs.db
