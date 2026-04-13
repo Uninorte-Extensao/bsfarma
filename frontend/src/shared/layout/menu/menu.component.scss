@@ -60,6 +60,10 @@
             }
         }
 
+        .power {
+            display: none;
+        }
+
     }
 }
 
@@ -96,24 +100,28 @@
     }
 }
 
+.container-footer {
+    padding: 10px 20px;
+    text-align: center;
+}
+
 .menu-wrapper {
     position: relative;
     height: 100dvh;
     flex-shrink: 0;
 
     &.collapsed .collapse-btn {
-        left: calc(72px - 12px); // 72px = largura colapsada
+        left: calc(78px - 12px);
     }
 }
 
 .collapse-btn {
     position: absolute;
     bottom: 5%;
-    left: calc(260px - 12px);
+    left: calc(268px - 12px);
     transform: translateY(-50%);
-    transition: left 0.3s ease;
     z-index: 100;
-    width: 28px;
+    width: 20px;
     height: 60px;
     border-radius: 4px;
     border: none;
@@ -166,7 +174,7 @@
 
     .p-panelmenu-header-content {
         width: 100%;
-        padding: 5px 10px;
+        padding: 0 10px;
         transition: background 0.2s;
 
         &:hover {
