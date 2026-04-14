@@ -1,13 +1,12 @@
 import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
-import { PanelMenuModule } from 'primeng/panelmenu';
+import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
-import { Badge } from 'primeng/badge';
 import { IUser } from '../../models/IUser';
 
 @Component({
   selector: 'app-menu',
-  imports: [PanelMenuModule, RouterModule, Badge],
+  imports: [MenuModule, RouterModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
@@ -47,7 +46,7 @@ export class MenuComponent implements OnInit {
       },
       { label: 'Configurações', icon: 'pi pi-sliders-h', routerLink: '/home' },
       { label: 'Contactar Gerência', icon: 'pi pi-users', routerLink: '/home' },
-      { label: 'Notificações', icon: 'pi pi-bell', routerLink: '/home', badge: '3' },
+      { label: 'Notificações', icon: 'pi pi-bell', routerLink: '/home' },
       { label: 'Fornecedores', icon: 'pi pi-comment', routerLink: '/home' },
       { label: 'Configurações do aplicativo', icon: 'pi pi-cog', routerLink: '/home' },
       { label: 'Covid 19', icon: 'pi pi-asterisk', routerLink: '/home' },

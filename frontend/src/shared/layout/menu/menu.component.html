@@ -22,49 +22,26 @@
     </header>
 
     <aside class="container-items">
-        <p-panelmenu [model]="items">
-        <ng-template pTemplate="header" let-item>
-        <a
-        pRipple
-        class="flex items-center px-4 py-2 cursor-pointer group menu-item"
-        [class.active]="isActive(item)"
-        (click)="selectItem(item)"
-        >
-        <i [class]="item.icon + ' item-icon'"></i>
-        <span class="ml-2 item-label">{{ item.label }}</span>
-
-        @if(item.badge) {
-            <p-badge class="ml-auto" [value]="item.badge"></p-badge>
-        }
-        @if(item.shortcut) {
-            <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
-            {{ item.shortcut }}
-            </span>
-        }
-        </a>
-        </ng-template>
-
+      <p-menu [model]="items">
         <ng-template pTemplate="item" let-item>
-            <a
+          <a
             pRipple
-            class="flex items-center px-4 py-2 cursor-pointer group menu-item"
+            class="menu-item"
             [class.active]="isActive(item)"
             (click)="selectItem(item)"
-            >
+          >
             <i [class]="item.icon + ' item-icon'"></i>
-            <span class="ml-2 item-label">{{ item.label }}</span>
-
-            @if(item.badge) {
-                <p-badge class="ml-auto" [value]="item.badge"></p-badge>
-            }
-            @if(item.shortcut) {
-                <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
-                {{ item.shortcut }}
-                </span>
-            }
-            </a>
+            <span class="item-label">{{ item.label }}</span>
+            <!-- @if(item.badge) {
+              <p-badge class="ml-auto" [value]="item.badge" />
+            } -->
+          </a>
         </ng-template>
-        </p-panelmenu>
+
+        <ng-template pTemplate="submenuheader" let-item>
+          <span class="group-label">{{ item.label }}</span>
+        </ng-template>
+      </p-menu>
     </aside>
 
     <footer class="container-footer">
