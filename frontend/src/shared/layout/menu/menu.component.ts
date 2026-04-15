@@ -1,7 +1,7 @@
-import { Component, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IUser } from '../../models/IUser';
 
 @Component({
@@ -11,6 +11,8 @@ import { IUser } from '../../models/IUser';
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent implements OnInit {
+  private router = inject(Router);
+
   items: MenuItem[] = [];
   activeItem: MenuItem | null = null;
   isCollapsed = false;
@@ -25,7 +27,7 @@ export class MenuComponent implements OnInit {
     })
 
     this.items = [
-      { label: 'Controle', icon: 'pi pi-th-large', routerLink: '/home' },
+      { label: 'Controle', icon: 'pi pi-th-large', routerLink: '/control' },
       { 
         label: 'Inventário', 
         icon: 'pi pi-inbox', 
@@ -57,6 +59,7 @@ export class MenuComponent implements OnInit {
   selectItem(item: MenuItem) {
     if (item.items?.length) return;
     this.activeItem = item;
+    this.router.navigate([item.routerLink])
   }
 
   isActive(item: MenuItem): boolean {
