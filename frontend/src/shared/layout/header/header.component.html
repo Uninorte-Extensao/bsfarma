@@ -1,0 +1,14 @@
+<div class="container">
+    <p-iconfield>
+        <p-inputicon class="pi pi-search" />
+        <input type="text" pInputText placeholder="Buscar" />
+    </p-iconfield>
+
+    <div class="flex flex-column">
+        <span class="text-center">{{showGreeting(date())}}</span>
+        <div class="flex gap-3 mt-2">
+            <small>{{date() | date: "d 'de' MMMM 'de' y"}}</small>
+            <small>{{date() | date: 'h:mm:ss'}}</small>
+        </div>
+    </div>
+</div>
