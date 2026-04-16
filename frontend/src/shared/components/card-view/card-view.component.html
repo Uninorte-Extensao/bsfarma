@@ -1,11 +1,14 @@
-<section class="container-card">
-    <header>
-        <i></i>
-        <span></span>
-        <span></span>
+<section class="container-card" [class]="cardColor()">
+    <header class="header-card">
+        <span class="material-symbols-outlined material-icon">
+            {{icon()}}
+        </span>
+        <span class="text-xl">{{value()}}</span>
+        <span>{{label()}}</span>
     </header>
 
-    <footer>
-
+    <footer class="footer-card flex justify-content-center align-items-center gap-2">
+        <span>{{labelRoute()}}</span>
+        <i class="pi pi-angle-double-right"></i>
     </footer>
 </section>

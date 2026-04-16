@@ -1,3 +1,11 @@
 <div class="container">
-    <app-card-view/>
+    @for (item of routes; track $index) {
+        <app-card-view 
+        [icon]="item.icon" 
+        [value]="item.value" 
+        [label]="item.label" 
+        [labelRoute]="item.labelRoute" 
+        [route]="item.route" 
+        />
+    }
 </div>

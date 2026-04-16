@@ -48,6 +48,7 @@
             span {
                 display: none;
             }
+
             img {
                 height: 42px;
                 width: 42px;
@@ -104,6 +105,9 @@
 .container-footer {
     padding: 10px 20px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
 }
 
 .menu-wrapper {
