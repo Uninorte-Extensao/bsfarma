@@ -1,16 +1,20 @@
 import { Component, InputSignal, input } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
+interface ICardData {
+  color: string;
+  icon: string,
+  value: string | number,
+  label: string,
+  labelRoute: string,
+  route: string
+}
 @Component({
   selector: 'app-card-view',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './card-view.component.html',
   styleUrl: './card-view.component.scss',
 })
 export class CardViewComponent {
-  public cardColor: InputSignal<string> = input('green');
-  public icon: InputSignal<string> = input.required();
-  public value: InputSignal<string | number> = input.required();
-  public label: InputSignal<string> = input.required();
-  public labelRoute: InputSignal<string> = input.required();
-  public route: InputSignal<string> = input.required();
+  public cardData: InputSignal<ICardData> = input.required()
 }

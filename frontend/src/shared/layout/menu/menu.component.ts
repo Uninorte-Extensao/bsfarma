@@ -26,33 +26,35 @@ export class MenuComponent implements OnInit {
     })
 
     this.items = [
-        { label: 'Controle', icon: 'pi pi-th-large', routerLink: '/control' },
-        {
-          label: 'Inventário',
-          icon: 'pi pi-inbox',
-          routerLink: '/home',
-          // items: [
-          //   { label: 'Medicamentos', icon: 'pi pi-inbox' },
-          //   { label: 'Grupo de Medicamentos', icon: 'pi pi-inbox' },
-          // ],
-        },
-        {
-          label: 'Relatórios',
-          icon: 'pi pi-chart-line',
-          routerLink: '/home',
-          // items: [
-          //   { label: 'Mensal', icon: 'pi pi-calendar' },
-          //   { label: 'Anual', icon: 'pi pi-chart-bar' },
-          // ],
-        },
-        { label: 'Configurações', icon: 'pi pi-sliders-h', routerLink: '/home' },
-        { label: 'Contactar Gerência', icon: 'pi pi-users', routerLink: '/home' },
-        { label: 'Notificações', icon: 'pi pi-bell', routerLink: '/home' },
-        { label: 'Fornecedores', icon: 'pi pi-comment', routerLink: '/home' },
-        { label: 'Configurações do aplicativo', icon: 'pi pi-cog', routerLink: '/home' },
-        { label: 'Covid 19', icon: 'pi pi-asterisk', routerLink: '/home' },
-        { label: 'Contactar Suport', icon: 'pi pi-question-circle', routerLink: '/home' },
-      ];
+      { label: 'Controle', icon: 'pi pi-th-large', routerLink: '/control' },
+      {
+        label: 'Inventário',
+        icon: 'pi pi-inbox',
+        routerLink: '/home',
+        // items: [
+        //   { label: 'Medicamentos', icon: 'pi pi-inbox' },
+        //   { label: 'Grupo de Medicamentos', icon: 'pi pi-inbox' },
+        // ],
+      },
+      { label: 'Medicamentos', icon: 'pi pi-inbox',  },
+      { label: 'Grupo de Medicamentos', icon: 'pi pi-inbox' },
+      {
+        label: 'Relatórios',
+        icon: 'pi pi-chart-line',
+        routerLink: '/home',
+        // items: [
+        //   { label: 'Mensal', icon: 'pi pi-calendar' },
+        //   { label: 'Anual', icon: 'pi pi-chart-bar' },
+        // ],
+      },
+      { label: 'Configurações', icon: 'pi pi-sliders-h', routerLink: '/home' },
+      { label: 'Contactar Gerência', icon: 'pi pi-users', routerLink: '/home' },
+      { label: 'Notificações', icon: 'pi pi-bell', routerLink: '/home' },
+      { label: 'Fornecedores', icon: 'pi pi-comment', routerLink: '/home' },
+      { label: 'Configurações do aplicativo', icon: 'pi pi-cog', routerLink: '/home' },
+      { label: 'Covid 19', icon: 'pi pi-asterisk', routerLink: '/home' },
+      { label: 'Contactar Suport', icon: 'pi pi-question-circle', routerLink: '/home' },
+    ];
   }
 
   selectItem(item: MenuItem) {

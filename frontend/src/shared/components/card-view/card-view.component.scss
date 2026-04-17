@@ -13,6 +13,11 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    padding: 5px;
+
+    .material-icon {
+        font-size: 33px;
+    }
 }
 
 .footer-card {
@@ -37,6 +42,10 @@
     .footer-card {
         background: var(--color-red);
     }
+
+    .material-icon {
+        color: #F0483E;
+    }
 }
 
 .yellow {
@@ -45,6 +54,10 @@
     .footer-card {
         background: var(--color-yellow);
     }
+
+    .material-icon {
+        color: #FED600;
+    }
 }
 
 .blue {
@@ -52,5 +65,9 @@
 
     .footer-card {
         background: var(--color-blue);
+    }
+
+    .material-icon {
+        color: #03A9F5;
     }
 }
