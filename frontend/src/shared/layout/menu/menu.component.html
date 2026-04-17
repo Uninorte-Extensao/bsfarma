@@ -3,8 +3,7 @@
 
     <header>
         <div class="container-logo">
-            <!-- <img src="assets/logo.svg"> -->
-            <!-- <img src="assets/logo.png"> -->
+            <img src="assets/logo.png">
             <span>BS Farma</span>
         </div>
 
@@ -25,12 +24,13 @@
     <aside class="container-items">
       <p-menu [model]="items">
         <ng-template pTemplate="item" let-item>
-          <a
-            pRipple
-            class="menu-item"
-            [class.active]="isActive(item)"
-            (click)="selectItem(item)"
-          >
+        <a
+          pRipple
+          class="menu-item"
+          [routerLink]="item.routerLink"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
             <i [class]="item.icon + ' item-icon'"></i>
             <span class="item-label">{{ item.label }}</span>
             <!-- @if(item.badge) {
