@@ -1,0 +1,122 @@
+export const MEDICAMENTOS: Medicamento[] = [
+  {
+    id: '1',
+    nomeGenerico: 'Paracetamol',
+    nomeComercial: 'Tylenol',
+    formaFarmaceutica: 'Comprimido',
+    concentracao: '500mg',
+    viaAdministracao: 'Oral',
+    estoqueMinimo: 50,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '2',
+    nomeGenerico: 'Ibuprofeno',
+    nomeComercial: 'Advil',
+    formaFarmaceutica: 'Cápsula',
+    concentracao: '400mg',
+    viaAdministracao: 'Oral',
+    estoqueMinimo: 30,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '3',
+    nomeGenerico: 'Amoxicilina',
+    nomeComercial: 'Amoxil',
+    formaFarmaceutica: 'Suspensão',
+    concentracao: '250mg/5ml',
+    viaAdministracao: 'Oral',
+    estoqueMinimo: 20,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '4',
+    nomeGenerico: 'Dipirona',
+    nomeComercial: 'Novalgina',
+    formaFarmaceutica: 'Solução oral',
+    concentracao: '500mg/ml',
+    viaAdministracao: 'Oral',
+    estoqueMinimo: 40,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '5',
+    nomeGenerico: 'Heparina',
+    nomeComercial: 'Liquemine',
+    formaFarmaceutica: 'Injetável',
+    concentracao: '5000UI/ml',
+    viaAdministracao: 'Subcutânea',
+    estoqueMinimo: 15,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '6',
+    nomeGenerico: 'Salbutamol',
+    nomeComercial: 'Aerolin',
+    formaFarmaceutica: 'Solução oral',
+    concentracao: '2mg/5ml',
+    viaAdministracao: 'Inalatória',
+    estoqueMinimo: 25,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '7',
+    nomeGenerico: 'Cetoconazol',
+    nomeComercial: 'Nizoral',
+    formaFarmaceutica: 'Pomada',
+    concentracao: '20mg/g',
+    viaAdministracao: 'Tópica',
+    estoqueMinimo: 10,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '8',
+    nomeGenerico: 'Omeprazol',
+    nomeComercial: 'Losec',
+    formaFarmaceutica: 'Cápsula',
+    concentracao: '20mg',
+    viaAdministracao: 'Oral',
+    estoqueMinimo: 35,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '9',
+    nomeGenerico: 'Morfina',
+    nomeComercial: 'Dimorf',
+    formaFarmaceutica: 'Injetável',
+    concentracao: '10mg/ml',
+    viaAdministracao: 'Intravenosa',
+    estoqueMinimo: 5,
+    ativo: false,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  },
+  {
+    id: '10',
+    nomeGenerico: 'Glicerina',
+    nomeComercial: 'Glicerol',
+    formaFarmaceutica: 'Supositório',
+    concentracao: '2g',
+    viaAdministracao: 'Retal',
+    estoqueMinimo: 12,
+    ativo: true,
+    criadoEm: new Date(),
+    atualizadoEm: new Date()
+  }
+];

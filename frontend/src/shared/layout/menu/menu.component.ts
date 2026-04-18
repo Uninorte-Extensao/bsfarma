@@ -14,7 +14,6 @@ export class MenuComponent implements OnInit {
   private router = inject(Router);
 
   items: MenuItem[] = [];
-  activeItem: MenuItem | null = null;
   isCollapsed = false;
   readonly user: WritableSignal<IUser | undefined> = signal(undefined);
 
@@ -23,70 +22,68 @@ export class MenuComponent implements OnInit {
       nome: 'Juliana Salgado',
       perfil: 'Administrador',
       image: 'assets/profile.jpg'
-    })
+    });
 
     this.items = [
-      { label: 'Controle', icon: 'pi pi-th-large', routerLink: '/control' },
-      {
-        label: 'Inventário',
-        icon: 'pi pi-inbox',
-        routerLink: '/home',
-        // items: [
-        //   { label: 'Medicamentos', icon: 'pi pi-inbox' },
-        //   { label: 'Grupo de Medicamentos', icon: 'pi pi-inbox' },
-        // ],
+      { 
+        label: 'Catálogo', 
+        items: [
+          { 
+            label: 'Medicamentos', 
+            icon: 'pi pi-inbox',
+            routerLink: '/catalog'
+          },
+          { 
+            label: 'Grupo de Medicamentos', 
+            icon: 'pi pi-inbox',
+            routerLink: '/grupo-medicamentos'
+          },
+        ]
       },
-      { label: 'Medicamentos', icon: 'pi pi-inbox',  },
-      { label: 'Grupo de Medicamentos', icon: 'pi pi-inbox' },
       {
-        label: 'Relatórios',
-        icon: 'pi pi-chart-line',
-        routerLink: '/home',
-        // items: [
-        //   { label: 'Mensal', icon: 'pi pi-calendar' },
-        //   { label: 'Anual', icon: 'pi pi-chart-bar' },
-        // ],
+        label: 'Lote',
+        items: [
+          { 
+            label: 'Movimentação', 
+            icon: 'pi pi-inbox',
+            routerLink: '/lote'
+          },
+        ],
       },
-      { label: 'Configurações', icon: 'pi pi-sliders-h', routerLink: '/home' },
-      { label: 'Contactar Gerência', icon: 'pi pi-users', routerLink: '/home' },
-      { label: 'Notificações', icon: 'pi pi-bell', routerLink: '/home' },
-      { label: 'Fornecedores', icon: 'pi pi-comment', routerLink: '/home' },
-      { label: 'Configurações do aplicativo', icon: 'pi pi-cog', routerLink: '/home' },
-      { label: 'Covid 19', icon: 'pi pi-asterisk', routerLink: '/home' },
-      { label: 'Contactar Suport', icon: 'pi pi-question-circle', routerLink: '/home' },
+      {
+        label: 'Dispensação',
+        items: [
+          { 
+            label: 'Atendimento', 
+            icon: 'pi pi-chart-line',
+            routerLink: '/atendimento'
+          },
+        ],
+      },
+      { 
+        label: 'Alertas', 
+        items: [
+          {
+            label: 'Notificações',
+            icon: 'pi pi-bell',
+            routerLink: '/notificacoes'
+          }
+        ]
+      },
+      { 
+        label: 'Administração', 
+        items: [
+          {
+            label: 'Usuários internos',
+            icon: 'pi pi-users',
+            routerLink: '/users'
+          }
+        ]
+      }
     ];
-  }
-
-  selectItem(item: MenuItem) {
-    if (item.items?.length) return;
-    this.activeItem = item;
-    this.router.navigate([item.routerLink])
-  }
-
-  isActive(item: MenuItem): boolean {
-    return this.activeItem === item;
   }
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
-  }
-
-  toggleAll() {
-    const expanded = !this.areAllItemsExpanded();
-    this.items = this.toggleAllRecursive(this.items, expanded);
-  }
-
-  private toggleAllRecursive(items: MenuItem[], expanded: boolean): MenuItem[] {
-    return items.map((menuItem) => {
-      menuItem.expanded = expanded;
-      if (menuItem.items) {
-        menuItem.items = this.toggleAllRecursive(menuItem.items, expanded);
-      }
-      return menuItem;
-    });
-  }
-
-  private areAllItemsExpanded(): boolean {
-    return this.items.every((menuItem) => menuItem.expanded);
   }
 }

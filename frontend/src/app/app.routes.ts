@@ -9,9 +9,9 @@ export const routes: Routes = [
     },
 
     {
-        path: 'control',
+        path: 'catalog',
         loadComponent: () =>
-            import('./modules/control/control.component')
-                .then(r => r.ControlComponent)
+            import('./modules/catalog/catalog.component')
+                .then(r => r.CatalogComponent)
     }
 ];
