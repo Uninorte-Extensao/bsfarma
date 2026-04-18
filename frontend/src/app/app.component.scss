@@ -12,6 +12,6 @@
 
 .content-router {
   flex: 1;
-  padding: 10px;
-  height: calc(100dvh - 60px);
+  height: calc(100dvh - 113px);
+  overflow-y: auto;
 }

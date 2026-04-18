@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
+import { IMedicine } from '../../../../shared/models/IMedicine';
 
 @Component({
   selector: 'app-table-medicines',
@@ -8,9 +9,5 @@ import { TableModule } from 'primeng/table';
   styleUrl: './table-medicines.component.scss',
 })
 export class TableMedicinesComponent {
-    products: any = [
-      {
-
-      }
-    ];
+    listMedicine: InputSignal<IMedicine[]> = input.required();
 }

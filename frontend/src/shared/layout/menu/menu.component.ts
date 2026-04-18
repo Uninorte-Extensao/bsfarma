@@ -18,6 +18,9 @@ export class MenuComponent implements OnInit {
   readonly user: WritableSignal<IUser | undefined> = signal(undefined);
 
   ngOnInit() {
+    const stored = localStorage.getItem('isCollapsed');
+    this.isCollapsed = stored === 'true';
+
     this.user.set({
       nome: 'Juliana Salgado',
       perfil: 'Administrador',
@@ -25,26 +28,21 @@ export class MenuComponent implements OnInit {
     });
 
     this.items = [
-      { 
-        label: 'Catálogo', 
+      {
+        label: 'Catálogo',
         items: [
-          { 
-            label: 'Medicamentos', 
+          {
+            label: 'Medicamentos',
             icon: 'pi pi-inbox',
             routerLink: '/catalog'
-          },
-          { 
-            label: 'Grupo de Medicamentos', 
-            icon: 'pi pi-inbox',
-            routerLink: '/grupo-medicamentos'
           },
         ]
       },
       {
         label: 'Lote',
         items: [
-          { 
-            label: 'Movimentação', 
+          {
+            label: 'Movimentação',
             icon: 'pi pi-inbox',
             routerLink: '/lote'
           },
@@ -53,15 +51,15 @@ export class MenuComponent implements OnInit {
       {
         label: 'Dispensação',
         items: [
-          { 
-            label: 'Atendimento', 
+          {
+            label: 'Atendimento',
             icon: 'pi pi-chart-line',
             routerLink: '/atendimento'
           },
         ],
       },
-      { 
-        label: 'Alertas', 
+      {
+        label: 'Alertas',
         items: [
           {
             label: 'Notificações',
@@ -70,8 +68,8 @@ export class MenuComponent implements OnInit {
           }
         ]
       },
-      { 
-        label: 'Administração', 
+      {
+        label: 'Administração',
         items: [
           {
             label: 'Usuários internos',
@@ -85,5 +83,6 @@ export class MenuComponent implements OnInit {
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
+    localStorage.setItem('isCollapsed', String(this.isCollapsed));
   }
 }

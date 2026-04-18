@@ -1,6 +1,8 @@
-export const MEDICAMENTOS: Medicamento[] = [
+import { IMedicine } from "../models/IMedicine";
+
+export const MEDICAMENTOS: IMedicine[] = [
   {
-    id: '1',
+    id: 1,
     nomeGenerico: 'Paracetamol',
     nomeComercial: 'Tylenol',
     formaFarmaceutica: 'Comprimido',
@@ -12,7 +14,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '2',
+    id: 2,
     nomeGenerico: 'Ibuprofeno',
     nomeComercial: 'Advil',
     formaFarmaceutica: 'Cápsula',
@@ -24,7 +26,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '3',
+    id: 3,
     nomeGenerico: 'Amoxicilina',
     nomeComercial: 'Amoxil',
     formaFarmaceutica: 'Suspensão',
@@ -36,7 +38,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '4',
+    id: 4,
     nomeGenerico: 'Dipirona',
     nomeComercial: 'Novalgina',
     formaFarmaceutica: 'Solução oral',
@@ -48,7 +50,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '5',
+    id: 5,
     nomeGenerico: 'Heparina',
     nomeComercial: 'Liquemine',
     formaFarmaceutica: 'Injetável',
@@ -60,7 +62,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '6',
+    id: 6,
     nomeGenerico: 'Salbutamol',
     nomeComercial: 'Aerolin',
     formaFarmaceutica: 'Solução oral',
@@ -72,7 +74,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '7',
+    id: 7,
     nomeGenerico: 'Cetoconazol',
     nomeComercial: 'Nizoral',
     formaFarmaceutica: 'Pomada',
@@ -84,7 +86,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '8',
+    id: 8,
     nomeGenerico: 'Omeprazol',
     nomeComercial: 'Losec',
     formaFarmaceutica: 'Cápsula',
@@ -96,7 +98,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '9',
+    id: 9,
     nomeGenerico: 'Morfina',
     nomeComercial: 'Dimorf',
     formaFarmaceutica: 'Injetável',
@@ -108,7 +110,7 @@ export const MEDICAMENTOS: Medicamento[] = [
     atualizadoEm: new Date()
   },
   {
-    id: '10',
+    id: 10,
     nomeGenerico: 'Glicerina',
     nomeComercial: 'Glicerol',
     formaFarmaceutica: 'Supositório',

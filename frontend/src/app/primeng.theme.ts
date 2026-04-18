@@ -2,21 +2,21 @@ import Aura from "@primeng/themes/aura";
 import { definePreset } from "@primeng/themes";
 
 export const BsFarmaTranslation = {
-    apply: 'Aplicar',
-    clear: 'Limpar',
-    accept: 'Sim',
-    reject: 'Não',
-    firstDayOfWeek: 0,
-    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
-        'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-    today: 'Hoje'
+  apply: 'Aplicar',
+  clear: 'Limpar',
+  accept: 'Sim',
+  reject: 'Não',
+  firstDayOfWeek: 0,
+  dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+  dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+  monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+    'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+  monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+  today: 'Hoje'
 };
 export const BsFarmaTheme = definePreset(Aura, {
-    primitive: {
+  primitive: {
     borderRadius: {
       none: "0",
       xs: "2px",
@@ -135,7 +135,8 @@ export const BsFarmaTheme = definePreset(Aura, {
       200: "#a5f3fc",
       300: "#67e8f9",
       400: "#22d3ee",
-      500: "#06b6d4",
+    // 500: "#06b6d4",
+      500: "#4C8EA9",
       600: "#0891b2",
       700: "#0e7490",
       800: "#155e75",
@@ -423,29 +424,29 @@ export const BsFarmaTheme = definePreset(Aura, {
       light: {
         surface: {
           0: "#ffffff",
-          50: "{slate.50}",
-          100: "{slate.100}",
-          200: "{slate.200}",
-          300: "{slate.300}",
-          400: "{slate.400}",
-          500: "{slate.500}",
-          600: "{slate.600}",
-          700: "{slate.700}",
-          800: "{slate.800}",
-          900: "{slate.900}",
-          950: "{slate.950}",
+          50: "#ffffff",
+          100: "#f8fafc",
+          200: "#f1f5f9",
+          300: "#e2e8f0",
+          400: "#cbd5e1",
+          500: "#94a3b8",
+          600: "#64748b",
+          700: "#475569",
+          800: "#334155",
+          900: "#1e293b",
+          950: "#0f172a",
         },
         primary: {
-          color: "{slate.900}",
+          color: "{cyan.500}",
           contrastColor: "#ffffff",
-          hoverColor: "{slate.800}",
-          activeColor: "{slate.700}"
+          hoverColor: "{cyan.600}",
+          activeColor: "{cyan.700}"
         },
         highlight: {
-          background: "{primary.50}",
-          focusBackground: "{primary.100}",
-          color: "{primary.700}",
-          focusColor: "{primary.800}"
+          background: "{cyan.50}",
+          focusBackground: "{cyan.100}",
+          color: "{cyan.700}",
+          focusColor: "{cyan.800}"
         },
         mask: {
           background: "rgba(0,0,0,0.4)",
