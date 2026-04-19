@@ -1,11 +1,12 @@
 :host ::ng-deep .p-breadcrumb-list {
-    font-size: 18px !important;
+    font-size: 20px !important;
+    font-weight: 600;
 }
 
-//:host ::ng-deep .p-breadcrumb-item-link {
-//    color: #000 !important;
-//}
+:host ::ng-deep .p-breadcrumb ul li:last-child .p-menuitem-link {
+  color: #000 !important;
+}
 
-// :host ::ng-deep .p-breadcrumb-separator {
-//    color: #000 !important;
-//}
+:host ::ng-deep .p-breadcrumb-separator {
+    color: #000 !important;
+}

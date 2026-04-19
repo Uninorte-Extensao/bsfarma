@@ -43,8 +43,8 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Movimentação',
-            icon: 'pi pi-inbox',
-            routerLink: '/lote'
+            icon: 'pi pi-chart-line',
+            routerLink: '/batch'
           },
         ],
       },
@@ -53,8 +53,8 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Atendimento',
-            icon: 'pi pi-chart-line',
-            routerLink: '/atendimento'
+            icon: 'pi pi-receipt',
+            routerLink: '/dispensation'
           },
         ],
       },
@@ -64,17 +64,17 @@ export class MenuComponent implements OnInit {
           {
             label: 'Notificações',
             icon: 'pi pi-bell',
-            routerLink: '/notificacoes'
+            routerLink: '/alerts'
           }
         ]
       },
       {
-        label: 'Administração',
+        label: 'Gestão',
         items: [
           {
             label: 'Usuários internos',
             icon: 'pi pi-users',
-            routerLink: '/users'
+            routerLink: '/management'
           }
         ]
       }

@@ -1,4 +1,24 @@
-<p-table [value]="listMedicine()">
+<p-table 
+[value]="listMedicine()"
+[paginator]="true"
+[rows]="8"
+[rowsPerPageOptions]="[8, 16, 32]"
+dataKey="id"
+[globalFilterFields]="['item.nomeGenerico', 'item.nomeComercial']"
+#dt
+>
+
+    <ng-template #caption>
+        <div class="flex">
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
+            </p-iconfield>
+        </div>
+    </ng-template>
+
     <ng-template #header>
         <tr>
             <th pSortableColumn="nomeGenerico" style="width:20%">
@@ -61,7 +81,7 @@
                 </span>
             </td>
             <td>
-                <span class="flex gap-1">
+                <span class="flex gap-1 cursor-pointer" routerLink="/catalog/{{item.id}}">
                     <small>Detalhes</small>
                     <i class="pi pi-angle-double-right"></i>
                 </span>
