@@ -1,2 +1,63 @@
-<p>form-medicine works!</p>
-    
+<section>
+    <header>
+        <small class="px-5 text-obs">Todos os campos são obrigatórios, exceto aqueles marcados como (Opcional).</small>
+    </header>
+    <aside class="m-0 grid p-4">
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="nomeG">Nome Genérico</label>
+                <input pInputText id="nomeG" aria-describedby="username-help" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="nomeC">Nome Comercial</label>
+                <input pInputText id="nomeC" aria-describedby="username-help" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="forma">Forma Farmacêutica</label>
+                <p-select id="forma" [options]="['']" optionLabel="name" placeholder="Selecione" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="concentracao">Concentração</label>
+                <input pInputText id="concentracao" aria-describedby="username-help" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="via">Via de administração</label>
+                <p-select id="via" [options]="['']" optionLabel="name" placeholder="Selecione" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="estoqueMinimo">Estoque Mínimo</label>
+                <p-inputnumber inputId="estoqueMinimo" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-2 flex align-items-end">
+            <div class="flex gap-2 align-items-center switch">
+                <div class="flex flex-column">
+                    <label for="ativo">{{checked ? 'Ativo' : 'Inativo'}}</label>
+                </div>
+                <p-toggleswitch id="ativo" [(ngModel)]="checked" />
+            </div>
+        </div>
+
+        <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+            <p-button label="Cancelar" severity="danger" routerLink="/catalog"/>
+            <p-button label="Salvar" severity="success"/>
+        </div>
+
+    </aside>
+</section>

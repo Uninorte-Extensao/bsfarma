@@ -12,11 +12,17 @@
     color: var(--text-color-red);
 }
 
+//:host ::ng-deep .p-datatable .p-datatable-header {
+//    padding: 0 !important;
+//    border: none !important;
+//    position: absolute;
+//    left: 40%;
+//    top: -13%;
+//    z-index: 10;
+//}
+
 :host ::ng-deep .p-datatable .p-datatable-header {
     padding: 0 !important;
-    border: none !important;
-    position: absolute;
-    left: 40%;
-    top: -13%;
-    z-index: 10;
+    display: flex;
+    justify-content: start;
 }

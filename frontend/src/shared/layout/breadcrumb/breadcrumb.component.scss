@@ -4,9 +4,14 @@
 }
 
 :host ::ng-deep .p-breadcrumb ul li:last-child .p-menuitem-link {
-  color: #000 !important;
+    color: #000 !important;
 }
 
 :host ::ng-deep .p-breadcrumb-separator {
     color: #000 !important;
+}
+
+:host ::ng-deep .p-breadcrumb {
+    padding: 1rem 2rem !important;
+    padding-bottom: 0 !important;
 }

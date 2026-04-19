@@ -6,12 +6,26 @@
         margin: 0;
         padding: 0;
     }
+
+    .text-obs {
+        color: #475569;
+    }
+
+    .p-tabs {
+        padding: 0 2rem !important;
+    }
+
+    .p-tabpanels {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 }
 
 
 html,
 body {
-    height: 100dvh;
+    height: 100%;
+    min-height: 100dvh;
 }
 
 body {
