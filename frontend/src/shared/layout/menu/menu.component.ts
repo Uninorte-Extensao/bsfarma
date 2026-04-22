@@ -3,10 +3,11 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 import { IUser } from '../../models/IUser';
+import { Badge } from "primeng/badge";
 
 @Component({
   selector: 'app-menu',
-  imports: [MenuModule, RouterModule],
+  imports: [MenuModule, RouterModule, Badge],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
@@ -64,7 +65,8 @@ export class MenuComponent implements OnInit {
           {
             label: 'Notificações',
             icon: 'pi pi-bell',
-            routerLink: '/alerts'
+            routerLink: '/alerts',
+            badge: '3'
           }
         ]
       },

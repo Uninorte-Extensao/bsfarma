@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'app-home',
@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy } from '@angular/core';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
+  nameUser = signal('Juliana Salgado')
 }
