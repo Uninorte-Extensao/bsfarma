@@ -1,8 +1,6 @@
 """
-Engine assíncrona e fábrica de sessões.
-
-Não use AsyncSessionLocal diretamente nas rotas —
-use a dependência get_session() de app.core.dependencies.
+Engine assíncrona e fábrica de sessões. Não use AsyncSessionLocal diretamente nas rotas.
+Use a dependência get_session() de app.core.dependencies.
 """
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine

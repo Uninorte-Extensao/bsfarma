@@ -105,7 +105,7 @@ async def test_autenticar_senha_errada_levanta_401(session: AsyncSession):
 
 @pytest.mark.asyncio
 async def test_autenticar_login_inexistente_levanta_401(session: AsyncSession):
-    """Login que não existe deve retornar 401 (não revelar se login existe)."""
+    """Login que não existe deve retornar 401 (não revelar se login existe, regras de segurança)."""
     from fastapi import HTTPException
 
     service = UsuarioService(session)

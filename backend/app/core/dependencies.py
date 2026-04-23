@@ -83,7 +83,7 @@ def require_perfil(*perfis: str):
         if usuario.perfil not in perfis:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Perfil '{usuario.perfil}' não tem acesso a este recurso.",
+                detail=f"Usuários do perfil de acesso '{usuario.perfil}' não tem acesso a este recurso.",
             )
         return usuario
 

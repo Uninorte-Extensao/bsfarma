@@ -11,7 +11,7 @@ from passlib.context import CryptContext
 
 from app.core.config import settings
 
-# Contexto de hash — bcrypt é o algoritmo recomendado para senhas.
+# Contexto de hash
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 

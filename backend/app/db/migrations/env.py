@@ -1,6 +1,5 @@
 """
 Configuração do Alembic para migrações assíncronas.
-
 Para gerar uma nova migration após alterar um model:
     poetry run alembic revision --autogenerate -m "descricao da mudanca"
     poetry run alembic upgrade head

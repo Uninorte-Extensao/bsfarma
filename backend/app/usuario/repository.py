@@ -48,9 +48,9 @@ class UsuarioRepository:
 
     async def create(self, usuario: Usuario) -> Usuario:
         """
-        Persiste um novo usuário no banco.
+        Cria um novo usuário no banco.
 
-        O objeto deve ser criado pelo service antes de chamar este método.
+        O objeto deve ser criado pelo service (usuario/service.py) antes de chamar este metodo.
         """
         self.session.add(usuario)
         await self.session.flush()   # gera o ID sem commitar — o commit é do get_session

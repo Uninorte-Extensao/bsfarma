@@ -1,7 +1,5 @@
 """
-Base declarativa do SQLAlchemy.
-
-Todos os model.py de domínio devem herdar de Base:
+Base declarativa do SQLAlchemy. Todos os model.py de domínio devem herdar de Base:
     from app.db.base import Base
 
     class MeuModelo(Base):
@@ -10,7 +8,6 @@ Todos os model.py de domínio devem herdar de Base:
 """
 
 from sqlalchemy.orm import DeclarativeBase
-
 
 class Base(DeclarativeBase):
     pass

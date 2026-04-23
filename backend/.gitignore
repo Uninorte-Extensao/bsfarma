@@ -20,7 +20,7 @@ htmlcov/
 .vscode/
 *.swp
 
-# Alembic (nunca versione dados de migration gerados localmente sem revisão)
+# Alembic
 app/db/migrations/versions/*.py
 
 # OS
