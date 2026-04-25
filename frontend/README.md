@@ -165,3 +165,17 @@ Alertas operacionais e preventivos.
 
 ## Gestão de Usuários
 Perfis, permissões e controle de acesso.
+
+---
+
+## Arquitetura da Solução
+
+A solução BsFarma é composta por dois repositórios:
+
+- **Frontend (este repositório)**  
+Aplicação web desenvolvida em Angular.
+
+- **Backend**  
+API responsável por autenticação, regras de negócio e persistência de dados.
+
+Repositório da API: [bsfarma](https://github.com/julysantos/bsfarma)
