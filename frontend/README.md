@@ -1,59 +1,167 @@
-# Bsfarma
+# BsFarma - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+Sistema de controle de estoque farmacêutico da UBS Saúde Sempre.
 
-## Development server
+---
 
-To start a local development server, run:
+## Stack
+
+- Angular `v20.3.18`
+- TypeScript `v5.9.3`
+- PrimeNG `v20.4.0`
+- PrimeFlex `v4.0.0`
+- Chart.js `v0.3.24`
+
+---
+
+# Pré-requisitos
+
+Antes de executar o projeto, instale:
+
+## 1. Instalar Node.js
+
+Baixe e instale a versão LTS:
+
+https://nodejs.org
+
+Verifique a instalação:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 2. Instalar Angular CLI
+
+Instale globalmente:
+
+```bash
+npm install -g @angular/cli
+```
+
+Verifique:
+
+```bash
+ng version
+```
+
+---
+
+## 3. Clonar o projeto
+
+```bash
+git clone https://github.com/AlessaSousa/bsfarma.git
+cd bsfarma
+```
+
+---
+
+## 4. Instalar dependências do projeto
+
+```bash
+npm install
+```
+
+ou
+
+```bash
+npm i
+```
+
+Isso instalará todas as dependências do projeto, incluindo:
+
+- Angular
+- PrimeNG
+- PrimeFlex
+- Chart.js
+- Demais bibliotecas do package.json
+
+---
+
+## 5. Executar aplicação
+
+Suba o ambiente local:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+ou
 
 ```bash
-ng generate component component-name
+ng s
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Aplicação disponível em:
 
 ```bash
-ng generate --help
+http://localhost:4200
 ```
 
-## Building
+---
 
-To build the project run:
+# Build de produção
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+# Scripts úteis
 
 ```bash
-ng test
+ng serve         # iniciar projeto
+ng build         # gerar build
+ng test          # testes
+ng lint          # lint
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+# Estrutura do Projeto
 
 ```bash
-ng e2e
+src/
+└── app/
+    ├── modules/
+    │   ├── alerts/
+    │   ├── batch/
+    │   ├── catalog/
+    │   ├── dispensation/
+    │   └── management/
+    ├── core/
+    └── shared/
+        ├── components/
+        │   └── card-view/
+        ├── layout/
+        │   ├── breadcrumb/
+        │   ├── header/
+        │   └── menu/
+        ├── mocks/
+        ├── models/
+        └── services/
+└──  environments/
+
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+# Módulos
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Catálogo
+Gestão de medicamentos.
+
+## Lote / Estoque
+Controle de lotes, validade e estoque.
+
+## Dispensação
+Registro e acompanhamento de dispensações.
+
+## Alertas
+Alertas operacionais e preventivos.
+
+## Gestão de Usuários
+Perfis, permissões e controle de acesso.
