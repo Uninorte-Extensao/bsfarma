@@ -4,13 +4,13 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { IS_MOBILE, IsMobileService } from '../shared/services/is-mobile.service';
+import { IS_MOBILE, IsMobileService } from './shared/services/is-mobile.service';
 import { MessageService } from 'primeng/api';
-import { BasicAuthInterceptor } from '../core/basicAuthInterceptor';
+import { BasicAuthInterceptor } from './core/basicAuthInterceptor';
 import { BsFarmaTheme, BsFarmaTranslation } from './primeng.theme';
-import { LoadingInterceptor } from '../core/loadingInterceptor';
+import { LoadingInterceptor } from './core/loadingInterceptor';
 import { providePrimeNG } from 'primeng/config';
-import { authInterceptor } from '../core/authInterceptor';
+import { authInterceptor } from './core/authInterceptor';
 
 export const appConfig: ApplicationConfig = {
   // providers: [

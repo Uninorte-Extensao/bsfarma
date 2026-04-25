@@ -1,6 +1,6 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { IMedicine } from '../../../../shared/models/IMedicine';
+import { IMedicine } from '../../../shared/models/IMedicine';
 import { RouterLink } from "@angular/router";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
