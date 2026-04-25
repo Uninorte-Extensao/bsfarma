@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="col-12 md:col-6 content">
+        <p-selectbutton 
+        class="mb-4 flex justify-content-center"
+        [options]="stateOptions" 
+        [(ngModel)]="value" 
+        optionLabel="label" 
+        optionValue="value" 
+        aria-labelledby="basic" 
+        #select
+        />
+        @if(select.value === 'login') {
+            <app-login/>
+        } @else {
+            <app-register/>
+        }
+    </div>
+</div>

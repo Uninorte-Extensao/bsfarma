@@ -8,9 +8,6 @@ import { BreadcrumbComponent } from "../app/shared/layout/breadcrumb/breadcrumb.
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    MenuComponent,
-    HeaderComponent,
-    BreadcrumbComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
