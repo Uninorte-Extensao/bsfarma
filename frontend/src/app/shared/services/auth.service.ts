@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { lastValueFrom, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ICreateUser, IResponseCreateUser, IResponseLogin, IUserLogin } from '../models/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -11,28 +12,34 @@ export class AuthService {
   public isLogged = signal(!!localStorage.getItem('isLogged'));
   public emailUser = signal('');
 
-
   constructor() { }
-  login(credentials: { email: string; senha: string }) {
+  async login(credentials: IUserLogin) {
+    const body = new URLSearchParams();
+
+    body.set('username', credentials.username)
+    body.set('password', credentials.password)
+
     return lastValueFrom(
-      this.http.post(`${environment.apiUrl}/api/auth/login`, credentials, {
-        withCredentials: true,
-        responseType: 'text'
-      })
+      this.http.post<IResponseLogin>(
+        `${environment.apiUrl}/auth/login`,
+        body.toString(),
+        {
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+          }
+        }
+      )
     ).then(res => {
-      localStorage.setItem('isLogged', 'true');
-      this.isLogged.set(true);
-      const limpa = res.replace(/\s*signed in/, "");
-      this.emailUser.set(limpa)
+      localStorage.setItem('isLoggedBsFarma', 'true');
+      this.isLogged.set(true)
       return res;
-    });
+    })
   }
 
-  register(data: any) {
+  register(data: ICreateUser) {
     return lastValueFrom(
-      this.http.post(`${environment.apiUrl}/api/auth/register`, data, {
+      this.http.post<IResponseCreateUser>(`${environment.apiUrl}/usuarios`, data, {
         withCredentials: true,
-        responseType: 'text'
       })
     );
   }
@@ -40,7 +47,7 @@ export class AuthService {
 
   logout() {
     return lastValueFrom(
-      this.http.post(`${environment.apiUrl}/api/auth/logout`, {}, {
+      this.http.post(`${environment.apiUrl}/logout`, {}, {
         withCredentials: true,
         responseType: 'text'
       })

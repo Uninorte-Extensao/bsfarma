@@ -1,19 +1,21 @@
-<div class="flex align-items-center flex-column">
-    <h3 class="m-0">Bem-vindo de volta!</h3>
-    <small>Acesse com seu login e senha.</small>
-</div>
-
-<div class="my-4 flex flex flex-column gap-2">
-    <div class="flex flex-column gap-2">
-        <label for="login">Login *</label>
-        <input pInputText id="login" fluid/>
+<form [formGroup]="form">
+    <div class="flex align-items-center flex-column">
+        <h3 class="m-0">Bem-vindo de volta!</h3>
+        <small>Acesse com seu login e senha.</small>
     </div>
     
-    <div class="flex flex-column gap-2">
-        <label for="password">Senha *</label>
-        <p-password [toggleMask]="true" fluid id="password"/>
+    <div class="my-4 flex flex flex-column gap-2">
+        <div class="flex flex-column gap-2">
+            <label for="login">Login *</label>
+            <input pInputText id="login" fluid formControlName="username"/>
+        </div>
+        
+        <div class="flex flex-column gap-2">
+            <label for="password">Senha *</label>
+            <p-password [toggleMask]="true" fluid id="password" formControlName="password"/>
+        </div>
     </div>
-</div>
-<div class="flex justify-content-center">
-    <p-button label="Entrar" severity="secondary"/>
-</div>
+    <div class="flex justify-content-center">
+        <p-button label="Entrar" severity="secondary" (click)="saveData()"/>
+    </div>
+</form>

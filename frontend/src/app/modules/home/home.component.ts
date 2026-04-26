@@ -10,7 +10,7 @@ import { RouterOutlet } from "@angular/router";
     MenuComponent,
     HeaderComponent,
     BreadcrumbComponent,
-    RouterOutlet
+    RouterOutlet,
 ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',

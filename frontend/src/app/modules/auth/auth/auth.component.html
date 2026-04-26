@@ -1,6 +1,6 @@
 <div class="container">
     <div class="col-12 md:col-6 content">
-        <p-selectbutton 
+        <!-- <p-selectbutton 
         class="mb-4 flex justify-content-center"
         [options]="stateOptions" 
         [(ngModel)]="value" 
@@ -13,6 +13,8 @@
             <app-login/>
         } @else {
             <app-register/>
-        }
+        } -->
+
+        <app-login (onChangeLogin)="submit($event)"/>
     </div>
 </div>
