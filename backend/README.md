@@ -21,7 +21,7 @@ Sistema de controle de estoque farmacêutico da UBS Saúde Sempre.
 
 ### 1. Pré-requisitos
 
-- Python 3.14
+- Python 3.11
 - [Poetry](https://python-poetry.org/docs/#installation)
 
 ### 2. Configurar ambiente virtual e instalar dependências
