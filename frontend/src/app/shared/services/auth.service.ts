@@ -9,7 +9,7 @@ import { ICreateUser, IResponseCreateUser, IResponseLogin, IUserLogin } from '..
 })
 export class AuthService {
   private http = inject(HttpClient);
-  public isLogged = signal(!!localStorage.getItem('isLogged'));
+  public isLogged = signal(!!localStorage.getItem('isLoggedBsFarma'));
   public emailUser = signal('');
 
   constructor() { }
@@ -59,6 +59,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('isLogged') === 'true';
+    return localStorage.getItem('isLoggedBsFarma') === 'true';
   }
 }

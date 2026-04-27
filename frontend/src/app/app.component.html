@@ -1,3 +1,23 @@
-<router-outlet></router-outlet>
 <p-toast position="top-center" key="tc"></p-toast>
-<app-loading/>
+<app-loading></app-loading>
+
+<!-- @if (!isAuthRoute) {
+  <div class="layout">
+    <div class="sidebar">
+      <app-menu />
+    </div>
+
+    <div class="content">
+      <app-header />
+      <app-breadcrumb />
+
+      <div class="content-router">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+} -->
+
+  <router-outlet></router-outlet>

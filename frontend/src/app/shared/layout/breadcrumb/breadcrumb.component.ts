@@ -1,15 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
-import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule, Route } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-breadcrumb',
-  imports: [
-    Breadcrumb,
-    RouterModule
-  ],
+  imports: [Breadcrumb, RouterModule],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.scss',
 })
@@ -28,27 +25,52 @@ export class BreadcrumbComponent {
   }
 
   private buildBreadcrumb(): MenuItem[] {
-    const url = this.router.url;
-    const breadcrumbs: MenuItem[] = [];
-
-    const routes = this.router.config;
-
+    const url = this.router.url.split('?')[0];
     const segments = url.split('/').filter(Boolean);
+    const breadcrumbs: MenuItem[] = [];
     let currentPath = '';
 
     segments.forEach(segment => {
       currentPath += `/${segment}`;
 
-      const route = routes.find(r => `/${r.path}` === currentPath);
+      const label = this.findBreadcrumbLabel(
+        this.router.config,
+        currentPath.replace(/^\//, '') 
+      );
 
-      if (route?.data?.['breadcrumb']) {
-        breadcrumbs.push({
-          label: route.data['breadcrumb'],
-          routerLink: currentPath
-        });
+      if (label) {
+        breadcrumbs.push({ label, routerLink: currentPath });
       }
     });
 
     return breadcrumbs;
+  }
+
+  private findBreadcrumbLabel(routes: Route[], fullPath: string): string | null {
+    for (const route of routes) {
+      const routePath = route.path ?? '';
+
+      if (this.matchPath(routePath, fullPath) && route.data?.['breadcrumb']) {
+        return route.data['breadcrumb'];
+      }
+
+      if (route.children) {
+        const found = this.findBreadcrumbLabel(route.children, fullPath);
+        if (found) return found;
+      }
+    }
+
+    return null;
+  }
+
+  private matchPath(routePath: string, urlPath: string): boolean {
+    const routeSegments = routePath.split('/');
+    const urlSegments = urlPath.split('/');
+
+    if (routeSegments.length !== urlSegments.length) return false;
+
+    return routeSegments.every((seg, i) =>
+      seg.startsWith(':') || seg === urlSegments[i]
+    );
   }
 }

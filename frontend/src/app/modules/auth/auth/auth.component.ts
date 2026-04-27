@@ -1,9 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LoginComponent } from "../login/login.component";
-import { Button } from "primeng/button";
-import { SelectButton } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
-import { RegisterComponent } from "../register/register.component";
 import { IResponseLogin, IUserLogin } from '../../../shared/models/IUser';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LoadingService } from '../../../shared/services/loading.service';
@@ -11,7 +8,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-auth',
-  imports: [LoginComponent, SelectButton, FormsModule, RegisterComponent],
+  imports: [LoginComponent, FormsModule],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
