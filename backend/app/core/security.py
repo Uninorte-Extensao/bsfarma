@@ -3,6 +3,7 @@ Segurança: hashing de senha e geração/validação de tokens JWT.
 
 Não contém lógica de negócio — apenas mecanismos de autenticação.
 """
+import hashlib
 
 from datetime import datetime, timedelta, timezone
 
@@ -17,6 +18,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(plain_password: str) -> str:
     """Gera o hash bcrypt de uma senha em texto plano."""
+    
     return pwd_context.hash(plain_password)
 
 
