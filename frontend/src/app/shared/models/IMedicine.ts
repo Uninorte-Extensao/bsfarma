@@ -18,39 +18,29 @@ export type ViaAdministracao =
   | 'Retal'
   | 'Sublingual';
 
-export interface IMedicine{
+  export type Tarja =
+  | 'Sem Tarja'
+  | 'Tarja Vermelha'
+  | 'Tarja Preta';
+
+export interface IMedicine {
   id: number;
   nomeGenerico: string;
   nomeComercial: string;
-  formaFarmaceutica: FormaFarmaceutica;
   concentracao: string;
+  formaFarmaceutica: FormaFarmaceutica;
   viaAdministracao: ViaAdministracao;
-  estoqueMinimo: number;
   ativo: boolean;
+  estoqueMinimo: number;
+  fabricantePadrao: string;
+  apresentacaoOriginal: string;
+  codGgrem: number;
+  registro: number;
+  codigoBarras: number;
+  classeTerapeutica: string;
+  tipoProduto: string;
+  restricaoHospitalar: boolean;
+  tarja: Tarja;
   criadoEm: Date;
   atualizadoEm: Date;
-}
-
-export type CriarMedicamentoDTO = Omit<
-  IMedicine,
-  'id' | 'criadoEm' | 'atualizadoEm'
->;
-
-export type AtualizarMedicamentoDTO = Partial<CriarMedicamentoDTO>;
-
-export type MedicamentoResumo = Pick<
-  IMedicine,
-  | 'id'
-  | 'nomeGenerico'
-  | 'nomeComercial'
-  | 'formaFarmaceutica'
-  | 'concentracao'
-  | 'viaAdministracao'
-  | 'ativo'
->;
-
-export interface FiltroMedicamento {
-  busca?: string;
-  formaFarmaceutica?: FormaFarmaceutica;
-  ativo?: boolean;
 }

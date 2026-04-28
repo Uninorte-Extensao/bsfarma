@@ -3,60 +3,126 @@
         <small class="px-5 text-obs">Todos os campos são obrigatórios, exceto aqueles marcados como (Opcional).</small>
     </header>
     <aside class="m-0 grid p-4">
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="nomeG">Nome Genérico</label>
-                <input pInputText id="nomeG" aria-describedby="username-help" />
+                <input pInputText id="nomeG" placeholder="Ex: Dipirona Sódica" />
             </div>
         </div>
 
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="nomeC">Nome Comercial</label>
-                <input pInputText id="nomeC" aria-describedby="username-help" />
+                <input pInputText id="nomeC" placeholder="Ex: Novalgina" />
             </div>
         </div>
 
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="forma">Forma Farmacêutica</label>
-                <p-select id="forma" [options]="['']" optionLabel="name" placeholder="Selecione" />
+                <p-select id="forma" [options]="['']" optionLabel="name" placeholder="Ex: Comprimido" />
             </div>
         </div>
 
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="concentracao">Concentração</label>
-                <input pInputText id="concentracao" aria-describedby="username-help" />
+                <input pInputText id="concentracao" placeholder="Ex: 500mg" />
             </div>
         </div>
 
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="via">Via de administração</label>
-                <p-select id="via" [options]="['']" optionLabel="name" placeholder="Selecione" />
+                <p-select id="via" [options]="['']" optionLabel="name" placeholder="Ex: Oral" />
             </div>
         </div>
 
         <div class="col-12 md:col-4">
             <div class="flex flex-column gap-2">
                 <label for="estoqueMinimo">Estoque Mínimo</label>
-                <p-inputnumber inputId="estoqueMinimo" />
+                <p-inputnumber inputId="estoqueMinimo" placeholder="Ex: 100" />
             </div>
         </div>
 
-        <div class="col-12 md:col-2 flex align-items-end">
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="fabPadrao">Fabricante Padrão</label>
+                <input pInputText id="fabPadrao" placeholder="Ex: Sanofi" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="apresentacao">Apresentação Padrão</label>
+                <input pInputText id="apresentacao" placeholder="Ex: Caixa com 20 comprimidos" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="codggrem">Código GGREM</label>
+                <p-inputnumber inputId="codggrem" placeholder="Ex: 100000001" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="registro">Registro ANVISA</label>
+                <p-inputnumber inputId="registro" placeholder="Ex: 123456789" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="codBarras">Código de Barras</label>
+                <p-inputnumber inputId="codBarras" placeholder="Ex: 7891234567890" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-2">
+                <label for="classe">Classe Terapêutica</label>
+                <input pInputText id="classe" placeholder="Ex: Analgésico" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-3">
+            <div class="flex flex-column gap-2">
+                <label for="produto">Tipo de Produto</label>
+                <input pInputText id="produto" placeholder="Ex: Medicamento Controlado" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-3">
+            <div class="flex flex-column gap-2">
+                <label for="tarja">Tarja</label>
+                <p-select id="tarja" [options]="['']" optionLabel="name" placeholder="Ex: Tarja Vermelha" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-3 flex align-items-end">
+            <div class="flex gap-2 align-items-center switch">
+                <div class="flex flex-column">
+                    <label for="restricao">Restrição Hospitalar</label>
+                </div>
+
+                <p-toggleswitch id="restricao" [(ngModel)]="checked" />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-3 flex align-items-end">
             <div class="flex gap-2 align-items-center switch">
                 <div class="flex flex-column">
                     <label for="ativo">{{checked ? 'Ativo' : 'Inativo'}}</label>
                 </div>
-                <p-toggleswitch id="ativo" [(ngModel)]="checked" />
+               <p-toggleswitch id="ativo" [(ngModel)]="checked" />
             </div>
         </div>
 
         <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
-            <p-button label="Cancelar" severity="danger" routerLink="/catalog"/>
-            <p-button label="Salvar" severity="success"/>
+            <p-button label="Cancelar" severity="danger" routerLink="/catalog" />
+            <p-button label="Salvar" severity="success" />
         </div>
 
     </aside>

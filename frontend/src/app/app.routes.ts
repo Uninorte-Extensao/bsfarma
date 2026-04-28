@@ -11,13 +11,18 @@ export const routes: Routes = [
 
     {
         path: '',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         loadComponent: () =>
             import('./modules/home/home.component')
                 .then(r => r.HomeComponent),
         children: [
 
             // MEDICAMENTOS
+            {
+                path: '',
+                redirectTo: 'catalog',
+                pathMatch: 'full'
+            },
             {
 
                 path: 'catalog',
