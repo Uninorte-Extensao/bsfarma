@@ -5,6 +5,7 @@ import { IResponseLogin, IUserLogin } from '../../../shared/models/IUser';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LoadingService } from '../../../shared/services/loading.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -22,6 +23,7 @@ export class AuthComponent {
   private authService = inject(AuthService)
   private loadingService = inject(LoadingService)
   private toastService = inject(ToastService)
+  private router = inject(Router)
 
   submit(event: IUserLogin) {
     this.loadingService.show()
@@ -29,6 +31,7 @@ export class AuthComponent {
     .then((res: IResponseLogin) => {
       console.log(res)
       // TODO AO INVÉS DE UM TOAST, CRIAR UMA TELA DO TIPO BEM VINDO
+      this.router.navigate(['/catalog']);
       this.toastService.showToastSuccess('Usuario logado com sucesso')
     })
     .catch((err) => {

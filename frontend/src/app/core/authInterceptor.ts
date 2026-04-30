@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('tokenBsFarma');
 
   const isLoginRequest = req.url.includes('/auth/login');
 

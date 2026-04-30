@@ -32,6 +32,7 @@ async login(credentials: IUserLogin) {
   ).then(res => {
     localStorage.setItem('isLoggedBsFarma', 'true');
     this.isLogged.set(true)
+    localStorage.setItem('tokenBsFarma', res.access_token)
     return res;
   })
 }
