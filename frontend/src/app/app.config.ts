@@ -40,11 +40,6 @@ export const appConfig: ApplicationConfig = {
       translation: BsFarmaTranslation
     }),
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: BasicAuthInterceptor,
-      multi: true,
-    },
-    {
       provide: LOCALE_ID,
       useValue: 'pt-BR'
     },

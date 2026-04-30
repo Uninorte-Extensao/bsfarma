@@ -3,17 +3,20 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
 
-  private username = 'user'; 
-  private password = ''; 
+  private username = 'user';
+  private password = '';
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+
+    if (req.url.includes('/auth/login')) {
+      return next.handle(req);
+    }
+
     const credenciais = btoa(`${this.username}:${this.password}`);
 
     const authReq = req.clone({
