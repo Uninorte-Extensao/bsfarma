@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { LoadingComponent } from "./shared/components/loading/loading.component";
 import { Toast } from "primeng/toast"
 import { filter } from 'rxjs';
+import { AuthService } from './shared/services/auth.service';
 @Component({
   selector: 'app-root',
   imports: [
@@ -13,12 +14,12 @@ import { filter } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'bsfarma';
-
-  router = inject(Router);
-
   isAuthRoute = false;
+
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   constructor() {
 
@@ -30,5 +31,13 @@ export class AppComponent {
         this.isAuthRoute =
           this.router.url === '/auth';
       });
+  }
+
+  ngOnInit() {
+    const token = localStorage.getItem('tokenBsFarma')
+
+    if(token) {
+      this.authService.loadUser()
+    }
   }
 }

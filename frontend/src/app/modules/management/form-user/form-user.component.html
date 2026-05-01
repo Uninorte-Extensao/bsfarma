@@ -1,0 +1,64 @@
+<form class="m-0 grid" [formGroup]="form">
+    <div class="col-12 md:col-4">
+        <div class="flex flex-column gap-2">
+            <label for="nome">Nome</label>
+            <input 
+            pInputText id="nome" 
+            placeholder="Ex: Ana Lima" 
+            formControlName="nome"
+            />
+        </div>
+    </div>
+
+    <div class="col-12 md:col-4">
+        <div class="flex flex-column gap-2">
+            <label for="login">Login</label>
+            <input 
+            pInputText 
+            id="login" 
+            placeholder="Ex: ana.lima" 
+            formControlName="login"
+            />
+        </div>
+    </div>
+
+    <div class="col-12 md:col-4">
+        <div class="flex flex-column gap-2">
+            <label for="password">Senha</label>
+            <p-password 
+            [toggleMask]="true" 
+            fluid 
+            id="password" 
+            formControlName="senha"
+            />
+        </div>
+    </div>
+
+    <div class="col-12 md:col-4">
+        <div class="flex flex-column gap-2">
+            <label for="forma">Perfil</label>
+            <p-select 
+            id="forma" 
+            [options]="typeProfile()" 
+            optionLabel="label" 
+            optionValue="value"
+            placeholder="Selecione um perfil"
+            appendTo="body"
+            formControlName="perfil"
+            />
+        </div>
+    </div>
+
+    <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+        <p-button 
+        label="Cancelar" 
+        severity="danger" 
+        (click)="close()" />
+        
+        <p-button 
+        label="Salvar" 
+        severity="success" 
+        (click)="submit()" />
+    </div>
+
+</form>

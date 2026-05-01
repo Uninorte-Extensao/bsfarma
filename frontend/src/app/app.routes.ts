@@ -81,7 +81,7 @@ export const routes: Routes = [
 
             {
                 path: 'management',
-                data: { breadcrumb: 'Usuários Internos' },
+                data: { breadcrumb: 'Usuários' },
                 loadComponent: () =>
                     import('./modules//management/management.component')
                         .then(r => r.ManagementComponent)

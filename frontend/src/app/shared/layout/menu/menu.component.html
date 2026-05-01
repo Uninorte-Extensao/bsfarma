@@ -8,15 +8,22 @@
         </div>
 
         <div class="container-perfil">
-            @if(user() && user()?.image) {
-            <img [src]="user()?.image" height="42px" width="42px">
-            } @else {
-            <i class="pi pi-user text-2xl"></i>
+          @if(isCollapsed) {
+            <div class="circle-name"
+            [ngClass]="getProfileClass(user()?.perfil)">
+            @if(user()?.nome) {
+              <div>
+                {{inititalName(user()!.nome) | uppercase}}
+              </div>
             }
+            </div>
+          }
+
             <div class="flex flex-column">
             <span>{{user()?.nome}}</span>
-            <small class="text-yellow">{{user()?.perfil}}</small>
+            <small>{{user()?.perfil | titlecase}}</small>
             </div>
+
             <div class="card flex justify-center">
               <p-menu #menu [model]="itemsProfile" [popup]="true" appendTo="body" />
               <i text (click)="menu.toggle($event)" class="pi pi-ellipsis-v cursor-pointer"></i>

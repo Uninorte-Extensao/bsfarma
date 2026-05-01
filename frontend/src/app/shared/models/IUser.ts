@@ -12,7 +12,8 @@ export interface IUserLogin {
 
 export interface IResponseLogin {
     access_token: string,
-    token_type: string
+    token_type: string,
+    id_user: string
 }
 
 export interface ICreateUser {
@@ -22,10 +23,11 @@ export interface ICreateUser {
     perfil: 'atendente' | 'farmaceutico' | 'gestor'
 }
 
-export interface IResponseCreateUser extends ICreateUser {
+export interface IResponseUser extends ICreateUser {
     ativo: boolean,
     criado_em: Date,
-    ultimo_acesso: Date
+    ultimo_acesso: Date,
+    id: string
 }
 
 export enum IProfileEnum {
@@ -33,3 +35,9 @@ export enum IProfileEnum {
     FARMACEUTICO = "farmaceutico",
     GESTOR = "gestor"
 }
+
+export const PROFILE_OPTIONS = [
+  { label: 'Atendente', value: IProfileEnum.ATENDENTE },
+  { label: 'Farmacêutico', value: IProfileEnum.FARMACEUTICO },
+  { label: 'Gestor', value: IProfileEnum.GESTOR }
+];

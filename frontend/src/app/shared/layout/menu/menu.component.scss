@@ -27,6 +27,7 @@
 
         .container-perfil {
             justify-content: center;
+            padding: 20px 0;
         }
 
         .menu-item {
@@ -76,6 +77,7 @@
         font-weight: 600;
         text-align: center;
     }
+
     img {
         width: 30px;
         height: 30px;
@@ -85,7 +87,7 @@
 .container-perfil {
     display: flex;
     align-items: center;
-    padding: 20px 10px;
+    padding: 20px 30px;
     justify-content: space-between;
 
     span,
@@ -276,4 +278,31 @@
 
 :host ::ng-deep .p-menuitem-content:hover {
     background: transparent !important;
+}
+
+.circle-name {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.atendente {
+    background: var(--color-blue);
+    border: var(--border-blue);
+    // color: var(--text-color-blue);
+}
+
+.gestor {
+    background: var(--color-yellow);
+    border: var(--border-yellow);
+    // color: var(--text-color-green);
+}
+
+.farmaceutico {
+    background: var(--color-red);
+    border: var(--border-red);
+    // color: var(--text-color-red);
 }

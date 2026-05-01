@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { ToastService } from '../shared/services/toast.service';
 
+let isHandling401 = false;
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   
   const token = localStorage.getItem('tokenBsFarma');
@@ -23,8 +25,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
-      if (error.status === 401 && !isLoginRequest) {
-
+      if (error.status === 401 && !isLoginRequest && !isHandling401)  {
+        isHandling401 = true;
         localStorage.removeItem('tokenBsFarma');
         localStorage.removeItem('isLoggedBsFarma');
 
@@ -33,6 +35,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         if (router.url !== '/login') {
           router.navigate(['/login']);
         }
+
+        setTimeout(() => isHandling401 = false, 2000);
       }
 
       return throwError(() => error);
