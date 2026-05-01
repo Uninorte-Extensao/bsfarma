@@ -17,7 +17,10 @@
             <span>{{user()?.nome}}</span>
             <small class="text-yellow">{{user()?.perfil}}</small>
             </div>
-            <i class="pi pi-ellipsis-v"></i>
+            <div class="card flex justify-center">
+              <p-menu #menu [model]="itemsProfile" [popup]="true" appendTo="body" />
+              <p-button text (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+            </div>
         </div>
     </header>
 

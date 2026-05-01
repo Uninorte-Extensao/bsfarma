@@ -4,20 +4,23 @@ import { MenuItem } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 import { IUser } from '../../models/IUser';
 import { Badge } from "primeng/badge";
+import { AuthService } from '../../services/auth.service';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-menu',
-  imports: [MenuModule, RouterModule, Badge],
+  imports: [MenuModule, RouterModule, Badge, Button],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent implements OnInit {
   private router = inject(Router);
+  private authService = inject(AuthService)
 
   items: MenuItem[] = [];
   isCollapsed = false;
-  readonly user: WritableSignal<IUser | undefined> = signal(undefined);
-
+  readonly user: WritableSignal<any | undefined> = signal(undefined);
+  protected itemsProfile: MenuItem[] = []
   ngOnInit() {
     const stored = localStorage.getItem('isCollapsed');
     this.isCollapsed = stored === 'true';
@@ -81,10 +84,33 @@ export class MenuComponent implements OnInit {
         ]
       }
     ];
+
+    this.itemsProfile = [
+      {
+        label: 'Opções',
+        items: [
+          {
+            label: 'Ver Perfil',
+            icon: 'pi pi-person'
+          },
+          {
+            label: 'Sair',
+            icon: 'pi pi-logout',
+            // adicionar um confirmpopup
+            command: () => this.logout()
+          }
+        ]
+      }
+    ];
+
   }
 
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
     localStorage.setItem('isCollapsed', String(this.isCollapsed));
+  }
+
+  private logout() {
+    this.authService.logout()
   }
 }
