@@ -1,0 +1,19 @@
+.item-active {
+    background: var(--color-green);
+    border-radius: 16px;
+    padding: 4px 8px;
+    color: var(--text-color-green)
+}
+
+.item-inactive {
+    background: var(--color-red);
+    border-radius: 16px;
+    padding: 5px 10px;
+    color: var(--text-color-red);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header {
+    padding: 0 !important;
+    display: flex;
+    justify-content: start;
+}
