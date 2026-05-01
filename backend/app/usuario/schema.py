@@ -51,3 +51,4 @@ class TokenResponse(BaseModel):
     """Resposta do endpoint de login."""
     access_token: str
     token_type: str = "bearer"
+    id_user: str
