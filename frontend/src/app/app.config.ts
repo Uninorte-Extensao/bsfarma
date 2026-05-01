@@ -6,7 +6,6 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } fro
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { IS_MOBILE, IsMobileService } from './shared/services/is-mobile.service';
 import { MessageService } from 'primeng/api';
-import { BasicAuthInterceptor } from './core/basicAuthInterceptor';
 import { BsFarmaTheme, BsFarmaTranslation } from './primeng.theme';
 import { LoadingInterceptor } from './core/loadingInterceptor';
 import { providePrimeNG } from 'primeng/config';
