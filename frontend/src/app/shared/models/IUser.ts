@@ -1,8 +1,8 @@
 export interface IUser {
-    id?: number,
+    id: string,
     nome: string,
-    perfil: 'Administrador' | 'Funcionário'
-    image: string
+    login: string,
+    perfil: IProfileEnum
 }
 
 export interface IUserLogin {
@@ -17,7 +17,7 @@ export interface IResponseLogin {
 
 export interface ICreateUser {
     nome: string,
-    login: string, 
+    login: string,
     senha: string,
     perfil: 'atendente' | 'farmaceutico' | 'gestor'
 }
@@ -26,4 +26,10 @@ export interface IResponseCreateUser extends ICreateUser {
     ativo: boolean,
     criado_em: Date,
     ultimo_acesso: Date
+}
+
+export enum IProfileEnum {
+    ATENDENTE = "atendente",
+    FARMACEUTICO = "farmaceutico",
+    GESTOR = "gestor"
 }

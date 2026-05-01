@@ -36,7 +36,7 @@ export class AuthComponent {
     })
     .catch((err) => {
       console.log(err)
-      this.toastService.showToastError('Erro ao logar.')
+      this.toastService.showToastError('Login ou senha inválidos.')
     })
     .finally(() => {
       this.loadingService.hide()
