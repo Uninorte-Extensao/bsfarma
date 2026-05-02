@@ -161,10 +161,6 @@
     }
 }
 
-.text-yellow {
-    color: yellow;
-}
-
 .group-label {
     display: block;
     font-size: 11px;
@@ -292,17 +288,29 @@
 .atendente {
     background: var(--color-blue);
     border: var(--border-blue);
-    // color: var(--text-color-blue);
 }
 
 .gestor {
     background: var(--color-yellow);
     border: var(--border-yellow);
-    // color: var(--text-color-green);
 }
 
 .farmaceutico {
     background: var(--color-red);
     border: var(--border-red);
-    // color: var(--text-color-red);
+}
+
+.textBlue {
+    color: var(--text-color-blue);
+    font-weight: 700;
+}
+
+.textYellow {
+    color: var(--text-color-yellow);
+    font-weight: 700;
+}
+
+.textRed {
+    color: var(--text-color-red);
+    font-weight: 700;
 }

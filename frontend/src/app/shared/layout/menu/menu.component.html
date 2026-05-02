@@ -21,7 +21,7 @@
 
             <div class="flex flex-column">
             <span>{{user()?.nome}}</span>
-            <small>{{user()?.perfil | titlecase}}</small>
+            <small [ngClass]="getTextClass(user()?.perfil)">{{user()?.perfil | titlecase}}</small>
             </div>
 
             <div class="card flex justify-center">

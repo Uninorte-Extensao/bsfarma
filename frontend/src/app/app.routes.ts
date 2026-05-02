@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/authGuard';
+import { permissionGuard } from './core/permissionGuard';
 
 export const routes: Routes = [
     {
@@ -12,6 +13,7 @@ export const routes: Routes = [
     {
         path: '',
         canActivate: [AuthGuard],
+        canActivateChild: [permissionGuard],
         loadComponent: () =>
             import('./modules/home/home.component')
                 .then(r => r.HomeComponent),
@@ -26,7 +28,10 @@ export const routes: Routes = [
             {
 
                 path: 'catalog',
-                data: { breadcrumb: 'Medicamentos' },
+                data: {
+                    breadcrumb: 'Medicamentos',
+                    permission: 'catalog.view'
+                },
                 loadComponent: () =>
                     import('./modules/catalog/catalog.component')
                         .then(r => r.CatalogComponent)
@@ -81,11 +86,15 @@ export const routes: Routes = [
 
             {
                 path: 'management',
-                data: { breadcrumb: 'Usuários' },
+                data: {
+                    breadcrumb: 'Usuários',
+                    permission: 'management.view'
+                },
                 loadComponent: () =>
                     import('./modules//management/management.component')
                         .then(r => r.ManagementComponent)
             },
+
         ]
     },
 

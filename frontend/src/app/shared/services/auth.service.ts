@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { ICreateUser, IResponseUser, IResponseLogin, IUserLogin, IUser } from '../models/IUser';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
+import { Permission } from '../../core/permissions.enum';
+import { ROLE_PERMISSIONS } from '../../core/role-permissions';
 
 @Injectable({
   providedIn: 'root'
@@ -85,5 +87,13 @@ export class AuthService {
     console.log('JWT payload:', payload);
 
     return payload.sub;
+  }
+
+  public hasPermission(permission: Permission): boolean {
+    const user = this.user();
+
+    if(!user) return false;
+
+    return ROLE_PERMISSIONS[user.perfil]?.includes(permission)
   }
 }

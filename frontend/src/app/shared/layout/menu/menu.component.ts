@@ -41,7 +41,8 @@ export class MenuComponent implements OnInit {
           {
             label: 'Medicamentos',
             icon: 'pi pi-inbox',
-            routerLink: '/catalog'
+            routerLink: '/catalog',
+            visible: this.authService.hasPermission('catalog.view')
           },
         ]
       },
@@ -51,7 +52,8 @@ export class MenuComponent implements OnInit {
           {
             label: 'Movimentação',
             icon: 'pi pi-chart-line',
-            routerLink: '/batch'
+            routerLink: '/batch',
+            visible: this.authService.hasPermission('batch.view')
           },
         ],
       },
@@ -61,7 +63,8 @@ export class MenuComponent implements OnInit {
           {
             label: 'Atendimento',
             icon: 'pi pi-receipt',
-            routerLink: '/dispensation'
+            routerLink: '/dispensation',
+            visible: this.authService.hasPermission('dispensation.view')
           },
         ],
       },
@@ -72,6 +75,7 @@ export class MenuComponent implements OnInit {
             label: 'Notificações',
             icon: 'pi pi-bell',
             routerLink: '/alerts',
+            visible: this.authService.hasPermission('alerts.view')
             // badge: '3'
           }
         ]
@@ -82,7 +86,8 @@ export class MenuComponent implements OnInit {
           {
             label: 'Usuários',
             icon: 'pi pi-users',
-            routerLink: '/management'
+            routerLink: '/management',
+            visible: this.authService.hasPermission('management.view')
           }
         ]
       }
@@ -106,6 +111,13 @@ export class MenuComponent implements OnInit {
       }
     ];
 
+    this.items = this.items
+      .map(group => ({
+        ...group,
+        items: group.items?.filter(item => item.visible !== false)
+      }))
+      .filter(group => group.items && group.items.length > 0);
+
   }
 
   toggleMenu() {
@@ -126,6 +138,14 @@ export class MenuComponent implements OnInit {
       gestor: profile === 'gestor',
       farmaceutico: profile === 'farmaceutico',
       atendente: profile === 'atendente'
+    };
+  }
+
+  getTextClass(profile: string | undefined) {
+    return {
+      textYellow: profile === 'gestor',
+      textRed: profile === 'farmaceutico',
+      textBlue: profile === 'atendente'
     };
   }
 }
