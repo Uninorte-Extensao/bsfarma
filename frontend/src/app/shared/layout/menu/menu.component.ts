@@ -97,10 +97,10 @@ export class MenuComponent implements OnInit {
       {
         label: 'Opções',
         items: [
-          {
-            label: 'Ver Perfil',
-            icon: 'pi pi-user'
-          },
+          // {
+          //   label: 'Ver Perfil',
+          //   icon: 'pi pi-user'
+          // },
           {
             label: 'Sair',
             icon: 'pi pi-sign-out',

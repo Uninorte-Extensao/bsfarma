@@ -1,4 +1,4 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, inject, model, signal, OnInit } from '@angular/core';
 import { Button } from "primeng/button";
 import { UserService } from '../../shared/services/user.service';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -28,7 +28,7 @@ type ITypeDialog = 'create' | 'update'
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss',
 })
-export class ManagementComponent {
+export class ManagementComponent implements OnInit {
   private userService = inject(UserService);
   private loadingService = inject(LoadingService);
   private toastService = inject(ToastService);
