@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ICreateUser, IResponseUser, IUser } from '../models/IUser'
+import { ICreateUser, IResponseUser, IUpdateUser, IUser } from '../models/IUser'
 @Injectable({
   providedIn: 'root',
 })
@@ -19,5 +19,9 @@ export class UserService {
 
   public createUser(user: ICreateUser) {
     return lastValueFrom(this.http.post<IResponseUser>(`${environment.apiUrl}/usuarios`, user))
+  }
+
+  public updateUser(userId: string, user: IUpdateUser) {
+    return lastValueFrom(this.http.patch<IResponseUser>(`${environment.apiUrl}/usuarios/${userId}`, user))
   }
 }

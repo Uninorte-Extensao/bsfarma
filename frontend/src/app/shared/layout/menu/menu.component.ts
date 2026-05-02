@@ -94,11 +94,11 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Ver Perfil',
-            icon: 'pi pi-person'
+            icon: 'pi pi-user'
           },
           {
             label: 'Sair',
-            icon: 'pi pi-logout',
+            icon: 'pi pi-sign-out',
             // adicionar um confirmpopup
             command: () => this.logout()
           }

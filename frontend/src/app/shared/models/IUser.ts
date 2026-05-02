@@ -20,7 +20,7 @@ export interface ICreateUser {
     nome: string,
     login: string,
     senha: string,
-    perfil: 'atendente' | 'farmaceutico' | 'gestor'
+    perfil: IProfileEnum
 }
 
 export interface IResponseUser extends ICreateUser {
@@ -41,3 +41,9 @@ export const PROFILE_OPTIONS = [
   { label: 'Farmacêutico', value: IProfileEnum.FARMACEUTICO },
   { label: 'Gestor', value: IProfileEnum.GESTOR }
 ];
+
+export interface IUpdateUser {
+    nome: string,
+    perfil: IProfileEnum,
+    ativo: boolean
+}

@@ -10,31 +10,34 @@
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="flex flex-column gap-2">
-            <label for="login">Login</label>
-            <input 
-            pInputText 
-            id="login" 
-            placeholder="Ex: ana.lima" 
-            formControlName="login"
-            />
+    @if(typeDialog() === 'create') {
+
+        <div class="col-12">
+            <div class="flex flex-column gap-2">
+                <label for="login">Login</label>
+                <input 
+                pInputText 
+                id="login" 
+                placeholder="Ex: ana.lima" 
+                formControlName="login"
+                />
+            </div>
         </div>
-    </div>
+
+        <div class="col-12">
+            <div class="flex flex-column gap-2">
+                <label for="password">Senha</label>
+                <p-password 
+                [toggleMask]="true" 
+                fluid 
+                id="password" 
+                formControlName="senha"
+                />
+            </div>
+        </div>
+    }
 
     <div class="col-12">
-        <div class="flex flex-column gap-2">
-            <label for="password">Senha</label>
-            <p-password 
-            [toggleMask]="true" 
-            fluid 
-            id="password" 
-            formControlName="senha"
-            />
-        </div>
-    </div>
-
-    <div class="col-12 md:col-4">
         <div class="flex flex-column gap-2">
             <label for="forma">Perfil</label>
             <p-select 
@@ -45,9 +48,27 @@
             placeholder="Selecione um perfil"
             appendTo="body"
             formControlName="perfil"
+            fluid
             />
         </div>
     </div>
+
+
+    @if(typeDialog() === 'update') {
+        <div class="col-12 flex align-items-end">
+            <div class="flex gap-2 align-items-center switch">
+                <div class="flex flex-column">
+                    <label for="ativo">{{checked ? 'Ativo' : 'Inativo'}}</label>
+                </div>
+               <p-toggleswitch 
+               id="ativo" 
+               [(ngModel)]="checked" 
+               [ngModelOptions]="{standalone: true}" 
+               fluid
+               />
+            </div>
+        </div>
+    }
 
     <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
         <p-button 

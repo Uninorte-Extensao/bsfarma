@@ -70,8 +70,8 @@
                         </span>
                     </td>
                     <td>
-                        <span class="flex gap-1 cursor-pointer">
-                            <small>Detalhes</small>
+                        <span class="flex gap-1 cursor-pointer" (click)="showDialog('update', item)">
+                            <small>Editar</small>
                             <i class="pi pi-angle-double-right"></i>
                         </span>
                     </td>
@@ -82,7 +82,7 @@
             <p-button 
             label="Adicionar Usuário" 
             icon="pi pi-plus"
-            (click)="showDialog()"
+            (click)="showDialog('create')"
             />
         </div>
     </div>
@@ -96,12 +96,15 @@
 [resizable]="false"
 [style]="{width: '30rem'}"
 (onHide)="closeModal()"
-header="Cadastro de Usuário"
+[header]="typeDialog() === 'create' ? 'Cadastro de Usuário' : 'Editar Usuário'"
 >
 @if(isVisible()) {
     <app-form-user 
     [(isVisible)]="isVisible"
-    (onChangeData)="submit($event)"
+    (onChangeCreate)="submit($event)"
+    (onChangeUpdate)="update($event)"
+    [(typeDialog)]="typeDialog"
+    [(user)]="viewUser"
     />
 }
 </p-dialog>
