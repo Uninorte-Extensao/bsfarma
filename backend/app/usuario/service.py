@@ -44,7 +44,7 @@ class UsuarioService:
         )
         return await self.repo.create(usuario)
 
-    async def autenticar(self, login: str, senha: str) -> TokenResponse:
+    async def autenticar(self, login: str, senha: str):
         """
         Valida credenciais e retorna um JWT.
 
@@ -66,7 +66,7 @@ class UsuarioService:
             )
 
         token = create_access_token(subject=usuario.id, perfil=usuario.perfil)
-        return TokenResponse(access_token=token)
+        return TokenResponse(access_token=token, token_type="bearer", id_user=usuario.id)
 
     async def buscar_por_id(self, usuario_id: str) -> Usuario:
         """

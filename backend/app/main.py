@@ -20,6 +20,7 @@ from app.core.exceptions import (
     handler_regra_violada,
 )
 from app.usuario.router import router as usuario_router
+from app.medicamentos.router import router as medicamentos_router
 
 app = FastAPI(
     title="RemédioEmDia API",
@@ -31,9 +32,9 @@ app = FastAPI(
 # Em produção, substitua "*" pelos domínios do frontend Angular.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:4200"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -45,6 +46,7 @@ app.add_exception_handler(RegraDeNegocioViolada, handler_regra_violada)
 # ── Routers ───────────────────────────────────────────────────────────────────
 # Adicione um router aqui para cada novo módulo de domínio.
 app.include_router(usuario_router)
+app.include_router(medicamentos_router)
 
 # Exemplo de como registrar os próximos módulos:
 # from app.medicamento.router import router as medicamento_router
