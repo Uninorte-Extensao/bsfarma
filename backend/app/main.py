@@ -22,6 +22,7 @@ from app.core.exceptions import (
 from app.usuario.router import router as usuario_router
 from app.medicamentos.router import router as medicamentos_router
 from app.movimentacao.router import router as movimentacao_router
+from app.lote.router import router as lote_router
 
 app = FastAPI(
     title="RemédioEmDia API",
@@ -49,6 +50,7 @@ app.add_exception_handler(RegraDeNegocioViolada, handler_regra_violada)
 app.include_router(usuario_router)
 app.include_router(medicamentos_router)
 app.include_router(movimentacao_router)
+app.include_router(lote_router)
 
 # Exemplo de como registrar os próximos módulos:
 # from app.medicamento.router import router as medicamento_router
