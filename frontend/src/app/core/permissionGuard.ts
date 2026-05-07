@@ -59,7 +59,7 @@ function getFallbackRoute(authService: AuthService): string {
 
     // Cada perfil cai na primeira rota que tem permissão
     const fallbackByProfile: Record<string, string> = {
-        atendente: '/batch',
+        atendente: '/catalog',
         farmaceutico: '/catalog',
         gestor: '/catalog'
     };

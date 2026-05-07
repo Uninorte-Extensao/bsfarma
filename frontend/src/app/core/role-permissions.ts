@@ -8,6 +8,8 @@ import { Permission } from "./permissions.enum";
 
 export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
     atendente: [
+        'catalog.view',
+        
         'batch.view',
   
         'dispensation.view',
