@@ -32,7 +32,7 @@ export class AuthComponent {
       console.log(res)
       // TODO AO INVÉS DE UM TOAST, CRIAR UMA TELA DO TIPO BEM VINDO
       this.router.navigate(['/catalog']);
-      this.toastService.showToastSuccess('Usuario logado com sucesso')
+      // this.toastService.showToastSuccess('Usuario logado com sucesso')
     })
     .catch((err) => {
       console.log(err)

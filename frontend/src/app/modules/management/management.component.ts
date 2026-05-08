@@ -36,7 +36,7 @@ export class ManagementComponent implements OnInit {
   protected isVisible = model(false);
   protected typeDialog = model<ITypeDialog>('create');
   public viewUser = model<IResponseUser | null>(null);
-  private userId = signal('')
+  private userId = signal<string | null>(null)
 
   ngOnInit() {
     this.getUsers()
@@ -62,6 +62,9 @@ export class ManagementComponent implements OnInit {
     if (user) {
       this.viewUser.set(user)
       this.userId.set(user.id)
+    } else {
+      this.viewUser.set(null)
+      this.userId.set(null)
     }
   }
 
@@ -88,7 +91,7 @@ export class ManagementComponent implements OnInit {
 
   protected update(user: IUpdateUser) {
     this.loadingService.show();
-    this.userService.updateUser(this.userId(), user)
+    this.userService.updateUser(this.userId()!, user)
       .then((res: IResponseUser) => {
         this.listUsers.update(users =>
           users.map(u => u.id === res.id ? res : u)
