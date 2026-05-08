@@ -62,21 +62,27 @@ export const routes: Routes = [
                         .then(r => r.BatchComponent)
             },
 
-            // DISPENSACAO
+            // DISPERSACAO
 
             {
-                path: 'dispensation',
-                data: { breadcrumb: 'Atendimento' },
+                path: 'dispersation',
+                data: { 
+                    breadcrumb: 'Atendimento',
+                    permission: 'dispersation.view' 
+                },
                 loadComponent: () =>
-                    import('./modules/dispensation/dispensation.component')
-                        .then(r => r.DispensationComponent)
+                    import('./modules/dispersation/dispersation.component')
+                        .then(r => r.DispersationComponent)
             },
 
             // ALERTAS
 
             {
                 path: 'alerts',
-                data: { breadcrumb: 'Notificações' },
+                data: { 
+                    breadcrumb: 'Notificações',
+                    permission: 'alert.view' 
+                },
                 loadComponent: () =>
                     import('./modules//alerts/alerts.component')
                         .then(r => r.AlertsComponent)

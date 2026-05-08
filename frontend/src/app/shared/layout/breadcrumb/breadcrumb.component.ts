@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { NavigationEnd, Router, RouterModule, Route } from '@angular/router';
@@ -10,7 +10,7 @@ import { filter } from 'rxjs';
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.scss',
 })
-export class BreadcrumbComponent {
+export class BreadcrumbComponent implements OnInit {
   private router = inject(Router);
   protected items: MenuItem[] = [];
 

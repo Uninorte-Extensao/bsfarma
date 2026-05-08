@@ -1,7 +1,7 @@
 export enum Module {
     CATALOG = 'catalog',
     BATCH = 'batch',
-    DISPENSATINS = 'dispensation',
+    DISPENSATINS = 'dispersation',
     ALERTS = 'alerts',
     MANAGEMENT = 'management',
     REPORT = 'report'

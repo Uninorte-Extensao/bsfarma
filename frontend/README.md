@@ -130,7 +130,7 @@ src/
     │   ├── alerts/
     │   ├── batch/
     │   ├── catalog/
-    │   ├── dispensation/
+    │   ├── dispersation/
     │   └── management/
     ├── core/
     └── shared/

@@ -28,13 +28,13 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
         },
 
         {
-            label: 'Dispensação',
+            label: 'Dispersação',
             items: [
                 {
                     label: 'Atendimento',
                     icon: 'pi pi-receipt',
-                    routerLink: '/dispensation',
-                    visible: authService.hasPermission('dispensation.view')
+                    routerLink: '/dispersation',
+                    visible: authService.hasPermission('dispersation.view')
                 },
             ],
         },

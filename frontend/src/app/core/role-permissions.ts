@@ -12,8 +12,8 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         
         'batch.view',
   
-        'dispensation.view',
-        'dispensation.create',
+        'dispersation.view',
+        'dispersation.create',
     ],
 
     farmaceutico: [
@@ -26,8 +26,8 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'batch.update',
         'batch.delete',
 
-        'dispensation.view',
-        'dispensation.create',
+        'dispersation.view',
+        'dispersation.create',
 
         'alerts.view'
     ],
@@ -43,10 +43,10 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'batch.update',
         'batch.delete',
 
-        'dispensation.view',
-        'dispensation.create',
-        'dispensation.update',
-        'dispensation.delete',
+        'dispersation.view',
+        'dispersation.create',
+        'dispersation.update',
+        'dispersation.delete',
 
         'alerts.view',
 

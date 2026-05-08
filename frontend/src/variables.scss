@@ -1,4 +1,10 @@
 :root {
+    --primary-green: #01A768;
+    --primary-blue: #03A9F5;
+    --primary-yellow: #FED600;
+    --primary-red: #F0483E;
+
+
     --ocean-blue: #4C8EA9;
     --border-green: 1px solid #01A768;
     --border-blue: 1px solid #03A9F5;
@@ -10,10 +16,10 @@
     --color-yellow: #FED6004D;
     --color-red: #F0483E4D;
 
-    --text-color-green: #01A768;
-    --text-color-blue: #03A9F5;
-    --text-color-yellow: #FED600;
-    --text-color-red: #F0483E;
+    --text-color-green: var(--primary-green);
+    --text-color-blue: var(--primary-blue);
+    --text-color-yellow: var(--primary-yellow);
+    --text-color-red: var(--primary-red);
 
     --color-white: #fff;
 
