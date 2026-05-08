@@ -4,6 +4,7 @@ import asyncio
 from logging.config import fileConfig
 from app.db.base import Base
 from app.usuario.model import Usuario
+from app.movimentacao.model import Movimentacao
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
