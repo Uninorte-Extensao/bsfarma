@@ -24,7 +24,7 @@ export type ViaAdministracao =
   | 'Tarja Preta';
 
 export interface IMedicine {
-  id: number;
+  id: string;
   nomeGenerico: string;
   nomeComercial: string;
   concentracao: string;

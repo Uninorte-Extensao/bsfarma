@@ -1,4 +1,4 @@
-export interface ILote {
+export interface IBatch {
     id: string;
     medicamento_id: string;
     numero_lote: string;

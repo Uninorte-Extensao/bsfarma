@@ -5,7 +5,7 @@ import { InputText } from 'primeng/inputtext';
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete'
 import { InputNumber } from 'primeng/inputnumber';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ICreateLote, ILote, IUpdateLote } from '../../../shared/models/ILote';
+import { ICreateLote, IBatch, IUpdateLote } from '../../../shared/models/IBatch';
 import { MEDICAMENTOS } from '../../../shared/mocks/medicamentos.mock';
 import { IMedicine } from '../../../shared/models/IMedicine';
 
@@ -26,7 +26,7 @@ type ITypeDialog = 'create' | 'update'
 })
 export class FormBatchComponent {
   protected form: FormGroup;
-  public lote = model<ILote | null>(null);
+  public lote = model<IBatch | null>(null);
   public onChangeCreate = output<ICreateLote>();
   public onChangeUpdate = output<IUpdateLote>()
   public typeDialog = model<ITypeDialog>('create');

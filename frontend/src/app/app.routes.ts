@@ -81,7 +81,7 @@ export const routes: Routes = [
                 path: 'alerts',
                 data: { 
                     breadcrumb: 'Notificações',
-                    permission: 'alert.view' 
+                    permission: 'alerts.view' 
                 },
                 loadComponent: () =>
                     import('./modules//alerts/alerts.component')
@@ -100,6 +100,17 @@ export const routes: Routes = [
                     import('./modules//management/management.component')
                         .then(r => r.ManagementComponent)
             },
+
+            {
+                path: 'patient',
+                data: {
+                    breadcrumb: 'Paciente',
+                    permission: 'patient.view'
+                },
+                loadComponent: () => 
+                    import('./modules/patient/patient.component')
+                        .then(r => r.PatientComponent)
+            }
 
         ]
     },

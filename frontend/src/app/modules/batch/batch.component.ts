@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 import { LOTE } from '../../shared/mocks/lote.mock';
 import { Dialog } from 'primeng/dialog';
 import { Button } from 'primeng/button';
-import { ICreateLote, IUpdateLote } from '../../shared/models/ILote';
+import { ICreateLote, IUpdateLote } from '../../shared/models/IBatch';
 import { FormsModule } from '@angular/forms';
 import { FormBatchComponent } from "./form-batch/form-batch.component";
 

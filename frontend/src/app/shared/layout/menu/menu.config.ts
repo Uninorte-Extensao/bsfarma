@@ -60,6 +60,12 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
                     icon: 'pi pi-users',
                     routerLink: '/management',
                     visible: authService.hasPermission('management.view')
+                },
+                {
+                    label: 'Paciente',
+                    icon: 'pi pi-users',
+                    routerLink: '/patient',
+                    visible: authService.hasPermission('patient.view')
                 }
             ]
         }

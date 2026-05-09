@@ -14,6 +14,11 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
   
         'dispersation.view',
         'dispersation.create',
+
+        'patient.view',
+        'patient.create',
+        'patient.update',
+        'patient.delete'
     ],
 
     farmaceutico: [
@@ -29,7 +34,12 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'dispersation.view',
         'dispersation.create',
 
-        'alerts.view'
+        'alerts.view',
+
+        'patient.view',
+        'patient.create',
+        'patient.update',
+        'patient.delete'
     ],
 
     gestor: [
@@ -53,6 +63,11 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'management.view',
         'management.create',
         'management.update',
-        'management.delete'
+        'management.delete',
+
+        'patient.view',
+        'patient.create',
+        'patient.update',
+        'patient.delete'
     ]
 }
