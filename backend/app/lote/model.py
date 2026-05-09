@@ -14,6 +14,7 @@ from datetime import date, datetime
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
+from app.medicamentos.model import Medicamento
 
 from app.db.base import Base
 
@@ -26,21 +27,27 @@ class Lote(Base):
         primary_key=True,
         server_default=func.gen_random_uuid(),
     )
-    
-    # Chaves Estrangeiras
-    medicamento_id: Mapped[str] = mapped_column(ForeignKey("medicamento.id"), nullable=False)
-    registrado_por: Mapped[str] = mapped_column(ForeignKey("usuario.id"), nullable=False)
-    
-    numero_lote: Mapped[str] = mapped_column(String(100), nullable=False)
-    fabricante: Mapped[str] = mapped_column(String(255), nullable=False)
-    validade: Mapped[date] = mapped_column(Date, nullable=False)
-    
+
+    medicamento_id: Mapped[int] = mapped_column(
+        ForeignKey("medicamento.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    registrado_por_id: Mapped[int | None] = mapped_column(
+        ForeignKey("usuario.id", ondelete="SET NULL"), nullable=True
+    )
+
+    numero_lote: Mapped[str]       = mapped_column(String(60), nullable=False)
+    fabricante: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    validade: Mapped[date]         = mapped_column(Date, nullable=False, index=True)
+
     quantidade_inicial: Mapped[int] = mapped_column(Integer, nullable=False)
-    quantidade_atual: Mapped[int] = mapped_column(Integer, nullable=False)
-    
+    quantidade_atual: Mapped[int]   = mapped_column(Integer, nullable=False)
+
     entrada_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    # Relacionamentos
+    medicamento: Mapped["Medicamento"] = relationship(back_populates="lotes")  # noqa: F821
 
     def __repr__(self) -> str:
         return f"<Lote id={self.id} numero={self.numero_lote} med_id={self.medicamento_id} qtd_atual={self.quantidade_atual}>"
