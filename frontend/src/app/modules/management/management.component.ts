@@ -73,7 +73,6 @@ export class ManagementComponent implements OnInit {
   }
 
   protected submit(user: ICreateUser) {
-    console.log('senha enviada', user)
     this.loadingService.show()
     this.userService.createUser(user)
       .then((res: IResponseUser) => {

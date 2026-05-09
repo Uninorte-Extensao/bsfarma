@@ -1,0 +1,81 @@
+<form class="" [formGroup]="form">
+    <div class="col-12">
+        <div class="flex flex-column gap-2">
+            <label for="nome">Nome do Medicamento</label>
+            <p-autocomplete 
+            formControlName="medicamento_id" 
+            [suggestions]="filteredMedicine()" 
+            (completeMethod)="filterMedicine($event)" 
+            optionLabel="nomeGenerico"
+            optionValue="id" 
+            fluid
+            />
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="lote">Lote</label>
+                <input 
+                pInputText 
+                id="lote" 
+                placeholder="Ex: LT-2026-XXX" 
+                formControlName="lote"
+                fluid
+                />
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="fabricante">Fabricante</label>
+                <input 
+                pInputText 
+                id="fabricante" 
+                placeholder="Ex: Medley" 
+                formControlName="fabricante"
+                fluid
+                />
+            </div>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="col-12 md:col-6">
+            <label for="validade">Validade</label>
+            <p-datepicker
+            id="validade"
+            formControlName="vencimento"
+            dateFormat="dd/mm/yy"
+            fluid
+            appendTo="body"
+            >
+            </p-datepicker>
+        </div>
+    
+        <div class="col-12 md:col-6">
+            <div class="flex flex-column gap-2">
+                <label for="quantidade">Quantidade</label>
+                <p-inputnumber 
+                inputId="quantidade" 
+                placeholder="Ex: 10" 
+                formControlName="quantidade"
+                />
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+        <p-button 
+        label="Cancelar" 
+        severity="danger" 
+        (click)="close()" />
+        
+        <p-button 
+        label="Salvar" 
+        severity="success" 
+        (click)="submit()" />
+    </div>
+
+</form>

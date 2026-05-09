@@ -16,10 +16,10 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
         },
 
         {
-            label: 'Lote',
+            label: 'Estoque',
             items: [
                 {
-                    label: 'Movimentação',
+                    label: 'Lote',
                     icon: 'pi pi-chart-line',
                     routerLink: '/batch',
                     visible: authService.hasPermission('batch.view')

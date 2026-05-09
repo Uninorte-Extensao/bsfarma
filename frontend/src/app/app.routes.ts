@@ -56,7 +56,7 @@ export const routes: Routes = [
 
             {
                 path: 'batch',
-                data: { breadcrumb: 'Movimentação' },
+                data: { breadcrumb: 'Lote' },
                 loadComponent: () =>
                     import('./modules/batch/batch.component')
                         .then(r => r.BatchComponent)
