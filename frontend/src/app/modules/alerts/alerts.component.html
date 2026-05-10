@@ -1,1 +1,25 @@
-<p>alerts works!</p>
+<section>
+    <header>
+        <small class="px-5 text-obs">Lista de Lotes</small>
+    </header>
+
+    <aside class="px-5 pt-3">
+        <div class="grid">
+            @for(item of cards(); track $index) {
+                <div class="col-12 md:col-4">
+                    <div class="card" [class]="item.color">
+                        <div class="box-icon">
+                            <i [class]="item.icon"></i>
+                        </div>
+                        <div class="flex flex-column gap-2">
+                            <div>{{item.label}}</div>
+                            <h3 class="label m-0">{{item.valor}}</h3>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        
+    </aside>
+</section>
