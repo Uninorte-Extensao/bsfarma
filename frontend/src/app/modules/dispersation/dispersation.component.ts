@@ -19,7 +19,7 @@ import { InputNumber } from 'primeng/inputnumber';
     Select,
     InputNumber,
     FormsModule
-],
+  ],
   templateUrl: './dispersation.component.html',
   styleUrl: './dispersation.component.scss',
 })
@@ -34,24 +34,24 @@ export class DispersationComponent {
   protected batchSelected = signal<any[]>([]);
   value = 0
 
-public loteComputed = computed(() => {
+  public loteComputed = computed(() => {
 
-  return this.listLote().map((lote) => {
+    return this.listLote().map((lote) => {
 
-    const medicamento = this.listMedicine().find(
-      (item) => item.id === lote.medicamento_id
-    );
+      const medicamento = this.listMedicine().find(
+        (item) => item.id === lote.medicamento_id
+      );
 
-    return {
-      ...lote,
-      nomeGenerico: medicamento?.nomeGenerico ?? '',
-      concentracao: medicamento?.concentracao ?? '',
-      viaAdministracao: medicamento?.viaAdministracao ?? '',
-    };
+      return {
+        ...lote,
+        nomeGenerico: medicamento?.nomeGenerico ?? '',
+        concentracao: medicamento?.concentracao ?? '',
+        viaAdministracao: medicamento?.viaAdministracao ?? '',
+      };
+
+    });
 
   });
-
-});
 
   constructor() {
     const fb = new FormBuilder()
@@ -85,12 +85,18 @@ public loteComputed = computed(() => {
     })
 
     let patient = this.listPatient().find(item => item.id === patientId)
-    if(patient) {
+    if (patient) {
       this.patientSelected.set(patient)
     }
   }
 
   addLote(item: any) {
-    this.batchSelected().push(item)
+    this.batchSelected.update((items) => [
+      ...items,
+      {
+        ...item,
+        quantidade: 0
+      }
+    ]);
   }
 }
