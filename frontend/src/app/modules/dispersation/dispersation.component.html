@@ -14,6 +14,7 @@
                 optionLabel="id_interno"
                 optionValue="id" 
                 fluid
+                placeholder="Ex: PAC-001"
                 />
             </div>
     
@@ -22,55 +23,86 @@
                     <label for="medicine">Medicamentos</label>
                     <p-select
                     id="medicine"
-                    [options]="loteComputed()"
+                    [options]="availableLotes()"
                     optionLabel="nomeGenerico"
                     optionId="id"
                     fluid
                     #select
+                    placeholder="Ex: Dipirona"
+                    filter
                     >
+                    <ng-template let-item #item>
+                        {{ item.nomeGenerico }} - {{ item.concentracao }}
+                    </ng-template>
+
+                    <ng-template let-item #selectedItem>
+                        {{ item.nomeGenerico }} - {{ item.concentracao }}
+                    </ng-template>
                     </p-select>
                 </div>
     
                 <p-button label="Adicionar" (click)="addLote(select.value)"/>
             </div>
 
+            <div class="container">
             @if(batchSelected().length) {
-                @for (item of batchSelected(); track $index) {
-                    <div class="bg-color">
-                        <div class="flex justify-content-between">
-                            <div class="flex flex-column gap-1">
-                                <span>
-                                    {{item.nomeGenerico}}
-                                </span>
-                                <small>
-                                    {{item.concentracao}} - {{item.viaAdministracao}}  {{item.numero_lote}}
-                                </small>
-                            </div>
-
-                            <div>
-                                <p-inputnumber 
-                                    [(ngModel)]="value"
-                                    [showButtons]="true"
-                                    buttonLayout="horizontal"
-                                    spinnerMode="horizontal"
-                                    inputId="horizontal"
-                                    [ngModelOptions]="{ standalone: true }"
-                                >
-
-                                    <ng-template #incrementbuttonicon>
-                                        <span class="pi pi-plus"></span>
-                                    </ng-template>
-
-                                    <ng-template #decrementbuttonicon>
-                                        <span class="pi pi-minus"></span>
-                                    </ng-template>
-
-                                </p-inputnumber>
+                    @for (item of batchSelected(); track $index) {
+                        <div class="bg-color my-3">
+                            <div class="flex justify-content-between">
+                                <div class="flex flex-column gap-1">
+                                    <span>
+                                        {{item.nomeGenerico}}
+                                    </span>
+                                    <small>
+                                        {{item.concentracao}} - {{item.viaAdministracao}}  {{item.numero_lote}}
+                                    </small>
+                                </div>
+    
+                                <div class="flex gap-2 align-items-center">
+                                    <div>
+                                        <p-inputnumber 
+                                            [(ngModel)]="item.quantidade"
+                                            [showButtons]="true"
+                                            buttonLayout="horizontal"
+                                            spinnerMode="horizontal"
+                                            inputId="horizontal"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        >
+        
+                                            <ng-template #incrementbuttonicon>
+                                                <span class="pi pi-plus"></span>
+                                            </ng-template>
+        
+                                            <ng-template #decrementbuttonicon>
+                                                <span class="pi pi-minus"></span>
+                                            </ng-template>
+        
+                                        </p-inputnumber>
+                                    </div>
+                                    <p-button
+                                        icon="pi pi-times"
+                                        severity="danger"
+                                        [outlined]="true"
+                                        (click)="removeLote($index)"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
-            }
+            </div>
+
+            <div class="flex justify-content-end gap-4 w-full pr-1">
+                <!-- <p-button 
+                label="Cancelar" 
+                severity="danger" 
+                (click)="clear()" /> -->
+                
+                <p-button 
+                label="Salvar" 
+                severity="success" 
+                (click)="submit()" />
+            </div>
         </div>
     </div>
 

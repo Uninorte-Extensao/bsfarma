@@ -53,6 +53,16 @@ export class DispersationComponent {
 
   });
 
+  public availableLotes = computed(() => {
+
+    const selectedIds = this.batchSelected().map(item => item.id);
+
+    return this.loteComputed().filter(
+      lote => !selectedIds.includes(lote.id)
+    );
+
+  });
+
   constructor() {
     const fb = new FormBuilder()
 
@@ -99,4 +109,14 @@ export class DispersationComponent {
       }
     ]);
   }
+
+  clear(){}
+
+  submit(){}
+
+  removeLote(index: number) {
+  this.batchSelected.update((items) =>
+    items.filter((_, i) => i !== index)
+  );
+}
 }
