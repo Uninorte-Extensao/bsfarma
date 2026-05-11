@@ -12,8 +12,8 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.lote.model import Lote
 from app.db.base import Base
 
 
@@ -52,6 +52,8 @@ class Medicamento(Base):
     atualizado_em: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )
+
+    lotes: Mapped[list["Lote"]] = relationship(back_populates="medicamento")  # noqa: F821
 
     def __repr__(self) -> str:
         return f"<Medicamento id={self.id} nome_generico={self.nome_generico} ativo={self.ativo}>"

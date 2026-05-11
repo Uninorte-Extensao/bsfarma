@@ -13,7 +13,11 @@ from datetime import datetime
 
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.medicamentos.model import Medicamento
+from app.movimentacao.model import Movimentacao
+from app.usuario.model import Usuario
 
 from app.db.base import Base
 
@@ -48,6 +52,9 @@ class Movimentacao(Base):
     ocorrido_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    medicamento: Mapped["Medicamento"] = relationship(back_populates="lotes")  # noqa: F821
+    movimentacoes: Mapped[list["Movimentacao"]] = relationship(back_populates="lote")
 
     def __repr__(self) -> str:
         return f"<Movimentacao id={self.id} lote={self.lote_id} tipo={self.tipo} qtd={self.quantidade}>"

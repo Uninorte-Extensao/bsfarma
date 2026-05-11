@@ -13,8 +13,9 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Enum, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.movimentacao.model import Movimentacao
+from app.lote.model import Lote
 from app.db.base import Base
 
 
@@ -52,6 +53,10 @@ class Usuario(Base):
     ultimo_acesso: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+
+    #relacionamentos
+    movimentacoes: Mapped[list["Movimentacao"]] = relationship(back_populates="usuario")  # noqa: F821
+    lotes: Mapped[list["Lote"]] = relationship(back_populates="medicamento")
 
     def __repr__(self) -> str:
         return f"<Usuario id={self.id} login={self.login} perfil={self.perfil}>"
