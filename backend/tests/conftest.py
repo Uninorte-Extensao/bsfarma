@@ -17,6 +17,7 @@ import os
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.core.dependencies import get_session
@@ -30,9 +31,15 @@ from typing import AsyncGenerator
 
 load_dotenv()
 
-TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+# 2. Add poolclass=NullPool to prevent connection sharing between tests
+engine = create_async_engine(
+    DATABASE_URL, 
+    echo=False, 
+    poolclass=NullPool 
+)
+
 TestingSessionLocal = async_sessionmaker(
     bind=engine, 
     class_=AsyncSession, 

@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pydantic
 from fastapi import HTTPException
@@ -277,6 +278,6 @@ async def test_atualizar_usuario_inexistente_levanta_nao_encontrado(session: Asy
     Risco: MÉDIO — tratamento correto de recursos ausentes.
     """
     service = UsuarioService(session)
-
+    id_falso = str(uuid.uuid4())
     with pytest.raises(RecursoNaoEncontrado):
-        await service.atualizar("id-que-nao-existe", UsuarioUpdate(nome="X"))
+        await service.atualizar(id_falso, UsuarioUpdate(nome="sr-nao-existente"))

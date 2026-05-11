@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -106,7 +106,7 @@ class UsuarioService:
         payload = decode_access_token(token)  # já levanta 401 se inválido
 
         exp = payload.get("exp")
-        expira_em = datetime.utcfromtimestamp(exp) if exp else datetime.utcnow()
+        expira_em = datetime.fromtimestamp(payload.get("exp"), tz=timezone.utc) if exp else datetime.now(tz=timezone.utc)
 
         blocklist.adicionar(token, expira_em)
 

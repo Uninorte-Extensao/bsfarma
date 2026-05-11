@@ -19,7 +19,7 @@ from app.usuario.model import PerfilUsuario
 class UsuarioCreate(BaseModel):
     """Payload para criação de um novo usuário."""
     nome: str = Field(min_length=2, max_length=120, examples=["Ana Lima"])
-    login: str = Field(min_length=3, max_length=80, examples=["ana.lima"])
+    login: str = Field(..., pattern=r"^[a-zA-Z0-9_.-]+$", examples=["ana.lima"])
     senha: str = Field(min_length=8, description="Mínimo 8 caracteres.")
     perfil: PerfilUsuario = Field(examples=[PerfilUsuario.ATENDENTE])
 

@@ -1,6 +1,6 @@
 # so pra bosta da atv
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 # { token: datetime_de_expiracao }
 _blocklist: dict[str, datetime] = {}
@@ -17,7 +17,7 @@ def esta_bloqueado(token: str) -> bool:
 
 
 def _purgar_expirados() -> None:
-    agora = datetime.now()
+    agora = datetime.now(tz=timezone.utc)
     expirados = [t for t, exp in _blocklist.items() if exp < agora]
     for t in expirados:
         del _blocklist[t]

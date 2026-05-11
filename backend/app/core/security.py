@@ -37,7 +37,7 @@ def create_access_token(subject: str, perfil: str) -> str:
     Returns:
         Token JWT assinado como string.
     """
-    expire = datetime.now(timezone.utc) + timedelta(
+    expire = datetime.now(tz=timezone.utc) + timedelta(
         minutes=settings.access_token_expire_minutes
     )
     payload = {
