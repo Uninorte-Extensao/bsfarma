@@ -9,13 +9,14 @@ PADRÃO DO PROJETO:
 """
 
 from datetime import datetime
-
+from typing import List, TYPE_CHECKING
 from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.lote.model import Lote
 from app.db.base import Base
 
+if TYPE_CHECKING:
+    from app.lote.model import Lote
 
 class Medicamento(Base):
     __tablename__ = "medicamento"
@@ -53,7 +54,7 @@ class Medicamento(Base):
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )
 
-    lotes: Mapped[list["Lote"]] = relationship(back_populates="medicamento")  # noqa: F821
+    lote: Mapped[List["Lote"]] = relationship(back_populates="medicamento")  # noqa: F821
 
     def __repr__(self) -> str:
         return f"<Medicamento id={self.id} nome_generico={self.nome_generico} ativo={self.ativo}>"

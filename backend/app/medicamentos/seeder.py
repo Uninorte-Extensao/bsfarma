@@ -1,10 +1,10 @@
 import asyncio
 from sqlalchemy import select, text
-from sqlalchemy.ext.asyncio import Asyncdb
-
 from app.db.base import SessionLocal
 from app.medicamentos.model import Medicamento
-
+from app.lote.model import Lote
+from app.usuario.model import Usuario
+from app.movimentacao.model import Movimentacao
 MEDICAMENTOS = [
         # ── ASMA ────────────────────────────────────────────────────────────
         {

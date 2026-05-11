@@ -4,6 +4,7 @@ from datetime import date
 from sqlalchemy import select
 from app.db.base import SessionLocal
 from app.lote.model import Lote
+from app.movimentacao.model import Movimentacao
 from app.medicamentos.model import Medicamento
 from app.usuario.model import Usuario
 
@@ -152,32 +153,32 @@ async def seed_initial_data():
                     print(f"    [skip] Medicamento não encontrado: {nome_gen} {concentracao}")
                     continue
 
-            for (numero, fabricante, validade, qtd_inicial, qtd_atual) in lotes:
-                existe = (await db.execute(
-                    select(Lote).where(
-                        Lote.medicamento_id == med.id,
-                        Lote.numero_lote    == numero,
+                for (numero, fabricante, validade, qtd_inicial, qtd_atual) in lotes:
+                    existe = (await db.execute(
+                        select(Lote).where(
+                            Lote.medicamento_id == med.id,
+                            Lote.numero_lote    == numero,
+                        )
+                    )).scalar_one_or_none()
+
+                    if existe:
+                        print(f"    [skip] Lote {numero}")
+                        continue
+                    lote = Lote(
+                        medicamento_id    = med.id,
+                        registrado_por_id = registrado_por_id,
+                        numero_lote       = numero,
+                        fabricante        = fabricante,
+                        validade          = validade,
+                        quantidade_inicial = qtd_inicial,
+                        quantidade_atual  = qtd_atual,
                     )
-                )).scalar_one_or_none()
+                    db.add(lote)
+                    status = "Crítico" if qtd_atual <= med.estoque_minimo else "Normal"
+                    venc   = "Vencido" if validade < date.today() else str(validade)
+                    print(f"    [+] {numero} | {nome_gen[:30]:<30} {concentracao:<18} val={venc} saldo={qtd_atual} {status}")
 
-                if existe:
-                    print(f"    [skip] Lote {numero}")
-                    continue
-                lote = Lote(
-                    medicamento_id    = med.id,
-                    registrado_por_id = registrado_por_id,
-                    numero_lote       = numero,
-                    fabricante        = fabricante,
-                    validade          = validade,
-                    quantidade_inicial = qtd_inicial,
-                    quantidade_atual  = qtd_atual,
-                )
-                db.add(lote)
-                status = "Crítico" if qtd_atual <= med.estoque_minimo else "Normal"
-                venc   = "Vencido" if validade < date.today() else str(validade)
-                print(f"    [+] {numero} | {nome_gen[:30]:<30} {concentracao:<18} val={venc} saldo={qtd_atual} {status}")
-
-            await db.commit()
+                await db.commit()
 
         except Exception as e:
             print("Houve um erro ao fazer a migração: ", e)

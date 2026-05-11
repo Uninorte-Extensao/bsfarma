@@ -8,18 +8,17 @@ PADRÃO DO PROJETO:
   - Data simples (Date) para a validade
   - Sintaxe SQLAlchemy 2.0 (Mapped / mapped_column)
 """
-
+from typing import List, TYPE_CHECKING
 from datetime import date, datetime
-
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.medicamentos.model import Medicamento
-from app.movimentacao.model import Movimentacao
-from app.usuario.model import Usuario
-
 from app.db.base import Base
 
+if TYPE_CHECKING:
+    from app.medicamentos.model import Medicamento
+    from app.movimentacao.model import Movimentacao
+    from app.usuario.model import Usuario
 
 class Lote(Base):
     __tablename__ = "lote"
@@ -49,9 +48,9 @@ class Lote(Base):
     )
 
     # Relacionamentos
-    medicamento: Mapped["Medicamento"] = relationship(back_populates="lotes")  # noqa: F821
-    usuario: Mapped["Usuario"] = relationship(back_populates="lotes")  # noqa: F821
-    movimentacoes: Mapped[list["Movimentacao"]] = relationship(back_populates="lote")
+    medicamento: Mapped["Medicamento"] = relationship(back_populates="lote")  # noqa: F821
+    usuario: Mapped["Usuario"] = relationship(back_populates="lote")  # noqa: F821
+    movimentacoes: Mapped[List["Movimentacao"]] = relationship(back_populates="lote")
     
     def __repr__(self) -> str:
         return f"<Lote id={self.id} numero={self.numero_lote} med_id={self.medicamento_id} qtd_atual={self.quantidade_atual}>"

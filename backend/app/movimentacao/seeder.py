@@ -1,24 +1,4 @@
-"""
-Seeder de movimentações.
-
-Simula 6 meses de histórico de uma UBS com ~800 pacientes cadastrados,
-exercitando todos os tipos de movimentação:
-
-  ENTRADA     — recebimento do almoxarifado central (toda segunda-feira)
-  DISPENSACAO — dispensação diária no balcão (volume proporcional à prevalência)
-  AJUSTE      — correção de inventário mensal (diferença de contagem)
-  PERDA       — descarte de lotes vencidos ou danificados
-
-Distribuição baseada em dados epidemiológicos do SUS:
-  - Hipertensão:  ~35% dos atendimentos
-  - Diabetes:     ~20%
-  - Dislipidemia: ~15%
-  - Demais:       ~30%
-
-As movimentações de ENTRADA correspondem aos lotes do LoteSeeder —
-a quantidade_inicial de cada lote é a soma das entradas daquele lote.
-"""
-
+import asyncio
 from datetime import date, datetime, timezone
 
 from sqlalchemy import select
@@ -223,10 +203,10 @@ async def seed_initial_data():
                 for data_ocorrido in datas:
                     movs.append(Movimentacao(
                         lote_id=lt.id, usuario_id=aid,
-                        tipo=TipoMovimentacao.DISPENSACAO,
+                        tipo=TipoMovimentacao.SAIDA,
                         quantidade=qtd_por_disp, ocorrido_em=data_ocorrido,
                     ))
-                print(f"    [+] DISPENSACAO {numero:<12} {len(datas)} dispensações x{qtd_por_disp}")
+                print(f"    [+] SAIDA {numero:<12} {len(datas)} dispensações x{qtd_por_disp}")
 
             # ── AJUSTES DE INVENTÁRIO ────────────────────────────────────────────
             # Realizados mensalmente pelo farmacêutico após contagem física.
@@ -275,18 +255,23 @@ async def seed_initial_data():
                 print(f"    [+] PERDA    {numero:<12} -{qtd}  {justificativa[:50]}...")
 
             # Persiste tudo em batch
-            db.add_all(movs)
-            await db.commit()
-            print(f"\n    Total de movimentações criadas: {len(movs)}")
+                db.add_all(movs)
+                await db.commit()
+                print(f"\n    Total de movimentações criadas: {len(movs)}")
         except Exception as e:
             print("Houve um erro ao fazer a migração: ", e)
             await db.rollback()
 
-    async def _mov_existe(db, lote_id: int, tipo: TipoMovimentacao) -> bool:
-        r = await db.execute(
-            select(Movimentacao).where(
-                Movimentacao.lote_id == lote_id,
-                Movimentacao.tipo    == tipo,
-            ).limit(1)
-        )
-        return r.scalar_one_or_none() is not None
+async def _mov_existe(db, lote_id: int, tipo: TipoMovimentacao) -> bool:
+    r = await db.execute(
+        select(Movimentacao).where(
+            Movimentacao.lote_id == lote_id,
+            Movimentacao.tipo    == tipo,
+        ).limit(1)
+    )
+    return r.scalar_one_or_none() is not None
+
+if __name__ == "__main__":
+    print("Iniciando o seed de movimentações...")
+    asyncio.run(seed_initial_data())
+    print("Processo finalizado.")

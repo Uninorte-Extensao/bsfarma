@@ -10,17 +10,16 @@ PADRÃO DO PROJETO:
 
 import enum
 from datetime import datetime
-
+from typing import List, TYPE_CHECKING
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.medicamentos.model import Medicamento
-from app.movimentacao.model import Movimentacao
-from app.usuario.model import Usuario
-
 from app.db.base import Base
 
+if TYPE_CHECKING:
+    from app.medicamentos.model import Medicamento
+    from app.lote.model import Lote
+    from app.usuario.model import Usuario
 
 class TipoMovimentacao(str, enum.Enum):
     """Tipos possíveis de movimentação de estoque."""
@@ -53,8 +52,8 @@ class Movimentacao(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
-    medicamento: Mapped["Medicamento"] = relationship(back_populates="lotes")  # noqa: F821
-    movimentacoes: Mapped[list["Movimentacao"]] = relationship(back_populates="lote")
+    usuario: Mapped["Usuario"] = relationship(back_populates="movimentacoes")  # noqa: F821
+    lote: Mapped[List["Lote"]] = relationship(back_populates="movimentacoes")
 
     def __repr__(self) -> str:
         return f"<Movimentacao id={self.id} lote={self.lote_id} tipo={self.tipo} qtd={self.quantidade}>"
