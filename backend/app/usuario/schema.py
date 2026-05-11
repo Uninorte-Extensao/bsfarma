@@ -52,3 +52,6 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     id_user: str
+
+class LogoutRequest(BaseModel):
+    access_token: str

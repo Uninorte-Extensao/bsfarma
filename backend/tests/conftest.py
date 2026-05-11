@@ -13,7 +13,7 @@ PADRÃO DO PROJETO — fixtures disponíveis:
 Para criar fixtures de outros módulos, adicione-as aqui ou crie um
 conftest.py dentro da pasta do módulo de teste correspondente.
 """
-
+import os
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -25,33 +25,46 @@ from app.db.base import Base
 from app.main import app
 from app.usuario.model import PerfilUsuario, Usuario
 
-# Banco SQLite em memória — rápido e isolado, sem depender do Supabase.
-DATABASE_URL_TESTE = "sqlite+aiosqlite:///:memory:"
+from dotenv import load_dotenv
+from typing import AsyncGenerator
 
+load_dotenv()
 
-@pytest_asyncio.fixture(scope="session")
-async def engine_teste():
-    """Engine SQLite em memória. Criada uma vez por sessão de testes."""
-    engine = create_async_engine(DATABASE_URL_TESTE, echo=False)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield engine
+TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL")
+
+engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+TestingSessionLocal = async_sessionmaker(
+    bind=engine, 
+    class_=AsyncSession, 
+    expire_on_commit=False
+)
+
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def setup_test_database():
+    """
+    Creates all tables before running tests and drops them after.
+    Runs once per test session.
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-    await engine.dispose()
-
+        await conn.run_sync(Base.metadata.create_all)
+    
+    yield
+    
+    # Teardown: Clean up the database after all tests are done
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 @pytest_asyncio.fixture
-async def session(engine_teste):
+async def session() -> AsyncGenerator[AsyncSession, None]:
     """
-    Sessão isolada por teste com rollback automático.
-
-    Cada teste começa com banco limpo — sem interferência entre testes.
+    Yields a new database session for each test.
+    Rolls back the transaction after the test completes to ensure a clean slate.
     """
-    factory = async_sessionmaker(bind=engine_teste, class_=AsyncSession, expire_on_commit=False)
-    async with factory() as sess:
-        yield sess
-        await sess.rollback()
+    async with TestingSessionLocal() as session:
+        yield session
+        # Rollback any uncommitted changes made during the test
+        await session.rollback()
 
 
 @pytest_asyncio.fixture
