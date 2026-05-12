@@ -212,3 +212,36 @@ export const MEDICAMENTOS: IMedicine[] = [
   //   atualizadoEm: new Date()
   // }
 ];
+
+
+export const FORMA_FARMACEUTICA = [
+  { label: 'Comprimido', value: 'Comprimido' },
+  { label: 'Cápsula', value: 'Cápsula' },
+  { label: 'Solução oral', value: 'Solução oral' },
+  { label: 'Injetável', value: 'Injetável' },
+  { label: 'Pomada', value: 'Pomada' },
+  { label: 'Suspensão', value: 'Suspensão' },
+  { label: 'Xarope', value: 'Xarope' },
+  { label: 'Supositório', value: 'Supositório' }
+];
+
+export const VIA_ADMINISTRACAO = [
+  { label: 'Oral', value: 'Oral' },
+  { label: 'Intravenosa', value: 'Intravenosa' },
+  { label: 'Intramuscular', value: 'Intramuscular' },
+  { label: 'Subcutânea', value: 'Subcutânea' },
+  { label: 'Tópica', value: 'Tópica' },
+  { label: 'Inalatória', value: 'Inalatória' },
+  { label: 'Retal', value: 'Retal' },
+  { label: 'Sublingual', value: 'Sublingual' }
+];
+
+export const UNIDADE_CONCENTRACAO = [
+    { label: 'mg', value: 'mg' },
+    { label: 'g', value: 'g' },
+    { label: 'mcg', value: 'mcg' },
+    { label: 'mg/mL', value: 'mg/mL' },
+    { label: 'g/mL', value: 'g/mL' },
+    { label: '%', value: '%' },
+    { label: 'UI/mL', value: 'UI/mL' }
+  ];

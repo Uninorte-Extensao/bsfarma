@@ -1,0 +1,21 @@
+<div class="container my-3">
+    <div class="flex gap-3">
+        <div class="box-icon">
+            <i [class]="item().icon"></i>
+        </div>
+
+        <div class="flex flex-column gap-1">
+            <h4 class="m-0">{{item().title}}</h4>
+            <div>{{item().subtitle}}</div>
+            <div class="flex gap-3">
+                <div class="tag">{{item().label}}</div>
+                <div class="tag">{{item().status}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-column gap-1">
+        <div>Gerado: {{item().gerado | date: 'dd/MM/yyyy'}}</div>
+        <p-button label="Marcar resolvido"/>
+    </div>
+</div>

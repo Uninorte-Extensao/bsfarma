@@ -44,3 +44,5 @@ export interface IMedicine {
   criadoEm: Date;
   atualizadoEm: Date;
 }
+
+

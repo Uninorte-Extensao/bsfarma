@@ -1,8 +1,11 @@
 import { Component, signal } from '@angular/core';
+import { TabsModule } from 'primeng/tabs';
+import { TableAlertsComponent } from "./table-alerts/table-alerts.component";
+import { ALERTS } from '../../shared/mocks/alerts.mock';
 
 @Component({
   selector: 'app-alerts',
-  imports: [],
+  imports: [TabsModule, TableAlertsComponent],
   templateUrl: './alerts.component.html',
   styleUrl: './alerts.component.scss',
 })
@@ -29,4 +32,6 @@ export class AlertsComponent {
       color: 'green'
     }
   ])
+
+  listAlerts = signal(ALERTS)
 }

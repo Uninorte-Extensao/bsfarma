@@ -1,7 +1,6 @@
 import { Component, input, InputSignal } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { IMedicine } from '../../../shared/models/IMedicine';
-import { RouterLink } from "@angular/router";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { InputText } from 'primeng/inputtext';
@@ -10,7 +9,6 @@ import { InputText } from 'primeng/inputtext';
   selector: 'app-table-medicines',
   imports: [
     TableModule, 
-    RouterLink, 
     IconField, 
     InputIcon,
     InputText
