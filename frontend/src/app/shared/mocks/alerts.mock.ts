@@ -1,3 +1,7 @@
+import { IAlert } from "../models/IAlert";
+import { LOTE } from "./lote.mock";
+import { MEDICAMENTOS } from "./medicamentos.mock";
+
 export const ALERTS = [
     {
         icon: 'pi pi-calendar',
@@ -64,3 +68,46 @@ export const ALERTS = [
         gerado: new Date()
     }
 ];
+
+
+export const ALERTAS: IAlert[] = LOTE.flatMap((lote) => {
+    const medicamento = MEDICAMENTOS.find(
+        med => med.id === lote.medicamento_id
+    )
+
+    if (!medicamento) return []
+
+    const alertas = []
+
+    const hoje = new Date()
+
+    const diffDias = Math.ceil(
+        (lote.validade.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24)
+    )
+
+    if (diffDias <= 90) {
+        alertas.push({
+            id: crypto.randomUUID(),
+            lote_id: lote.id,
+            medicamento_id: medicamento.id,
+            tipo: 'Vencimento',
+            status: 'Aberto',
+            gerado_em: new Date(),
+            resolvido_em: null
+        })
+    }
+
+     if(lote.quantidade_atual <= medicamento.estoqueMinimo) {
+        alertas.push({
+            id: crypto.randomUUID(),
+            lote_id: lote.id,
+            medicamento_id: medicamento.id,
+            tipo: 'Estoque mínimo',
+            status: 'Aberto',
+            gerado_em: new Date(),
+            resolvido_em: null
+        })
+     }
+
+     return alertas
+})

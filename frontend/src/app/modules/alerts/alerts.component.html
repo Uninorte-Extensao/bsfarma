@@ -21,26 +21,28 @@
         </div>
 
         <div>
-        <p-tabs value="0">
-            <p-tablist>
-                <p-tab value="0">Abertos</p-tab>
-                <p-tab value="1">Resolvidos</p-tab>
-                <p-tab value="2">Todos</p-tab>
-            </p-tablist>
-            <p-tabpanels>
-                <p-tabpanel value="0">
-                    @for(item of listAlerts(); track $index) {
-                        <app-table-alerts [item]="item"/>
-                    }
-                </p-tabpanel>
-                <p-tabpanel value="1">
+            <p-tabs value="0">
+                <p-tablist>
+                    <p-tab value="0">Abertos</p-tab>
+                    <p-tab value="1">Resolvidos</p-tab>
+                    <p-tab value="2">Todos</p-tab>
+                </p-tablist>
+                <p-tabpanels>
+                    <p-tabpanel value="0">
+                        <div class="container-alert">
+                            @for(item of listAlerts(); track $index) {
+                                <app-table-alerts [item]="item"/>
+                            }
+                        </div>
+                    </p-tabpanel>
+                    <p-tabpanel value="1">
 
-                </p-tabpanel>
-                <p-tabpanel value="2">
+                    </p-tabpanel>
+                    <p-tabpanel value="2">
 
-                </p-tabpanel>
-            </p-tabpanels>
-        </p-tabs>
+                    </p-tabpanel>
+                </p-tabpanels>
+            </p-tabs>
         </div>
 
         

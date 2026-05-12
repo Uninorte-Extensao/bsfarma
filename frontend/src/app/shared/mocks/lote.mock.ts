@@ -1,12 +1,14 @@
-export const LOTE: any[] = [
+import { IBatch } from "../models/IBatch";
+
+export const LOTE: IBatch[] = [
     {
         id: '8f6f4d3c-2c11-4e54-a98f-1f7d9c0b1001',
         medicamento_id: '2a7d88c3-5a21-4f1e-b8b3-6d2f9a8f3001',
         numero_lote: 'LOT-2026-001',
         fabricante: 'EMS',
-        validade: new Date('2027-12-10'),
-        quantidade_inicial: 500,
-        quantidade_atual: 320,
+        validade: new Date('2026-06-20'),
+        quantidade_inicial: 45,
+        quantidade_atual: 10,
         entrada_em: new Date('2026-01-15T08:30:00'),
         registrado_por: 'c3a9f6a0-8d10-4b0e-b92a-1f7a9d8c7001'
     },
@@ -15,7 +17,7 @@ export const LOTE: any[] = [
         medicamento_id: '1f8d72c9-7b32-4f2e-a9d3-5b1e7f9a4002',
         numero_lote: 'LOT-2026-002',
         fabricante: 'Neo Química',
-        validade: new Date('2028-03-22'),
+        validade: new Date('2026-05-20'),
         quantidade_inicial: 1000,
         quantidade_atual: 850,
         entrada_em: new Date('2026-02-02T10:15:00'),
@@ -26,7 +28,7 @@ export const LOTE: any[] = [
         medicamento_id: '3b7f61d2-8c44-4d9f-b7a1-7e2f8a9c5003',
         numero_lote: 'LOT-2026-003',
         fabricante: 'Medley',
-        validade: new Date('2026-11-05'),
+        validade: new Date('2026-07-20'),
         quantidade_inicial: 250,
         quantidade_atual: 120,
         entrada_em: new Date('2026-03-11T14:20:00'),

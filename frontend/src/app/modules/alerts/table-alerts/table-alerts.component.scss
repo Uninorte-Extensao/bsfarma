@@ -1,7 +1,7 @@
 .container {
     background: var(--slate-3);
     border-radius: 10px;
-    padding: 10px;
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -9,56 +9,60 @@
 
 
 .box-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 
     i {
-        font-size: 24px;
+        font-size: 18px;
     }
 }
 
-.red {
-    .box-icon {
-        background: var(--color-red);
+.box-icon.box-red {
+    background: var(--color-red);
 
-        i {
-            color: var(--primary-red)
-        }
-    }
-
-    .label {
+    i {
         color: var(--primary-red)
     }
 }
 
-.yellow {
-    .box-icon {
-        background: var(--color-yellow);
+.box-icon.box-yellow {
+    background: var(--color-yellow);
 
-        i {
-            color: var(--primary-yellow)
-        }
-    }
-
-    .label {
+    i {
         color: var(--primary-yellow)
     }
 }
 
-.green {
-    .box-icon {
-        background: var(--color-green);
+.box-icon.box-green {
+    background: var(--color-green);
 
-        i {
-            color: var(--primary-green)
-        }
-    }
-
-    .label {
+    i {
         color: var(--primary-green)
     }
+}
+
+
+.tag-red {
+    background: var(--color-red);
+    color: var(--primary-red);
+    border-radius: 15px;
+    padding: 2px 8px;
+}
+
+.tag-green {
+    background: var(--color-green);
+    color: var(--primary-green);
+    border-radius: 15px;
+    padding: 2px 8px;
+}
+
+.tag-yellow {
+    background: var(--color-yellow);
+    color: var(--primary-yellow);
+    border-radius: 15px;
+    padding: 2px 8px;
 }

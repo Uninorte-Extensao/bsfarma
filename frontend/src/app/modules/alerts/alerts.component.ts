@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { TableAlertsComponent } from "./table-alerts/table-alerts.component";
-import { ALERTS } from '../../shared/mocks/alerts.mock';
+import { ALERTAS } from '../../shared/mocks/alerts.mock';
 
 @Component({
   selector: 'app-alerts',
@@ -33,5 +33,11 @@ export class AlertsComponent {
     }
   ])
 
-  listAlerts = signal(ALERTS)
+  listAlerts = signal(ALERTAS)
+
+  constructor() {
+    effect(() => {
+      console.log('list alert', this.listAlerts())
+    })
+  }
 }
