@@ -32,7 +32,7 @@ LOTES = [
 ]),
 ("Cloridrato De Metformina", "850 MG", [
     ("MK240512", "Merck S.A.",                  date(2026, 10, 31), 400, 287),
-    ("MK241088", "Merck S.A.",                  date(2027, 4, 30),  400, 400),
+    ("MK241089", "Merck S.A.",                  date(2027, 4, 30),  400, 400),
 ]),
 ("Glibenclamida", "5 MG", [
     ("SA240199", "Sanofi-Aventis Farmacêutica Ltda", date(2026, 5, 31),  300, 241),

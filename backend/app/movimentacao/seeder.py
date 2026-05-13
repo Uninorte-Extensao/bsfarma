@@ -54,7 +54,7 @@ async def seed_initial_data():
                 ("EU241200", 600, dt(2025,  1, 6,  8, 0)),
                 # Metformina 850mg
                 ("MK240512", 400, dt(2024,  6, 3,  8, 0)),
-                ("MK241088", 400, dt(2025,  1, 6,  8, 0)),
+                ("MK241089", 400, dt(2025,  1, 6,  8, 0)),
                 # Glibenclamida
                 ("SA240199", 300, dt(2024,  3, 4,  8, 0)),
                 # Insulina R
@@ -88,7 +88,7 @@ async def seed_initial_data():
                 ("MK240155", 500, dt(2024,  2, 5,  8, 0)),
                 ("MK240277", 500, dt(2024,  4, 1,  8, 0)),
                 ("MK241088", 500, dt(2025,  1, 6,  8, 0)),
-                ("MK240388", 200, dt(2024,  2, 5,  8, 0)),
+                ("MK240389", 200, dt(2024,  2, 5,  8, 0)),
                 ("MK241144", 300, dt(2025,  1, 6,  8, 0)),
                 # Anticoncepcionais
                 ("BY240433", 200, dt(2024,  5, 6,  8, 0)),
@@ -254,10 +254,10 @@ async def seed_initial_data():
                 ))
                 print(f"    [+] PERDA    {numero:<12} -{qtd}  {justificativa[:50]}...")
 
-            # Persiste tudo em batch
-                db.add_all(movs)
-                await db.commit()
-                print(f"\n    Total de movimentações criadas: {len(movs)}")
+        # Persiste tudo em batch
+            db.add_all(movs)
+            await db.commit()
+            print(f"\n    Total de movimentações criadas: {len(movs)}")
         except Exception as e:
             print("Houve um erro ao fazer a migração: ", e)
             await db.rollback()
