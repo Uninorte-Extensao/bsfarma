@@ -97,7 +97,7 @@ export const ALERTAS: IAlert[] = LOTE.flatMap((lote) => {
         })
     }
 
-     if(lote.quantidade_atual <= medicamento.estoqueMinimo) {
+     if(lote.quantidade_atual <= medicamento.estoque_minimo) {
         alertas.push({
             id: crypto.randomUUID(),
             lote_id: lote.id,

@@ -11,10 +11,10 @@
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
-                    <app-table-medicines [listMedicine]="listMedicine()" />
+                    <app-table-medicines [listMedicine]="listMedicine()"/>
                 </p-tabpanel>
                 <p-tabpanel value="1">
-                    <app-table-medicines [listMedicine]="listActive()" />
+                    <app-table-medicines [listMedicine]="listActive()"  />
                 </p-tabpanel>
                 <p-tabpanel value="2">
                     <app-table-medicines [listMedicine]="listInactive()" />
@@ -25,28 +25,8 @@
             <p-button 
             label="Adicionar Medicamento" 
             icon="pi pi-plus"
-            (click)="showDialog('create')" />
+            (click)="goToCreate()" />
         </div>
     </div>
 
 </div>
-
-<p-dialog
-[(visible)]="isVisible"
-[modal]="true"
-[draggable]="false"
-[resizable]="false"
-[style]="{width: '40rem'}"
-(onHide)="closeModal()"
-[header]="typeDialog() === 'create' ? 'Cadastro de Medicamento' : 'Editar Medicamento'"
->
-@if(isVisible()) {
-    <app-form-medicine 
-    [(isVisible)]="isVisible"
-    (onChangeCreate)="submit($event)"
-    (onChangeUpdate)="update($event)"
-    [(typeDialog)]="typeDialog"
-    [(medicine)]="viewMedicine"
-    />
-}
-</p-dialog>

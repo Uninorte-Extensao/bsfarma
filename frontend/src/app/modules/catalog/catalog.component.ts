@@ -1,49 +1,54 @@
-import { Component, WritableSignal, computed, model, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { TableMedicinesComponent } from './table-medicines/table-medicines.component';
 import { IMedicine } from '../../shared/models/IMedicine';
-import { MEDICAMENTOS } from '../../shared/mocks/medicamentos.mock';
 import { Button } from 'primeng/button';
-import { RouterLink } from "@angular/router";
-import { Dialog } from "primeng/dialog";
-import { FormMedicineComponent } from "./form-medicine/form-medicine.component";
-
-type ITypeDialog = 'create' | 'update'
+import { MedicineService } from '../../shared/services/medicine.service';
+import { ToastService } from '../../shared/services/toast.service';
+import { LoadingService } from '../../shared/services/loading.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-catalog',
   imports: [
     TabsModule,
     TableMedicinesComponent,
-    Button,
-    RouterLink,
-    Dialog,
-    FormMedicineComponent
-],
+    Button
+  ],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })
-export class CatalogComponent {
-  listMedicine: WritableSignal<IMedicine[]> = signal(MEDICAMENTOS);
-  listActive = computed(() => {
-    return this.listMedicine().filter(m => m.ativo === true)
-  })
-  listInactive = computed(() => {
-    return this.listMedicine().filter(m => m.ativo === false);
-  })
+export class CatalogComponent implements OnInit{
+  listMedicine: WritableSignal<IMedicine[]> = signal([]);
+  listActive: WritableSignal<IMedicine[]> = signal([]);
+  listInactive: WritableSignal<IMedicine[]> = signal([]);
 
-  public isVisible = model(false)
-  public typeDialog = model<ITypeDialog>('create')
-  public viewMedicine = model<any | null>(null)
+  private service = inject(MedicineService)
+  private toast = inject(ToastService)
+  private loading = inject(LoadingService)
+  private router = inject(Router)
 
-  protected showDialog(type: ITypeDialog, medicine?: IMedicine) {
-    this.isVisible.set(true)
+  ngOnInit() {
+    this.getAllMedicamentos()
   }
 
-  protected closeModal() {
-    this.isVisible.set(false)
+  getAllMedicamentos() {
+    this.loading.show()
+    this.service.getMedicamentos()
+      .then((res: IMedicine[]) => {
+        this.listMedicine.set(res)
+        this.listActive.set(res.filter(item => item.ativo === true))
+        this.listInactive.set(res.filter(item => item.ativo === false))
+      })
+      .catch(() => {
+        this.toast.showToastError('Erro ao buscar medicamentos.')
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
   }
 
-  submit(medicine: any){}
+  protected goToCreate() {
+    this.router.navigate(['/catalog/create'])
+  }
 
-  update(medicine: any) {}
 }

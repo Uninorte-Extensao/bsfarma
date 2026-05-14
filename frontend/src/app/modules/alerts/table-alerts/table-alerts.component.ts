@@ -30,11 +30,11 @@ export class TableAlertsComponent {
 
     const validade = lote?.validade
     const estoque_atual = lote?.quantidade_atual
-    const estoque_minimo = medicine?.estoqueMinimo
+    const estoque_minimo = medicine?.estoque_minimo
 
     return {
       ...this.item(),
-      nome_medicamento: medicine?.nomeGenerico,
+      nome_medicamento: medicine?.nome_generico,
       nome_lote: lote?.numero_lote,
       dias_vencimento: days,
       validade: validade,

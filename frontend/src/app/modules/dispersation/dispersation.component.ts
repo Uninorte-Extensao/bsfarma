@@ -44,9 +44,9 @@ export class DispersationComponent {
 
       return {
         ...lote,
-        nomeGenerico: medicamento?.nomeGenerico ?? '',
+        nomeGenerico: medicamento?.nome_generico ?? '',
         concentracao: medicamento?.concentracao ?? '',
-        viaAdministracao: medicamento?.viaAdministracao ?? '',
+        viaAdministracao: medicamento?.via_administracao ?? '',
       };
 
     });

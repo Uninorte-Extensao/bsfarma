@@ -70,19 +70,19 @@ dataKey="id"
     </ng-template>
     <ng-template #body let-item>
         <tr>
-            <td>{{ item.nomeGenerico }}</td>
-            <td>{{ item.nomeComercial }}</td>
-            <td>{{ item.formaFarmaceutica }}</td>
+            <td>{{ item.nome_generico }}</td>
+            <td>{{ item.nome_comercial }}</td>
+            <td>{{ item.forma_farmaceutica }}</td>
             <td>{{ item.concentracao }}</td>
-            <td>{{ item.viaAdministracao }}</td>
+            <td>{{ item.via_administracao }}</td>
             <td>
                 <span [class]="item.ativo ? 'item-active' : 'item-inactive'">
                     {{ item.ativo ? 'Ativo' : 'Inativo' }}
                 </span>
             </td>
             <td>
-                <span class="flex gap-1 cursor-pointer">
-                    <small>Detalhes</small>
+                <span class="flex gap-1 cursor-pointer" (click)="goToEdit(item)">
+                    <small>Editar</small>
                     <i class="pi pi-angle-double-right"></i>
                 </span>
             </td>

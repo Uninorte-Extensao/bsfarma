@@ -37,20 +37,20 @@ export const routes: Routes = [
                         .then(r => r.CatalogComponent)
             },
             {
-                path: 'catalog/form-medicine',
+                path: 'catalog/create',
                 data: { breadcrumb: 'Cadastro de medicamentos' },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
             },
 
-            // {
-            //     path: 'catalog/:id',
-            //     data: { breadcrumb: 'Cadastro de medicamentos' },
-            //     loadComponent: () =>
-            //         import('./modules/catalog/form-medicine/form-medicine.component')
-            //             .then(r => r.FormMedicineComponent)
-            // },
+            {
+                path: 'catalog/edit/:id',
+                data: { breadcrumb: 'Cadastro de medicamentos' },
+                loadComponent: () =>
+                    import('./modules/catalog/form-medicine/form-medicine.component')
+                        .then(r => r.FormMedicineComponent)
+            },
 
             // LOTE
 

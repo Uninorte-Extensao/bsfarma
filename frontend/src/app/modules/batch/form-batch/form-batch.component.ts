@@ -62,7 +62,7 @@ export class FormBatchComponent {
 
     for (let i = 0; i < (this.listMedicine() as IMedicine[]).length; i++) {
       let country = (this.listMedicine() as IMedicine[])[i];
-      if (country.nomeGenerico.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+      if (country.nome_generico.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(country);
       }
     }
