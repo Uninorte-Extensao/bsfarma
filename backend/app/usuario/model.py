@@ -9,14 +9,17 @@ PADRÃO DO PROJETO — siga este modelo em todos os módulos:
 """
 
 import enum
+from typing import List, TYPE_CHECKING
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Enum, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
+if TYPE_CHECKING:
+    from app.movimentacao.model import Movimentacao
+    from app.lote.model import Lote
 
 class PerfilUsuario(str, enum.Enum):
     """
@@ -52,6 +55,10 @@ class Usuario(Base):
     ultimo_acesso: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+
+    #relacionamentos
+    movimentacoes: Mapped[List["Movimentacao"]] = relationship(back_populates="usuario")  # noqa: F821
+    lote: Mapped[List["Lote"]] = relationship(back_populates="usuario")
 
     def __repr__(self) -> str:
         return f"<Usuario id={self.id} login={self.login} perfil={self.perfil}>"
