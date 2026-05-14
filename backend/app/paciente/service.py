@@ -18,9 +18,7 @@ class PacienteService:
         É preenchido automaticamente pelo sistema.
         """
         paciente = Paciente(
-            codigo=dados.id_interno
-            condicao_clinica=dados.condicao_clinica,
-            senha_hash=hash_password(dados.senha),
-            perfil=dados.perfil,
+            codigo=dados.codigo,
+            condicao_clinica=dados.condicao_clinica
         )
         return await self.repo.create(paciente)
