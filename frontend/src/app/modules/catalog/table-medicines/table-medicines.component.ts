@@ -1,11 +1,12 @@
-import { Component, inject, input, InputSignal, model, output } from '@angular/core';
+import { Component, inject, input, InputSignal, output } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { IMedicine } from '../../../shared/models/IMedicine';
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { InputText } from 'primeng/inputtext';
-import { ITypeDialog } from '../../../shared/models/IGeneral';
 import { Router } from '@angular/router';
+import { Button } from "primeng/button";
+import { IS_MOBILE } from '../../../shared/services/is-mobile.service';
 
 @Component({
   selector: 'app-table-medicines',
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
     TableModule,
     IconField,
     InputIcon,
-    InputText
+    InputText,
+    Button
   ],
   templateUrl: './table-medicines.component.html',
   styleUrl: './table-medicines.component.scss',
@@ -21,8 +23,14 @@ import { Router } from '@angular/router';
 export class TableMedicinesComponent {
   listMedicine: InputSignal<IMedicine[]> = input.required();
   private router = inject(Router)
+  public onItemDelete = output<IMedicine>()
+  public isMobile = inject(IS_MOBILE)
 
   protected goToEdit(medicine: IMedicine) {
-  this.router.navigate(['/catalog/edit', medicine.id])
-}
+    this.router.navigate(['/catalog/edit', medicine.id])
+  }
+
+  public deleteItem(medicamento: IMedicine) {
+    this.onItemDelete.emit(medicamento)
+  }
 }

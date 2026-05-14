@@ -7,6 +7,7 @@ import { MedicineService } from '../../shared/services/medicine.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { LoadingService } from '../../shared/services/loading.service';
 import { Router } from '@angular/router';
+import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 @Component({
   selector: 'app-catalog',
   imports: [
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })
-export class CatalogComponent implements OnInit{
+export class CatalogComponent implements OnInit {
   listMedicine: WritableSignal<IMedicine[]> = signal([]);
   listActive: WritableSignal<IMedicine[]> = signal([]);
   listInactive: WritableSignal<IMedicine[]> = signal([]);
@@ -26,6 +27,7 @@ export class CatalogComponent implements OnInit{
   private toast = inject(ToastService)
   private loading = inject(LoadingService)
   private router = inject(Router)
+  protected isMobile = inject(IS_MOBILE)
 
   ngOnInit() {
     this.getAllMedicamentos()
@@ -49,6 +51,33 @@ export class CatalogComponent implements OnInit{
 
   protected goToCreate() {
     this.router.navigate(['/catalog/create'])
+  }
+
+  public delete(medicamento: IMedicine) {
+    this.loading.show()
+
+    this.service.deleteMedicamento(medicamento.id)
+      .then(() => {
+        this.listMedicine.update(list =>
+          list.filter(item => item.id !== medicamento.id)
+        )
+
+        this.listActive.set(
+          this.listMedicine().filter(item => item.ativo)
+        )
+
+        this.listInactive.set(
+          this.listMedicine().filter(item => !item.ativo)
+        )
+
+        this.toast.showToastSuccess('Medicamento removido com sucesso.')
+      })
+      .catch(() => {
+        this.toast.showToastError('Erro ao remover medicamento.')
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
   }
 
 }

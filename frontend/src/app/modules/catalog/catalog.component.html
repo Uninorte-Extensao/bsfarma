@@ -11,7 +11,7 @@
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
-                    <app-table-medicines [listMedicine]="listMedicine()"/>
+                    <app-table-medicines [listMedicine]="listMedicine()" (onItemDelete)="delete($event)"/>
                 </p-tabpanel>
                 <p-tabpanel value="1">
                     <app-table-medicines [listMedicine]="listActive()"  />
@@ -23,7 +23,7 @@
         </p-tabs>
         <div class="btn-add">
             <p-button 
-            label="Adicionar Medicamento" 
+            [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'" 
             icon="pi pi-plus"
             (click)="goToCreate()" />
         </div>

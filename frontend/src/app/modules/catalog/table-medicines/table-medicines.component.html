@@ -21,46 +21,49 @@ dataKey="id"
 
     <ng-template #header>
         <tr>
-            <th pSortableColumn="nomeGenerico" style="width:20%">
+            <th pSortableColumn="nomeGenerico">
                 <div class="flex items-center gap-2">
                     Nome genérico
                     <p-sortIcon field="nomeGenerico" />
                 </div>
             </th>
-            <th pSortableColumn="nomeComercial" style="width:20%">
-                <div class="flex items-center gap-2">
-                    Nome comercial
-                    <p-sortIcon field="nomeComercial" />
-                </div>
-            </th>
-            <th pSortableColumn="formaFarmaceutica" style="width:20%">
-                <div class="flex items-center gap-2">
-                    Forma farm.
-                    <p-sortIcon field="formaFarmaceutica" />
-                </div>
-            </th>
-            <th pSortableColumn="concentracao" style="width:20%">
-                <div class="flex items-center gap-2">
-                    Concentração
-                    <p-sortIcon field="concentracao" />
-                </div>
-            </th>
 
-            <th pSortableColumn="viaAdministracao" style="width:20%">
-                <div class="flex items-center gap-2">
-                    Via
-                    <p-sortIcon field="viaAdministracao" />
-                </div>
-            </th>
+            @if(!isMobile()) {
+                <th pSortableColumn="nomeComercial">
+                    <div class="flex items-center gap-2">
+                        Nome comercial
+                        <p-sortIcon field="nomeComercial" />
+                    </div>
+                </th>
+                <th pSortableColumn="formaFarmaceutica">
+                    <div class="flex items-center gap-2">
+                        Forma farm.
+                        <p-sortIcon field="formaFarmaceutica" />
+                    </div>
+                </th>
+                <th pSortableColumn="concentracao">
+                    <div class="flex items-center gap-2">
+                        Concentração
+                        <p-sortIcon field="concentracao" />
+                    </div>
+                </th>
 
-            <th pSortableColumn="ativo" style="width:20%">
+                <th pSortableColumn="viaAdministracao">
+                    <div class="flex items-center gap-2">
+                        Via
+                        <p-sortIcon field="viaAdministracao" />
+                    </div>
+                </th>
+                }
+
+            <th pSortableColumn="ativo">
                 <div class="flex items-center gap-2">
                     Status
                     <p-sortIcon field="ativo" />
                 </div>
             </th>
 
-            <th pSortableColumn="acao" style="width:20%">
+            <th pSortableColumn="acao">
                 <div class="flex items-center gap-2">
                     Ação
                     <p-sortIcon field="acao" />
@@ -71,20 +74,40 @@ dataKey="id"
     <ng-template #body let-item>
         <tr>
             <td>{{ item.nome_generico }}</td>
-            <td>{{ item.nome_comercial }}</td>
-            <td>{{ item.forma_farmaceutica }}</td>
-            <td>{{ item.concentracao }}</td>
-            <td>{{ item.via_administracao }}</td>
+            @if(!isMobile()) {
+                <td>{{ item.nome_comercial }}</td>
+                <td>{{ item.forma_farmaceutica }}</td>
+                <td>{{ item.concentracao }}</td>
+                <td>{{ item.via_administracao }}</td>
+            }
             <td>
                 <span [class]="item.ativo ? 'item-active' : 'item-inactive'">
                     {{ item.ativo ? 'Ativo' : 'Inativo' }}
                 </span>
             </td>
             <td>
-                <span class="flex gap-1 cursor-pointer" (click)="goToEdit(item)">
+                <!-- <span class="flex gap-1 cursor-pointer" (click)="goToEdit(item)">
                     <small>Editar</small>
                     <i class="pi pi-angle-double-right"></i>
-                </span>
+                </span> -->
+
+                <div class="flex gap-1">
+                    <p-button
+                    icon="pi pi-pencil"
+                    rounded 
+                    text
+                    severity="warn"
+                    (click)="goToEdit(item)"
+                    />
+
+                    <p-button
+                    icon="pi pi-trash"
+                    rounded 
+                    text
+                    severity="danger"
+                    (click)="deleteItem(item)"
+                    />
+                </div>
             </td>
         </tr>
     </ng-template>
