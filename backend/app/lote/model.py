@@ -32,7 +32,7 @@ class Lote(Base):
     medicamento_id: Mapped[int] = mapped_column(
         ForeignKey("medicamento.id", ondelete="RESTRICT"), nullable=False, index=True
     )
-    registrado_por_id: Mapped[int | None] = mapped_column(
+    registrado_por: Mapped[int | None] = mapped_column(
         ForeignKey("usuario.id", ondelete="SET NULL"), nullable=True
     )
 
