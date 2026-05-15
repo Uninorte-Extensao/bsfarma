@@ -1,55 +1,63 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { RouterLink } from "@angular/router";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { InputText } from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
-import { LOTE } from '../../shared/mocks/lote.mock';
-import { Dialog } from 'primeng/dialog';
 import { Button } from 'primeng/button';
-import { ICreateLote, IUpdateLote } from '../../shared/models/IBatch';
+import { IBatch } from '../../shared/models/IBatch';
 import { FormsModule } from '@angular/forms';
-import { FormBatchComponent } from "./form-batch/form-batch.component";
-
-type ITypeDialog = 'create' | 'update'
+import { Router } from '@angular/router';
+import { LoteService } from '../../shared/services/batch.service';
+import { LoadingService } from '../../shared/services/loading.service';
+import { ToastService } from '../../shared/services/toast.service';
 @Component({
   selector: 'app-batch',
   imports: [
     TableModule,
-    RouterLink,
     IconField,
     InputIcon,
     InputText,
     DatePipe,
-    Dialog,
     Button,
     FormsModule,
-    FormBatchComponent
-],
+  ],
   templateUrl: './batch.component.html',
   styleUrl: './batch.component.scss',
 })
-export class BatchComponent {
-    listLote = signal<any[]>(LOTE);
-    isVisible = model<boolean>(false);
-    typeDialog = model<ITypeDialog>('create');
+export class BatchComponent implements OnInit {
+  listLote = signal<IBatch[]>([]);
 
-    protected showModal(type: ITypeDialog, lote?: any) {
-      this.typeDialog.set(type)
-      this.isVisible.set(true)
-    }
+  private router = inject(Router)
+  private service = inject(LoteService)
+  private loading = inject(LoadingService)
+  private toast = inject(ToastService)
 
-    protected closeModal() {
-      this.isVisible.set(false);
-    }
-
-    protected submit(lote: ICreateLote) {
-
-    }
+  ngOnInit() {
+    this.getAllLotes()
+  }
 
 
-    protected update(lote: IUpdateLote){
-      
-    }
+  goToCreate() {
+    this.router.navigate(['batch/create'])
+  }
+
+  goToEdit(lote: IBatch) {
+    this.router.navigate(['batch/edit', lote.id])
+  }
+
+  getAllLotes() {
+    this.loading.show()
+    this.service.getLotes()
+      .then((res: IBatch[]) => {
+        this.listLote.set(res)
+      })
+      .catch(() => {
+        this.toast.showToastError('Erro ao buscar medicamentos.')
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
+  }
+
 }

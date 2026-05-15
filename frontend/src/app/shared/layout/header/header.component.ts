@@ -1,14 +1,8 @@
 import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { InputIcon } from 'primeng/inputicon';
-import { IconField } from 'primeng/iconfield';
-import { InputText } from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-header',
   imports: [
-    InputIcon,
-    IconField,
-    InputText,
     DatePipe
   ],
   templateUrl: './header.component.html',

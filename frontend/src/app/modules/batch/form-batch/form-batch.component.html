@@ -1,81 +1,93 @@
-<form class="" [formGroup]="form">
-    <div class="col-12">
-        <div class="flex flex-column gap-2">
-            <label for="nome">Nome do Medicamento</label>
-            <p-autocomplete 
-            formControlName="medicamento_id" 
-            [suggestions]="filteredMedicine()" 
-            (completeMethod)="filterMedicine($event)" 
-            optionLabel="nomeGenerico"
-            optionValue="id" 
-            fluid
-            />
-        </div>
-    </div>
+<section>
+    <header>
+        <small class="px-5 text-obs">Registre a entrada de novos medicamentos no estoque.</small>
+    </header>
+    <aside class="box-card m-4">
+        <form class="m-0 grid" [formGroup]="form">
+            <div class="col-12 md:col-6">
+                <div class="flex flex-column gap-2">
+                    <label for="nome">Nome do Medicamento</label>
+                    <p-autocomplete 
+                    formControlName="medicamento_id" 
+                    [suggestions]="filteredMedicine()" 
+                    (completeMethod)="filterMedicine($event)" 
+                    optionLabel="nome_generico"
+                    optionValue="id" 
+                    fluid
+                    placeholder="Ex: Dipirona"
+                    >
+                     <ng-template let-item #item>
+                        {{ item.nome_generico }} - {{ item.concentracao }}
+                    </ng-template>
 
-    <div class="grid">
-        <div class="col-12 md:col-6">
-            <div class="flex flex-column gap-2">
-                <label for="lote">Lote</label>
-                <input 
-                pInputText 
-                id="lote" 
-                placeholder="Ex: LT-2026-XXX" 
-                formControlName="lote"
-                fluid
-                />
+                </p-autocomplete>
+                </div>
             </div>
-        </div>
-
-        <div class="col-12 md:col-6">
-            <div class="flex flex-column gap-2">
-                <label for="fabricante">Fabricante</label>
-                <input 
-                pInputText 
-                id="fabricante" 
-                placeholder="Ex: Medley" 
-                formControlName="fabricante"
-                fluid
-                />
-            </div>
-        </div>
-    </div>
-
-    <div class="grid">
-        <div class="col-12 md:col-6">
-            <label for="validade">Validade</label>
-            <p-datepicker
-            id="validade"
-            formControlName="vencimento"
-            dateFormat="dd/mm/yy"
-            fluid
-            appendTo="body"
-            >
-            </p-datepicker>
-        </div>
+                <div class="col-12 md:col-6">
+                    <div class="flex flex-column gap-2">
+                        <label for="lote">Lote</label>
+                        <input 
+                        pInputText 
+                        id="lote" 
+                        placeholder="Ex: LT-2026-001" 
+                        formControlName="numero_lote"
+                        fluid
+                        />
+                    </div>
+                </div>
     
-        <div class="col-12 md:col-6">
-            <div class="flex flex-column gap-2">
-                <label for="quantidade">Quantidade</label>
-                <p-inputnumber 
-                inputId="quantidade" 
-                placeholder="Ex: 10" 
-                formControlName="quantidade"
-                />
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+                        <label for="fabricante">Fabricante</label>
+                        <input 
+                        pInputText 
+                        id="fabricante" 
+                        placeholder="Ex: Medley" 
+                        formControlName="fabricante"
+                        fluid
+                        />
+                    </div>
+                </div>
+    
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+                        <label for="validade">Validade</label>
+                        <p-datepicker
+                        id="validade"
+                        formControlName="validade"
+                        dateFormat="dd/mm/yy"
+                        fluid
+                        appendTo="body"
+                        >
+                        </p-datepicker>
+                    </div>
+                </div>
+            
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+                        <label for="quantidade">Quantidade Inicial</label>
+                        <p-inputnumber 
+                        inputId="quantidade" 
+                        placeholder="Ex: 10" 
+                        formControlName="quantidade_inicial"
+                        [min]="0"
+                        fluid
+                        />
+                    </div>
+                </div>
+    
+            <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+                <p-button 
+                label="Cancelar" 
+                severity="danger" 
+                (click)="close()" />
+                
+                <p-button 
+                label="Salvar" 
+                severity="success" 
+                (click)="submit()" />
             </div>
-        </div>
-    </div>
-
-    <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
-        <p-button 
-        label="Cancelar" 
-        severity="danger" 
-        (click)="close()" />
-        
-        <p-button 
-        label="Salvar" 
-        severity="success" 
-        (click)="submit()" />
-    </div>
-
-</form>
+    
+        </form>
+    </aside>
+</section>

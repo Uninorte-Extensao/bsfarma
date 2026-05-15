@@ -38,7 +38,7 @@ export const routes: Routes = [
             },
             {
                 path: 'catalog/create',
-                data: { breadcrumb: 'Cadastro de medicamentos' },
+                data: { breadcrumb: 'Cadastro de medicamento' },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -46,7 +46,7 @@ export const routes: Routes = [
 
             {
                 path: 'catalog/edit/:id',
-                data: { breadcrumb: 'Cadastro de medicamentos' },
+                data: { breadcrumb: 'Edição de medicamento' },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -62,13 +62,31 @@ export const routes: Routes = [
                         .then(r => r.BatchComponent)
             },
 
+            {
+                path: 'batch/create',
+                data: { breadcrumb: 'Entrada de Lote' },
+                loadComponent: () =>
+                    import('./modules/batch/form-batch/form-batch.component')
+                        .then(r => r.FormBatchComponent)
+
+            },
+
+            {
+                path: 'batch/edit/:id',
+                data: { breadcrumb: 'Edição de Lote' },
+                loadComponent: () =>
+                    import('./modules/batch/form-batch/form-batch.component')
+                        .then(r => r.FormBatchComponent)
+
+            },
+
             // DISPERSACAO
 
             {
                 path: 'dispersation',
-                data: { 
+                data: {
                     breadcrumb: 'Atendimento',
-                    permission: 'dispersation.view' 
+                    permission: 'dispersation.view'
                 },
                 loadComponent: () =>
                     import('./modules/dispersation/dispersation.component')
@@ -79,9 +97,9 @@ export const routes: Routes = [
 
             {
                 path: 'alerts',
-                data: { 
+                data: {
                     breadcrumb: 'Notificações',
-                    permission: 'alerts.view' 
+                    permission: 'alerts.view'
                 },
                 loadComponent: () =>
                     import('./modules//alerts/alerts.component')
@@ -107,7 +125,7 @@ export const routes: Routes = [
                     breadcrumb: 'Paciente',
                     permission: 'patient.view'
                 },
-                loadComponent: () => 
+                loadComponent: () =>
                     import('./modules/patient/patient.component')
                         .then(r => r.PatientComponent)
             }

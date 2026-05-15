@@ -96,4 +96,8 @@ export class AuthService {
 
     return ROLE_PERMISSIONS[user.perfil]?.includes(permission)
   }
+
+  public getUser() {
+    return this.user()
+  }
 }
