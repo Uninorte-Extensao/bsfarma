@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { LoteService } from '../../shared/services/batch.service';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { AutoComplete } from "primeng/autocomplete";
 import { Select } from "primeng/select";
 import { IMedicine } from '../../shared/models/IMedicine';
 import { MedicineService } from '../../shared/services/medicine.service';
@@ -25,7 +24,6 @@ import { MedicineService } from '../../shared/services/medicine.service';
     DatePipe,
     Button,
     FormsModule,
-    AutoComplete,
     Select
   ],
   templateUrl: './batch.component.html',

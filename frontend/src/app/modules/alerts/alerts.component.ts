@@ -2,36 +2,40 @@ import { Component, effect, signal } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { TableAlertsComponent } from "./table-alerts/table-alerts.component";
 import { ALERTAS } from '../../shared/mocks/alerts.mock';
+import { CardViewComponent } from "../../shared/components/card-view/card-view.component";
 
 @Component({
   selector: 'app-alerts',
-  imports: [TabsModule, TableAlertsComponent],
+  imports: [TabsModule, TableAlertsComponent, CardViewComponent],
   templateUrl: './alerts.component.html',
   styleUrl: './alerts.component.scss',
 })
 export class AlertsComponent {
   cards = signal<any[]>([
     {
+      title: 'VENCIMENTO PRÓXIMO',
+      value: '3 alertas',
+      subtitle: 'Lotes próximos do vencimento',
       icon: 'pi pi-calendar',
-      label: 'Vencimento próximo',
-      valor: 3,
-      color: 'red'
+      variant: 'danger'
     },
 
     {
-      icon: 'pi pi-home',
-      label: 'Estoque mínimo',
-      valor: 3,
-      color: 'yellow'
+      title: 'ESTOQUE MÍNIMO',
+      value: '3 itens',
+      subtitle: 'Necessitam reposição',
+      icon: 'pi pi-exclamation-triangle',
+      variant: 'warning'
     },
 
     {
-      icon: 'pi pi-check',
-      label: 'Resolvidos hoje',
-      valor: 0,
-      color: 'green'
+      title: 'RESOLVIDOS HOJE',
+      value: '0 alertas',
+      subtitle: 'Nenhuma pendência resolvida',
+      icon: 'pi pi-check-circle',
+      variant: 'success'
     }
-  ])
+  ]);
 
   listAlerts = signal(ALERTAS)
 

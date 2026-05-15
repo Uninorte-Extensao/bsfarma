@@ -1,20 +1,18 @@
-import { Component, InputSignal, input } from '@angular/core';
-import { RouterLink } from "@angular/router";
-
-interface ICardData {
-  color: string;
-  icon: string,
-  value: string | number,
-  label: string,
-  labelRoute: string,
-  route: string
-}
+import { NgClass } from '@angular/common';
+import { Component, input } from '@angular/core';
 @Component({
   selector: 'app-card-view',
-  imports: [RouterLink],
+  imports: [
+    NgClass
+  ],
   templateUrl: './card-view.component.html',
   styleUrl: './card-view.component.scss',
 })
 export class CardViewComponent {
-  public cardData: InputSignal<ICardData> = input.required()
+  title = input.required<string>();
+  value = input.required<string>();
+  subtitle = input<string>('');
+  icon = input<string>('pi pi-chart-line');
+
+  variant = input<'primary' | 'success' | 'danger' | 'warning'>('primary');
 }

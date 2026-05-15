@@ -1,4 +1,28 @@
-<section class="container-card" [class]="cardData().color">
+
+<div class="card-dashboard" [ngClass]="variant()">
+
+    <div class="icon-container">
+        <i [class]="icon()"></i>
+    </div>
+
+    <div class="content">
+        <small>
+            {{ title() }}
+        </small>
+
+        <h2>
+            {{ value() }}
+        </h2>
+
+        <span class="subtitle">
+            {{ subtitle() }}
+        </span>
+    </div>
+
+</div>
+
+
+<!-- <section class="container-card" [class]="cardData().color">
     <header class="header-card">
         <span class="material-symbols-outlined material-icon">
             {{cardData().icon}}
@@ -11,4 +35,4 @@
         <small>{{cardData().labelRoute}}</small>
         <i class="pi pi-angle-double-right"></i>
     </footer>
-</section>
+</section> -->

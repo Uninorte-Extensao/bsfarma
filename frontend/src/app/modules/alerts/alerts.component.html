@@ -6,17 +6,14 @@
     <aside class="px-5 pt-3">
         <div class="grid">
             @for(item of cards(); track $index) {
-                <div class="col-12 md:col-4">
-                    <div class="card" [class]="item.color">
-                        <div class="box-icon">
-                            <i [class]="item.icon"></i>
-                        </div>
-                        <div class="flex flex-column gap-1">
-                            <div>{{item.label}}</div>
-                            <h2 class="label m-0">{{item.valor}}</h2>
-                        </div>
-                    </div>
-                </div>
+                <app-card-view
+                class="col-12 md:col-4"
+                    [title]="item.title"
+                    [value]="item.value"
+                    [subtitle]="item.subtitle"
+                    [icon]="item.icon"
+                    [variant]="item.variant"
+                />
             }
         </div>
 
