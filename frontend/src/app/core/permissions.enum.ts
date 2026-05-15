@@ -5,7 +5,8 @@ export enum Module {
     ALERTS = 'alerts',
     MANAGEMENT = 'management',
     REPORT = 'report',
-    PATIENT = 'patient'
+    PATIENT = 'patient',
+    MOVEMENT = 'movement'
 }
 
 export enum Action {

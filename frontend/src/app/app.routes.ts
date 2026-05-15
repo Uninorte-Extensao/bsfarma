@@ -80,6 +80,32 @@ export const routes: Routes = [
 
             },
 
+            // MOVIMENTACAO
+
+            {
+                path: 'movement',
+                data: { breadcrumb: 'Movimentação de Lote' },
+                loadComponent: () =>
+                    import('./modules/movement/movement.component')
+                        .then(r => r.MovementComponent)
+
+            },
+
+            {
+                path: 'movement/create',
+                data: { breadcrumb: 'Criar Movimentação' },
+                loadComponent: () =>
+                    import('./modules/movement/form-movement/form-movement.component')
+                        .then(r => r.FormMovementComponent)
+            },
+            {
+                path: 'movement/edit/:id',
+                data: { breadcrumb: 'Editar Movimentação' },
+                loadComponent: () =>
+                    import('./modules/movement/form-movement/form-movement.component')
+                        .then(r => r.FormMovementComponent)
+            },
+
             // DISPERSACAO
 
             {

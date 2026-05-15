@@ -9,9 +9,9 @@ import { Permission } from "./permissions.enum";
 export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
     atendente: [
         'catalog.view',
-        
+
         'batch.view',
-  
+
         'dispersation.view',
         'dispersation.create',
 
@@ -39,7 +39,12 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'patient.view',
         'patient.create',
         'patient.update',
-        'patient.delete'
+        'patient.delete',
+
+        'movement.create',
+        'movement.delete',
+        'movement.update',
+        'movement.view'
     ],
 
     gestor: [
@@ -68,6 +73,11 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'patient.view',
         'patient.create',
         'patient.update',
-        'patient.delete'
+        'patient.delete',
+
+        'movement.create',
+        'movement.delete',
+        'movement.update',
+        'movement.view'
     ]
 }

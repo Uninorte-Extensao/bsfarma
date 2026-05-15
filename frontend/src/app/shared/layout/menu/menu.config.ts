@@ -20,10 +20,16 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
             items: [
                 {
                     label: 'Lote',
-                    icon: 'pi pi-chart-line',
+                    icon: 'pi pi-box',
                     routerLink: '/batch',
                     visible: authService.hasPermission('batch.view')
                 },
+                {
+                    label: 'Movimentações',
+                    icon: 'pi pi-arrow-right-arrow-left',
+                    routerLink: '/movement',
+                    visible: authService.hasPermission('movement.view')
+                }
             ],
         },
 
@@ -62,8 +68,8 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
                     visible: authService.hasPermission('management.view')
                 },
                 {
-                    label: 'Paciente',
-                    icon: 'pi pi-users',
+                    label: 'Pacientes',
+                    icon: 'pi pi-user',
                     routerLink: '/patient',
                     visible: authService.hasPermission('patient.view')
                 }

@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 import { LoteService } from '../../shared/services/batch.service';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { AutoComplete } from "primeng/autocomplete";
+import { Select } from "primeng/select";
+import { IMedicine } from '../../shared/models/IMedicine';
+import { MedicineService } from '../../shared/services/medicine.service';
 @Component({
   selector: 'app-batch',
   imports: [
@@ -21,6 +25,8 @@ import { ToastService } from '../../shared/services/toast.service';
     DatePipe,
     Button,
     FormsModule,
+    AutoComplete,
+    Select
   ],
   templateUrl: './batch.component.html',
   styleUrl: './batch.component.scss',
@@ -29,12 +35,22 @@ export class BatchComponent implements OnInit {
   listLote = signal<IBatch[]>([]);
 
   private router = inject(Router)
-  private service = inject(LoteService)
+  private loteService = inject(LoteService)
   private loading = inject(LoadingService)
   private toast = inject(ToastService)
+  private medicamentoService = inject(MedicineService)
+
+  protected medicamentos = signal<IMedicine[]>([])
+  protected checked: boolean | null = null;
+  protected medicamentoId: string | null = null
+  protected isSaldo = [
+    { label: 'Sim', value: true },
+    { label: 'Não', value: false }
+  ]
 
   ngOnInit() {
     this.getAllLotes()
+    this.getMedicamentos()
   }
 
 
@@ -46,9 +62,9 @@ export class BatchComponent implements OnInit {
     this.router.navigate(['batch/edit', lote.id])
   }
 
-  getAllLotes() {
+  getAllLotes(medicamentoId?: string, comSaldo?: boolean) {
     this.loading.show()
-    this.service.getLotes()
+    this.loteService.getLotes(medicamentoId, comSaldo)
       .then((res: IBatch[]) => {
         this.listLote.set(res)
       })
@@ -58,6 +74,39 @@ export class BatchComponent implements OnInit {
       .finally(() => {
         this.loading.hide()
       })
+  }
+
+  protected getMedicamentos() {
+    this.loading.show()
+    this.medicamentoService.getMedicamentos()
+      .then((res: IMedicine[]) => {
+        this.medicamentos.set(res)
+      })
+      .catch(() => {
+        this.toast.showToastError('Erro ao buscar medicamentos.')
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
+  }
+
+
+  onChangeMedicamento(medicamento: string | null) {
+    this.medicamentoId = medicamento
+
+    this.getAllLotes(
+      this.medicamentoId || undefined,
+      this.checked ?? undefined
+    )
+  }
+
+  onChangeSaldo(saldo: boolean | null) {
+    this.checked = saldo
+
+    this.getAllLotes(
+      this.medicamentoId || undefined,
+      this.checked ?? undefined
+    )
   }
 
 }

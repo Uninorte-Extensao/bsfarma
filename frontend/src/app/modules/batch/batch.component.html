@@ -3,7 +3,7 @@
         <small class="px-5 text-obs">Lista de Lotes</small>
     </header>
 
-    <aside class="px-5 pt-3 relative">
+    <aside class="px-5 pt-3">
         <p-table 
         [value]="listLote()"
         [paginator]="true"
@@ -21,19 +21,75 @@
         >
 
             <ng-template #caption>
-                <div class="flex">
-                    <p-iconfield iconPosition="left" class="ml-auto">
-                        <p-inputicon>
-                            <i class="pi pi-search"></i>
-                        </p-inputicon>
+                <div class="grid align-items-end w-full">
+                    <div class="col-12 md:col-3">
+                        <p-iconfield iconPosition="left" class="w-full">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
 
-                        <input 
-                            pInputText 
-                            type="text" 
-                            (input)="dt.filterGlobal($event.target.value, 'contains')" 
-                            placeholder="Buscar lote" 
+                            <input 
+                                pInputText 
+                                fluid
+                                type="text"
+                                class="w-full"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" 
+                                placeholder="Buscar lote" 
+                            />
+                        </p-iconfield>
+                    </div>
+    
+                    <div class="col-12 md:col-3">
+                        <div class="flex flex-column gap-2">
+                            <p-select
+                                id="saldo"
+                                [options]="isSaldo"
+                                optionLabel="label"
+                                optionValue="value"
+                                fluid
+                                (onChange)="onChangeSaldo($event.value)"
+                                [(ngModel)]="checked"
+                                showClear
+                                placeholder="Saldo"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-3">
+                        <div class="flex flex-column gap-2">
+                            <p-select
+                                id="medicine"
+                                [options]="medicamentos()"
+                                optionLabel="nome_generico"
+                                optionValue="id"
+                                fluid
+                                placeholder="Medicamentos"
+                                filter
+                                (onChange)="onChangeMedicamento($event.value)"
+                                [(ngModel)]="medicamentoId"
+                                showClear
+                            >
+                                <ng-template let-item #item>
+                                    {{ item.nome_generico }} - {{ item.concentracao }}
+                                </ng-template>
+
+                                <ng-template let-item #selectedItem>
+                                    {{ item.nome_generico }} - {{ item.concentracao }}
+                                </ng-template>
+                            </p-select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-3">
+                        <p-button 
+                            label="Adicionar lote" 
+                            icon="pi pi-plus"
+                            (click)="goToCreate()"
+                            fluid
                         />
-                    </p-iconfield>
+                    </div>
+    
+
                 </div>
             </ng-template>
 
@@ -135,12 +191,5 @@
 
         </p-table>
 
-        <div class="btn-add">
-            <p-button 
-            label="Adicionar lote" 
-            icon="pi pi-plus"
-            (click)="goToCreate()"
-            />
-        </div>
     </aside>
 </section>
