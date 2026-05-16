@@ -52,8 +52,8 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
                     label: 'Notificações',
                     icon: 'pi pi-bell',
                     routerLink: '/alerts',
-                    visible: authService.hasPermission('alerts.view')
-                    // badge: '3'
+                    visible: authService.hasPermission('alerts.view'),
+                    badge: '3'
                 }
             ]
         },

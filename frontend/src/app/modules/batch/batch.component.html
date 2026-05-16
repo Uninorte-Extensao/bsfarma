@@ -3,6 +3,26 @@
         <small class="px-5 text-obs">Lista de Lotes</small>
     </header>
 
+    <aside class="grid px-5 pt-3">
+
+    @for(card of cards(); track card.title) {
+
+        <div class="col-12 md:col-6 lg:col-4 xl:col-3">
+
+            <app-card-view
+                [title]="card.title"
+                [value]="card.value"
+                [subtitle]="card.subtitle || ''"
+                [icon]="card.icon || 'pi pi-chart-line'"
+                [variant]="card.variant || 'primary'"
+            />
+
+        </div>
+
+    }
+
+</aside>
+
     <aside class="px-5 pt-3">
         <p-table 
         [value]="listLote()"
@@ -22,7 +42,7 @@
 
             <ng-template #caption>
                 <div class="grid align-items-end w-full">
-                    <div class="col-12 md:col-3">
+                    <div class="col-4 md:col-3">
                         <p-iconfield iconPosition="left" class="w-full">
                             <p-inputicon>
                                 <i class="pi pi-search"></i>
@@ -39,7 +59,7 @@
                         </p-iconfield>
                     </div>
     
-                    <div class="col-12 md:col-3">
+                    <div class="col-4 md:col-3">
                         <div class="flex flex-column gap-2">
                             <p-select
                                 id="saldo"
@@ -55,7 +75,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 md:col-3">
+                    <div class="col-4 md:col-3">
                         <div class="flex flex-column gap-2">
                             <p-select
                                 id="medicine"
@@ -117,12 +137,15 @@
                         </div>
                     </th>
 
-                    <th pSortableColumn="quantidade_inicial">
-                        <div class="flex items-center gap-2">
-                            Qtd Inicial
-                            <p-sortIcon field="quantidade_inicial" />
-                        </div>
-                    </th>
+                    @if(!isMobile()) {
+                        <th pSortableColumn="quantidade_inicial">
+                            <div class="flex items-center gap-2">
+                                Qtd Inicial
+                                <p-sortIcon field="quantidade_inicial" />
+                            </div>
+                        </th>
+                    }
+
 
                     <th pSortableColumn="quantidade_atual">
                         <div class="flex items-center gap-2">
@@ -131,12 +154,14 @@
                         </div>
                     </th>
 
-                    <th pSortableColumn="entrada_em">
-                        <div class="flex items-center gap-2">
-                            Entrada em
-                            <p-sortIcon field="entrada_em" />
-                        </div>
-                    </th>
+                    @if(!isMobile()) {
+                        <th pSortableColumn="entrada_em">
+                            <div class="flex items-center gap-2">
+                                Entrada em
+                                <p-sortIcon field="entrada_em" />
+                            </div>
+                        </th>
+                    }
 
                     <th>
                         <div class="flex items-center gap-2">
@@ -162,17 +187,21 @@
                         {{ item.validade | date:'dd/MM/yyyy' }}
                     </td>
 
-                    <td>
-                        {{ item.quantidade_inicial }}
-                    </td>
+                    @if(!isMobile()) {
+                        <td>
+                            {{ item.quantidade_inicial }}
+                        </td>
+                    }
 
                     <td>
                         {{ item.quantidade_atual }}
                     </td>
 
-                    <td>
-                        {{ item.entrada_em | date:'dd/MM/yyyy' }}
-                    </td>
+                    @if(!isMobile()) {
+                        <td>
+                            {{ item.entrada_em | date:'dd/MM/yyyy' }}
+                        </td>
+                    }
 
                     <td>
                     <div class="flex gap-1">

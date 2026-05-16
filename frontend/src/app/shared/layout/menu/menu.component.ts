@@ -66,11 +66,15 @@ export class MenuComponent implements OnInit {
     };
   }
 
- protected getTextClass(profile: string | undefined) {
+  protected getTextClass(profile: string | undefined) {
     return {
       textYellow: profile === 'gestor',
       textRed: profile === 'farmaceutico',
       textBlue: profile === 'atendente'
     };
+  }
+
+  protected toggleProfileMenu(event: Event, menu: any) {
+    menu.toggle(event);
   }
 }

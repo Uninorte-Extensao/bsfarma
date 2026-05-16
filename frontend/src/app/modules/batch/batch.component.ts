@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
@@ -14,6 +14,8 @@ import { ToastService } from '../../shared/services/toast.service';
 import { Select } from "primeng/select";
 import { IMedicine } from '../../shared/models/IMedicine';
 import { MedicineService } from '../../shared/services/medicine.service';
+import { IS_MOBILE } from '../../shared/services/is-mobile.service';
+import { CardViewComponent } from "../../shared/components/card-view/card-view.component";
 @Component({
   selector: 'app-batch',
   imports: [
@@ -24,7 +26,8 @@ import { MedicineService } from '../../shared/services/medicine.service';
     DatePipe,
     Button,
     FormsModule,
-    Select
+    Select,
+    CardViewComponent
   ],
   templateUrl: './batch.component.html',
   styleUrl: './batch.component.scss',
@@ -37,6 +40,7 @@ export class BatchComponent implements OnInit {
   private loading = inject(LoadingService)
   private toast = inject(ToastService)
   private medicamentoService = inject(MedicineService)
+  protected isMobile = inject(IS_MOBILE)
 
   protected medicamentos = signal<IMedicine[]>([])
   protected checked: boolean | null = null;
@@ -45,6 +49,64 @@ export class BatchComponent implements OnInit {
     { label: 'Sim', value: true },
     { label: 'Não', value: false }
   ]
+
+  protected cards = computed<any[]>(() => [
+
+    {
+      title: 'Total de lotes',
+      value: String(this.listLote().length),
+      subtitle: 'Lotes cadastrados',
+      icon: 'pi pi-box',
+      variant: 'primary'
+    },
+
+    {
+      title: 'Com saldo',
+      value: String(
+        this.listLote()
+          .filter(item => item.quantidade_atual > 0)
+          .length
+      ),
+      subtitle: 'Disponíveis no estoque',
+      icon: 'pi pi-check-circle',
+      variant: 'success'
+    },
+
+    {
+      title: 'Sem saldo',
+      value: String(
+        this.listLote()
+          .filter(item => item.quantidade_atual <= 0)
+          .length
+      ),
+      subtitle: 'Necessitam reposição',
+      icon: 'pi pi-times-circle',
+      variant: 'danger'
+    },
+
+    {
+      title: 'Próx. vencimento',
+      value: String(
+        this.listLote()
+          .filter(item => {
+
+            const hoje = new Date();
+
+            const limite = new Date();
+
+            limite.setDate(hoje.getDate() + 30);
+
+            return new Date(item.validade) <= limite;
+
+          }).length
+      ),
+
+      subtitle: 'Vencem em até 30 dias',
+      icon: 'pi pi-calendar',
+      variant: 'warning'
+    }
+
+  ]);
 
   ngOnInit() {
     this.getAllLotes()

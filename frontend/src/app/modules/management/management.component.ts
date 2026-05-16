@@ -11,6 +11,7 @@ import { InputText } from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
 import { Dialog } from 'primeng/dialog'
 import { FormUserComponent } from "./form-user/form-user.component";
+import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 
 type ITypeDialog = 'create' | 'update'
 @Component({
@@ -37,6 +38,7 @@ export class ManagementComponent implements OnInit {
   protected typeDialog = model<ITypeDialog>('create');
   public viewUser = model<IResponseUser | null>(null);
   private userId = signal<string | null>(null)
+  protected isMobile = inject(IS_MOBILE)
 
   ngOnInit() {
     this.getUsers()

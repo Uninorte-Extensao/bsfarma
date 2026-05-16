@@ -116,7 +116,8 @@ export class MovementComponent implements OnInit {
   protected movimentacoesComUsuario = computed(() => {
     return this.movimentacoes().map(mov => ({
       ...mov,
-      usuario: this.users().find(user => user.id === mov.usuario_id)
+      usuario: this.users().find(user => user.id === mov.usuario_id),
+      lote: this.lotes().find(lote => lote.id === mov.lote_id)
     }));
   });
 

@@ -1,20 +1,14 @@
 <div class="container">
     <div class="col-12 md:col-6 content">
-        <!-- <p-selectbutton 
-        class="mb-4 flex justify-content-center"
-        [options]="stateOptions" 
-        [(ngModel)]="value" 
-        optionLabel="label" 
-        optionValue="value" 
-        aria-labelledby="basic" 
-        #select
-        />
-        @if(select.value === 'login') {
-            <app-login/>
-        } @else {
-            <app-register/>
-        } -->
-
+        <div class="container-img">
+            <img class="logo" src="assets/icon-logo.png">
+            <span class="logo-tipo">BS <span class="font-semibold">farma</span></span>
+        </div>
         <app-login (onChangeLogin)="submit($event)"/>
     </div>
+
+    <footer class="footer-auth">
+        <span>Sistema de gestão de insumos farmacêuticos.</span>
+        <span class="bold">v1.0</span>
+    </footer>
 </div>

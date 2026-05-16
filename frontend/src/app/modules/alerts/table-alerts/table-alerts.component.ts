@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, effect, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { Button } from "primeng/button";
 import { IAlert } from '../../../shared/models/IAlert';
 import { MEDICAMENTOS } from '../../../shared/mocks/medicamentos.mock';
 import { LOTE } from '../../../shared/mocks/lote.mock';
+import { IS_MOBILE } from '../../../shared/services/is-mobile.service';
 
 @Component({
   selector: 'app-table-alerts',
@@ -15,6 +16,7 @@ export class TableAlertsComponent {
   item = input.required<IAlert>()
   listMedicine = signal(MEDICAMENTOS);
   listLote = signal(LOTE);
+  isMobile = inject(IS_MOBILE)
 
   alert = computed(() => {
     const date = new Date()

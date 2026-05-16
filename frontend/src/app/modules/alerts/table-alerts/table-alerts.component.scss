@@ -1,23 +1,36 @@
 .container {
-    background: var(--slate-3);
     border-radius: 10px;
     padding: 12px 16px;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    border: 1px solid transparent;
+    align-items: center;
+}
+
+
+.container.border-red {
+    border-color: var(--primary-red);
+}
+
+.container.border-yellow {
+    border-color: var(--primary-yellow);
+}
+
+.container.border-green {
+    border-color: var(--primary-green);
 }
 
 
 .box-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     i {
-        font-size: 18px;
+        font-size: 1.2rem;
     }
 }
 
@@ -25,7 +38,7 @@
     background: var(--color-red);
 
     i {
-        color: var(--primary-red)
+        color: var(--primary-red);
     }
 }
 
@@ -33,7 +46,7 @@
     background: var(--color-yellow);
 
     i {
-        color: var(--primary-yellow)
+        color: var(--primary-yellow);
     }
 }
 
@@ -41,28 +54,29 @@
     background: var(--color-green);
 
     i {
-        color: var(--primary-green)
+        color: var(--primary-green);
     }
 }
 
 
+.tag {
+    border-radius: 15px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
 .tag-red {
     background: var(--color-red);
     color: var(--primary-red);
-    border-radius: 15px;
-    padding: 2px 8px;
 }
 
 .tag-green {
     background: var(--color-green);
     color: var(--primary-green);
-    border-radius: 15px;
-    padding: 2px 8px;
 }
 
 .tag-yellow {
     background: var(--color-yellow);
     color: var(--primary-yellow);
-    border-radius: 15px;
-    padding: 2px 8px;
 }

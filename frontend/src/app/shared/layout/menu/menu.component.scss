@@ -44,7 +44,7 @@
         // }
 
         .container-logo {
-            padding: 20px 20px 0;
+            padding: 20px 0 0 20px;
 
             span {
                 display: none;
@@ -69,19 +69,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 30px 0 0;
-    gap: 15px;
+    padding-top: 20px;
+    flex-direction: column;
 
     span {
         font-size: 18px;
         font-weight: 600;
         text-align: center;
-        padding-top: 8px;
     }
 
     img {
         width: 35px;
         height: 35px;
+    }
+
+    .logo-tipo {
+        font-weight: 800;
+        color: #112D55;
+        font-size: 1.2rem;
     }
 }
 
@@ -314,4 +319,13 @@
 .textRed {
     color: var(--text-color-red);
     font-weight: 700;
+}
+
+:host ::ng-deep .p-badge {
+    min-width: 1rem !important;
+    height: 1rem !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    background: var(--primary-red) !important;
 }

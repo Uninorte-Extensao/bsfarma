@@ -29,7 +29,8 @@
             'quantidade',
             'justificativa',
             'usuario_id',
-            'lote_id'
+            'lote_id',
+            'lote.numero_lote'
         ]"
         #dt
     >
@@ -83,6 +84,14 @@
         
         <ng-template #header>
             <tr>
+
+                <th pSortableColumn="numero_lote">
+                    <div class="flex items-center gap-2">
+                        Lote
+                        <p-sortIcon field="numero_lote" />
+                    </div>
+                </th>
+
                 <th pSortableColumn="ocorrido_em">
                     <div class="flex items-center gap-2">
                         Ocorrido em
@@ -132,6 +141,9 @@
 
         <ng-template #body let-item>
             <tr>
+                <td>
+                    {{item.lote.numero_lote}}
+                </td>
                 <td>
                     {{ item.ocorrido_em | date:'dd/MM/yyyy' }}
                 </td>
