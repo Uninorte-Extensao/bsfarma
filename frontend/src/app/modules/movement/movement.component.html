@@ -19,7 +19,7 @@
 
     <aside class="px-4 pt-3">
    <p-table 
-        [value]="listMovements()"
+        [value]="movimentacoesComUsuario()"
         [paginator]="true"
         [rows]="5"
         [rowsPerPageOptions]="[5, 10, 15]"
@@ -80,9 +80,15 @@
 
             </div>
         </ng-template>
-
+        
         <ng-template #header>
             <tr>
+                <th pSortableColumn="ocorrido_em">
+                    <div class="flex items-center gap-2">
+                        Ocorrido em
+                        <p-sortIcon field="ocorrido_em" />
+                    </div>
+                </th>
 
                 <th pSortableColumn="tipo">
                     <div class="flex items-center gap-2">
@@ -91,33 +97,29 @@
                     </div>
                 </th>
 
-                <th pSortableColumn="quantidade">
-                    <div class="flex items-center gap-2">
-                        Quantidade
-                        <p-sortIcon field="quantidade" />
-                    </div>
-                </th>
+                @if(!isMobile()) {
+                    <th pSortableColumn="quantidade">
+                        <div class="flex items-center gap-2">
+                            Quantidade
+                            <p-sortIcon field="quantidade" />
+                        </div>
+                    </th>
+    
+                    <th pSortableColumn="usuario_id">
+                        <div class="flex items-center gap-2">
+                            Usuário
+                            <p-sortIcon field="usuario_id" />
+                        </div>
+                    </th>
+    
+                    <th pSortableColumn="justificativa">
+                        <div class="flex items-center gap-2">
+                            Justificativa
+                            <p-sortIcon field="justificativa" />
+                        </div>
+                    </th>
+                }
 
-                <th pSortableColumn="justificativa">
-                    <div class="flex items-center gap-2">
-                        Justificativa
-                        <p-sortIcon field="justificativa" />
-                    </div>
-                </th>
-
-                <th pSortableColumn="usuario_id">
-                    <div class="flex items-center gap-2">
-                        Usuário
-                        <p-sortIcon field="usuario_id" />
-                    </div>
-                </th>
-
-                <th pSortableColumn="ocorrido_em">
-                    <div class="flex items-center gap-2">
-                        Ocorrido em
-                        <p-sortIcon field="ocorrido_em" />
-                    </div>
-                </th>
 
                 <th>
                     <div class="flex items-center gap-2">
@@ -130,33 +132,38 @@
 
         <ng-template #body let-item>
             <tr>
+                <td>
+                    {{ item.ocorrido_em | date:'dd/MM/yyyy' }}
+                </td>
 
                 <td>
                     <span
                         class="px-2 py-1 border-round text-sm font-semibold"
-                        [class]="item.tipo === 'entrada'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'"
-                    >
+                            [ngClass]="{
+                                'bg-green-100 text-green-700': item.tipo === 'entrada',
+                                'bg-red-100 text-red-700': item.tipo === 'saida',
+                                'bg-yellow-100 text-yellow-700': item.tipo === 'perda',
+                                'bg-blue-100 text-blue-700': item.tipo === 'ajuste'
+                            }"
+                            >
                         {{ item.tipo }}
                     </span>
                 </td>
+                
+                @if(!isMobile()) {
+                    
+                    <td>
+                        {{ item.quantidade }}
+                    </td>
 
-                <td>
-                    {{ item.quantidade }}
-                </td>
-
-                <td>
-                    {{ item.justificativa }}
-                </td>
-
-                <td>
-                    {{ item.usuario_id }}
-                </td>
-
-                <td>
-                    {{ item.ocorrido_em | date:'dd/MM/yyyy HH:mm' }}
-                </td>
+                    <td>
+                        {{ item.usuario.nome }}
+                    </td>
+    
+                    <td>
+                        {{ item.justificativa }}
+                    </td>
+                }
 
                 <td>
                     <div class="flex gap-1">
@@ -165,7 +172,7 @@
                             rounded 
                             text
                             severity="warn"
-                            (click)="goToEdit(item)"
+                            (click)="goToEdit(item.id)"
                         />
                     </div>
                 </td>

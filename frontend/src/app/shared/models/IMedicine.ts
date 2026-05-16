@@ -6,7 +6,47 @@ export type FormaFarmaceutica =
   | 'Pomada'
   | 'Suspensão'
   | 'Xarope'
-  | 'Supositório';
+  | 'Supositório'
+  | 'Outros'
+
+  | 'Comprimido revestido'
+  | 'Comprimido mastigável'
+  | 'Comprimido efervescente'
+  | 'Comprimido sublingual'
+  | 'Drágea'
+  | 'Cápsula gelatinosa'
+  | 'Pó'
+  | 'Granulado'
+  | 'Sachê'
+  | 'Suspensão oral'
+  | 'Emulsão'
+  | 'Elixir'
+  | 'Gotas'
+  | 'Spray'
+  | 'Aerossol'
+  | 'Ampola'
+  | 'Frasco-ampola'
+  | 'Bolsa para infusão'
+  | 'Creme'
+  | 'Gel'
+  | 'Loção'
+  | 'Pasta'
+  | 'Unguento'
+  | 'Adesivo transdérmico'
+  | 'Óvulo'
+  | 'Enema'
+  | 'Colírio'
+  | 'Pomada oftálmica'
+  | 'Solução nasal'
+  | 'Spray nasal'
+  | 'Inalador'
+  | 'Nebulização'
+  | 'Implante'
+  | 'Sistema transdérmico'
+  | 'Shampoo'
+  | 'Sabonete medicinal'
+  | 'Tintura'
+  | 'Extrato';
 
 export type ViaAdministracao =
   | 'Oral'
@@ -16,26 +56,42 @@ export type ViaAdministracao =
   | 'Tópica'
   | 'Inalatória'
   | 'Retal'
-  | 'Sublingual';
+  | 'Sublingual'
 
-export type Tarja =
-  | 'Sem Tarja'
-  | 'Tarja Vermelha'
-  | 'Tarja Preta';
+  | 'Bucal'
+  | 'Enteral'
+  | 'Vaginal'
+  | 'Cutânea'
+  | 'Transdérmica'
+  | 'Oftálmica'
+  | 'Otológica'
+  | 'Nasal'
+  | 'Pulmonar'
+  | 'Intradérmica'
+  | 'Intratecal'
+  | 'Epidural'
+  | 'Intraóssea'
+  | 'Intraperitoneal'
+  | 'Intra-articular'
+  | 'Intravesical'
+  | 'Intracardíaca'
+  | 'Intracavernosa'
+  | 'Intravitreal'
+  | 'Uretral'
+  | 'Implantável';
 
 export interface IMedicine {
   id: string;
   nome_generico: string;
   nome_comercial: string;
   concentracao: string;
-  forma_farmaceutica: FormaFarmaceutica;
-  via_administracao: ViaAdministracao;
+  forma_farmaceutica: string;
+  via_administracao: string;
   ativo: boolean;
   estoque_minimo: number;
   criado_em: Date;
   atualizado_em: Date;
 }
-
 
 export interface ICreateMedicine {
   nome_generico: string;

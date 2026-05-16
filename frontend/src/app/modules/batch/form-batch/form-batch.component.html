@@ -4,26 +4,28 @@
     </header>
     <aside class="box-card m-4">
         <form class="m-0 grid" [formGroup]="form">
-            <div class="col-12 md:col-6">
-                <div class="flex flex-column gap-2">
-                    <label for="nome">Nome do Medicamento</label>
-                    <p-autocomplete 
-                    formControlName="medicamento_id" 
-                    [suggestions]="filteredMedicine()" 
-                    (completeMethod)="filterMedicine($event)" 
-                    optionLabel="nome_generico"
-                    optionValue="id" 
-                    fluid
-                    placeholder="Ex: Dipirona"
-                    >
-                     <ng-template let-item #item>
-                        {{ item.nome_generico }} - {{ item.concentracao }}
-                    </ng-template>
-
-                </p-autocomplete>
-                </div>
-            </div>
+            @if(!isEdit()) {
                 <div class="col-12 md:col-6">
+                    <div class="flex flex-column gap-2">
+                        <label for="nome">Nome do Medicamento</label>
+                        <p-autocomplete 
+                        formControlName="medicamento_id" 
+                        [suggestions]="filteredMedicine()" 
+                        (completeMethod)="filterMedicine($event)" 
+                        optionLabel="nome_generico"
+                        optionValue="id" 
+                        fluid
+                        placeholder="Ex: Dipirona"
+                        >
+                         <ng-template let-item #item>
+                            {{ item.nome_generico }} - {{ item.concentracao }}
+                        </ng-template>
+    
+                    </p-autocomplete>
+                    </div>
+                </div>
+            }
+                <div [class]="isEdit() ? 'col-12 md:col-4' : 'col-12 md:col-6'">
                     <div class="flex flex-column gap-2">
                         <label for="lote">Lote</label>
                         <input 
@@ -63,18 +65,21 @@
                     </div>
                 </div>
             
-                <div class="col-12 md:col-4">
-                    <div class="flex flex-column gap-2">
-                        <label for="quantidade">Quantidade Inicial</label>
-                        <p-inputnumber 
-                        inputId="quantidade" 
-                        placeholder="Ex: 10" 
-                        formControlName="quantidade_inicial"
-                        [min]="0"
-                        fluid
-                        />
+                @if(!isEdit()) {
+
+                    <div class="col-12 md:col-4">
+                        <div class="flex flex-column gap-2">
+                            <label for="quantidade">Quantidade Inicial</label>
+                            <p-inputnumber 
+                            inputId="quantidade" 
+                            placeholder="Ex: 10" 
+                            formControlName="quantidade_inicial"
+                            [min]="0"
+                            fluid
+                            />
+                        </div>
                     </div>
-                </div>
+                }
     
             <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
                 <p-button 

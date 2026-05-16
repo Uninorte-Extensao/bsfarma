@@ -1,1 +1,119 @@
-<p>form-movement works!</p>
+<section>
+    <header>
+        <small class="px-5 text-obs">
+            Registre movimentações de estoque.
+        </small>
+    </header>
+
+    <aside class="box-card m-4">
+
+        <form class="m-0 grid" [formGroup]="form">
+
+            @if(!isEdit()) {
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+    
+                        <label for="lote">
+                            Lote
+                        </label>
+    
+                        <p-autocomplete
+                            formControlName="lote_id"
+                            [suggestions]="filteredLote()"
+                            (completeMethod)="filterLote($event)"
+                            optionLabel="numero_lote"
+                            fluid
+                            placeholder="Ex: LT-2026-001"
+                        >
+    
+                            <ng-template pTemplate="item" let-item>
+                                {{ item.numero_lote }}
+                                -
+                                {{ item.medicamento?.nome_generico }}
+                            </ng-template>
+    
+                            <ng-template pTemplate="selectedItem" let-item>
+                                {{ item.numero_lote }}
+                                -
+                                {{ item.medicamento?.nome_generico }}
+                            </ng-template>
+    
+                        </p-autocomplete>
+    
+                    </div>
+                </div>
+    
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+    
+                        <label for="tipo">
+                            Tipo de Movimentação
+                        </label>
+    
+                        <p-select
+                            formControlName="tipo"
+                            [options]="listTipoMovimentacao()"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Selecione"
+                            fluid
+                        />
+    
+                    </div>
+                </div>
+    
+                <div class="col-12 md:col-4">
+                    <div class="flex flex-column gap-2">
+    
+                        <label for="quantidade">
+                            Quantidade
+                        </label>
+    
+                        <p-inputnumber
+                            inputId="quantidade"
+                            formControlName="quantidade"
+                            [min]="1"
+                            placeholder="Ex: 10"
+                            fluid
+                        />
+    
+                    </div>
+                </div>
+            }
+
+            <div class="col-12">
+                <div class="flex flex-column gap-2">
+
+                    <label for="justificativa">
+                        Justificativa
+                    </label>
+
+                    <textarea
+                        pInputTextarea
+                        rows="4"
+                        formControlName="justificativa"
+                        placeholder="Descreva a movimentação"
+                    >
+                    </textarea>
+
+                </div>
+            </div>
+
+            <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+
+                <p-button
+                    label="Cancelar"
+                    severity="danger"
+                    (click)="close()" />
+
+                <p-button
+                    label="Salvar"
+                    severity="success"
+                    (click)="submit()" />
+
+            </div>
+
+        </form>
+
+    </aside>
+</section>

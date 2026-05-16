@@ -81,7 +81,10 @@ dataKey="id"
                 <td>{{ item.via_administracao }}</td>
             }
             <td>
-                <span [class]="item.ativo ? 'item-active' : 'item-inactive'">
+                <span class="px-2 py-1 border-round text-sm font-semibold"
+                        [class]="item.ativo
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'">
                     {{ item.ativo ? 'Ativo' : 'Inativo' }}
                 </span>
             </td>

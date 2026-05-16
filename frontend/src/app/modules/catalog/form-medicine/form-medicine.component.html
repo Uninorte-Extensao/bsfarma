@@ -38,6 +38,7 @@
                     optionValue="value" 
                     placeholder="Ex: Comprimido"
                     formControlName="forma_farmaceutica"
+                    filter
                     />
                 </div>
             </div>
@@ -64,6 +65,7 @@
                         appendTo="body"
                         placeholder="Ex: mg"
                         formControlName="unidade"
+                        filter
                         class="w-5">
                     </p-select>
                 </div>
@@ -80,6 +82,7 @@
                     placeholder="Ex: Oral"
                     appendTo="body"
                     formControlName="via_administracao"
+                    filter
                     />
                 </div>
             </div>
@@ -91,6 +94,7 @@
                     inputId="estoqueMinimo" 
                     placeholder="Ex: 100" 
                     fluid 
+                    [min]="1"
                     appendTo="body" 
                     formControlName="estoque_minimo"
                     />

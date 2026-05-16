@@ -45,7 +45,7 @@ export class FormBatchComponent implements OnInit {
   private auth = inject(AuthService)
   private medicamentoService = inject(MedicineService)
 
-  private isEdit = signal<boolean>(false)
+  protected isEdit = signal<boolean>(false)
   private loteId = signal<string | null>(null)
   private user = signal<IUser | null>(null)
 
