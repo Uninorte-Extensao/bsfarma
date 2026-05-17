@@ -2,10 +2,8 @@ import hmac
 import hashlib
 import os
 import asyncio
-from requests import session
 from sqlalchemy import select
 from app.paciente.model import Paciente
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.base import SessionLocal
 
 PACIENTES = [
