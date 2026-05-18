@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from app.medicamentos.model import Medicamento
     from app.movimentacao.model import Movimentacao
     from app.usuario.model import Usuario
+    from app.alertas.model import Alertas
 
 class Lote(Base):
     __tablename__ = "lote"
@@ -51,6 +52,7 @@ class Lote(Base):
     medicamento: Mapped["Medicamento"] = relationship(back_populates="lote")  # noqa: F821
     usuario: Mapped["Usuario"] = relationship(back_populates="lote")  # noqa: F821
     movimentacoes: Mapped[List["Movimentacao"]] = relationship(back_populates="lote")
-    
+    alerta: Mapped[List["Alertas"]] = relationship(back_populates="lote")
+
     def __repr__(self) -> str:
         return f"<Lote id={self.id} numero={self.numero_lote} med_id={self.medicamento_id} qtd_atual={self.quantidade_atual}>"
