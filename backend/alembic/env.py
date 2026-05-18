@@ -7,6 +7,7 @@ from app.usuario.model import Usuario
 from app.medicamentos.model import Medicamento
 from app.movimentacao.model import Movimentacao
 from app.lote.model import Lote
+from app.paciente.model import Paciente
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config

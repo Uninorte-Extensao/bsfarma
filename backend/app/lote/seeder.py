@@ -139,7 +139,7 @@ async def seed_initial_data():
                 select(Usuario).where(Usuario.login == "farmaceut")
             )).scalar_one_or_none()
 
-            registrado_por_id = farmaceut.id if farmaceut else None
+            registrado_por = farmaceut.id if farmaceut else None
 
             for (nome_gen, concentracao, lotes) in LOTES:
                 med = (await db.execute(
@@ -166,7 +166,7 @@ async def seed_initial_data():
                         continue
                     lote = Lote(
                         medicamento_id    = med.id,
-                        registrado_por_id = registrado_por_id,
+                        registrado_por = registrado_por,
                         numero_lote       = numero,
                         fabricante        = fabricante,
                         validade          = validade,
