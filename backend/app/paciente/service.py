@@ -119,9 +119,7 @@ class PacienteService:
         Raises:
             RecursoNaoEncontrado: Se nenhum paciente for encontrado para o código.
         """
-        paciente = await self.session.execute(
-            select(Paciente).where(Paciente.codigo == codigo)
-        )
+        paciente = await self.repo.get_by_codigo(codigo)
         if not paciente:
             raise RecursoNaoEncontrado("Paciente não encontrado.")
         return paciente
@@ -165,7 +163,4 @@ class PacienteService:
 
     async def inativar(self, codigo: str) -> Paciente:
         """Inativa um paciente (soft delete — não apaga o registro)."""
-        paciente = await self.buscar_por_codigo(codigo)
-        paciente.ativo = False
-        await self.session.flush()
-        return paciente
+        return await self.repo.inativar_paciente(codigo=codigo)
