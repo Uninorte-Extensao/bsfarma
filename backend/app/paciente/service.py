@@ -7,7 +7,6 @@ from select import select
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import paciente
 from app.core.exceptions import RecursoNaoEncontrado, RegraDeNegocioViolada
 from app.paciente.model import Paciente
 from app.paciente.repository import PacienteRepository
@@ -100,7 +99,7 @@ class PacienteService:
 
         codigo = gerar_codigo(cpf)
 
-        paciente_ja_cadastrado = await self._buscar_por_codigo(codigo)
+        paciente_ja_cadastrado = await self.buscar_por_codigo(codigo)
         if paciente_ja_cadastrado:
             return paciente_ja_cadastrado
 
@@ -110,11 +109,9 @@ class PacienteService:
             ativo            = True,
         )
 
-        self.session.add(paciente)
-        await self.session.flush()
-        await self.session.refresh(paciente)
-        return paciente
-    
+        return await self.repo.create(paciente)
+
+
     async def buscar_por_codigo(self, codigo: str) -> Paciente:
         """
         Busca um paciente pelo código do cartão.
@@ -152,16 +149,19 @@ class PacienteService:
             )
         return paciente
 
+    async def listar(self, codigo: str | None = None) -> list[Paciente]:
+        """
+        Lista movimentações, opcionalmente filtrando por um lote específico.
+        """
+        return await self.repo.list_all(codigo=codigo)
+
     async def atualizar(self, codigo: str, dados: PacienteUpdate) -> Paciente:
         """Atualiza a condição clínica de um paciente existente."""
         paciente = await self.buscar_por_codigo(codigo)
         campos = dados.model_dump(exclude_unset=True)
         for campo, valor in campos.items():
             setattr(paciente, campo, valor)
-        await self.session.flush()
-        await self.session.refresh(paciente)
-
-        return paciente
+        return await self.repo.atualizar()
 
     async def inativar(self, codigo: str) -> Paciente:
         """Inativa um paciente (soft delete — não apaga o registro)."""

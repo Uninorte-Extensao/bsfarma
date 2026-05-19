@@ -35,5 +35,21 @@ class PacienteRepository:
         await self.session.flush()
         await self.session.refresh(paciente)
         return paciente
+    
+    async def list_all(self, codigo: str | None = None) -> list[Paciente]:
+        stmt = select(Paciente).order_by(Paciente.criado_em.desc())
+        
+        if codigo:
+            stmt = stmt.where(Paciente.codigo == codigo)
+            
+        result = await self.session.execute(stmt)
+        return list(result.scalars().all())
+    
+    async def atualizar(self,  paciente: Paciente, dados: dict) -> Paciente:
+        for campo, valor in dados.items():
+            setattr(paciente, campo, valor)
+        await self.session.flush()
+        await self.session.refresh(paciente)
+        return paciente
 
     
