@@ -1,8 +1,8 @@
-"""teste: populando tabelas medicamentos, movimentacoes, lote, usuario
+"""incluido todas as tabelas exceto dispensacoes eu acho
 
-Revision ID: b3bb586a452a
-Revises: e61709f10c84
-Create Date: 2026-05-13 16:38:14.252670
+Revision ID: 11e50a8c7c8b
+Revises: 
+Create Date: 2026-05-19 16:34:08.543479
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'b3bb586a452a'
-down_revision: Union[str, Sequence[str], None] = 'e61709f10c84'
+revision: str = '11e50a8c7c8b'
+down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -41,10 +41,20 @@ def upgrade() -> None:
     sa.Column('ativo', sa.Boolean(), nullable=False),
     sa.Column('criado_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('atualizado_em', sa.DateTime(timezone=True), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('cod_ggrem')
+    sa.PrimaryKeyConstraint('id', name=op.f('medicamento_pkey')),
+    sa.UniqueConstraint('cod_ggrem', name=op.f('medicamento_cod_ggrem_key'))
     )
     op.create_index(op.f('ix_medicamento_indicacao_farmacia_popular'), 'medicamento', ['indicacao_farmacia_popular'], unique=False)
+    op.create_table('paciente',
+    sa.Column('id', sa.UUID(as_uuid=False), server_default=sa.text('gen_random_uuid()'), nullable=False),
+    sa.Column('codigo', sa.String(length=15), nullable=False),
+    sa.Column('condicao_clinica', sa.String(length=255), nullable=False),
+    sa.Column('ativo', sa.Boolean(), nullable=False),
+    sa.Column('criado_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.PrimaryKeyConstraint('id', name=op.f('paciente_pkey')),
+    sa.UniqueConstraint('codigo', name=op.f('paciente_codigo_key'))
+    )
+    op.create_index(op.f('ix_paciente_condicao_clinica'), 'paciente', ['condicao_clinica'], unique=False)
     op.create_table('usuario',
     sa.Column('id', sa.UUID(as_uuid=False), server_default=sa.text('gen_random_uuid()'), nullable=False),
     sa.Column('nome', sa.String(length=120), nullable=False),
@@ -54,25 +64,37 @@ def upgrade() -> None:
     sa.Column('ativo', sa.Boolean(), nullable=False),
     sa.Column('criado_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('ultimo_acesso', sa.DateTime(timezone=True), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('usuario_pkey'))
     )
     op.create_index(op.f('ix_usuario_login'), 'usuario', ['login'], unique=True)
     op.create_table('lote',
     sa.Column('id', sa.UUID(as_uuid=False), server_default=sa.text('gen_random_uuid()'), nullable=False),
     sa.Column('medicamento_id', sa.UUID(as_uuid=False), nullable=False),
-    sa.Column('registrado_por_id', sa.UUID(as_uuid=False), nullable=True),
+    sa.Column('registrado_por', sa.UUID(as_uuid=False), nullable=True),
     sa.Column('numero_lote', sa.String(length=60), nullable=False),
     sa.Column('fabricante', sa.String(length=200), nullable=True),
     sa.Column('validade', sa.Date(), nullable=False),
     sa.Column('quantidade_inicial', sa.Integer(), nullable=False),
     sa.Column('quantidade_atual', sa.Integer(), nullable=False),
     sa.Column('entrada_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.ForeignKeyConstraint(['medicamento_id'], ['medicamento.id'], ondelete='RESTRICT'),
-    sa.ForeignKeyConstraint(['registrado_por_id'], ['usuario.id'], ondelete='SET NULL'),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['medicamento_id'], ['medicamento.id'], name=op.f('lote_medicamento_id_fkey'), ondelete='RESTRICT'),
+    sa.ForeignKeyConstraint(['registrado_por'], ['usuario.id'], name=op.f('lote_registrado_por_fkey'), ondelete='SET NULL'),
+    sa.PrimaryKeyConstraint('id', name=op.f('lote_pkey'))
     )
     op.create_index(op.f('ix_lote_medicamento_id'), 'lote', ['medicamento_id'], unique=False)
     op.create_index(op.f('ix_lote_validade'), 'lote', ['validade'], unique=False)
+    op.create_table('alertas',
+    sa.Column('id', sa.UUID(as_uuid=False), server_default=sa.text('gen_random_uuid()'), nullable=False),
+    sa.Column('lote_id', sa.UUID(as_uuid=False), nullable=False),
+    sa.Column('medicamento_id', sa.UUID(as_uuid=False), nullable=False),
+    sa.Column('tipo_alerta', sa.Enum('ALERTA_30_DIAS', 'ALERTA_15_DIAS', 'ALERTA_7_DIAS', 'ALERTA_ESTOQUE_CRITICO', name='tipo_alerta'), nullable=False),
+    sa.Column('status_alerta', sa.Enum('PENDENTE', 'EM_ANDAMENTO', 'RESOLVIDO', 'EXPIRADO', name='status_alerta'), nullable=False),
+    sa.Column('gerado_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('resolvido_em', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['lote_id'], ['lote.id'], name=op.f('alertas_lote_id_fkey')),
+    sa.ForeignKeyConstraint(['medicamento_id'], ['medicamento.id'], name=op.f('alertas_medicamento_id_fkey')),
+    sa.PrimaryKeyConstraint('id', name=op.f('alertas_pkey'))
+    )
     op.create_table('movimentacao',
     sa.Column('id', sa.UUID(as_uuid=False), server_default=sa.text('gen_random_uuid()'), nullable=False),
     sa.Column('lote_id', sa.UUID(as_uuid=False), nullable=False),
@@ -81,9 +103,9 @@ def upgrade() -> None:
     sa.Column('quantidade', sa.Integer(), nullable=False),
     sa.Column('justificativa', sa.String(length=255), nullable=True),
     sa.Column('ocorrido_em', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.ForeignKeyConstraint(['lote_id'], ['lote.id'], ),
-    sa.ForeignKeyConstraint(['usuario_id'], ['usuario.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['lote_id'], ['lote.id'], name=op.f('movimentacao_lote_id_fkey')),
+    sa.ForeignKeyConstraint(['usuario_id'], ['usuario.id'], name=op.f('movimentacao_usuario_id_fkey')),
+    sa.PrimaryKeyConstraint('id', name=op.f('movimentacao_pkey'))
     )
     # ### end Alembic commands ###
 
@@ -92,11 +114,14 @@ def downgrade() -> None:
     """Downgrade schema."""
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('movimentacao')
+    op.drop_table('alertas')
     op.drop_index(op.f('ix_lote_validade'), table_name='lote')
     op.drop_index(op.f('ix_lote_medicamento_id'), table_name='lote')
     op.drop_table('lote')
     op.drop_index(op.f('ix_usuario_login'), table_name='usuario')
     op.drop_table('usuario')
+    op.drop_index(op.f('ix_paciente_condicao_clinica'), table_name='paciente')
+    op.drop_table('paciente')
     op.drop_index(op.f('ix_medicamento_indicacao_farmacia_popular'), table_name='medicamento')
     op.drop_table('medicamento')
     # ### end Alembic commands ###

@@ -122,7 +122,7 @@ class AlertaService:
 
     async def listar(
         self,
-        status: StatusAlerta | None = None,
+        status_alerta: StatusAlerta | None = None,
         tipo: TipoAlerta | None = None,
         medicamento_id: str | None = None,
         apenas_ativos: bool = True,
@@ -145,11 +145,11 @@ class AlertaService:
             .order_by(Alertas.gerado_em.desc())
         )
 
-        if status:
-            stmt = stmt.where(Alertas.status == status)
+        if status_alerta:
+            stmt = stmt.where(Alertas.status_alerta == status_alerta)
         elif apenas_ativos:
             stmt = stmt.where(
-                Alertas.status.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO])
+                Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO])
             )
 
         if tipo:
@@ -175,16 +175,16 @@ class AlertaService:
             raise RecursoNaoEncontrado("Alerta", alerta_id)
         return alerta
 
-    # ── Atualização de status (ação do operador) ──────────────────────────────
+    # ── Atualização de status_alerta (ação do operador) ──────────────────────────────
 
-    async def atualizar_status(
+    async def atualizar_status_alerta(
         self,
         alerta_id: str,
-        novo_status: StatusAlerta,
+        novo_status_alerta: StatusAlerta,
         usuario_id: str,
     ) -> Alertas:
         """
-        Atualiza o status de um alerta seguindo a máquina de estados.
+        Atualiza o status_alerta de um alerta seguindo a máquina de estados.
 
         Transições permitidas:
             PENDENTE     → EM_ANDAMENTO, RESOLVIDO
@@ -194,18 +194,18 @@ class AlertaService:
 
         Args:
             alerta_id:   UUID do alerta.
-            novo_status: Status desejado.
+            novo_status_alerta: Status desejado.
             usuario_id:  ID do usuário que está fazendo a transição (para log futuro).
 
         Raises:
-            RegraDeNegocioViolada: Transição de status inválida.
+            RegraDeNegocioViolada: Transição de status_alerta inválida.
         """
         alerta = await self.buscar_por_id(alerta_id)
 
-        self._validar_transicao(alerta.status, novo_status)
+        self._validar_transicao(alerta.status_alerta, novo_status_alerta)
 
-        alerta.status = novo_status
-        if novo_status == StatusAlerta.RESOLVIDO:
+        alerta.status_alerta = novo_status_alerta
+        if novo_status_alerta == StatusAlerta.RESOLVIDO:
             alerta.resolvido_em = datetime.now(timezone.utc)
 
         await self.session.flush()
@@ -244,14 +244,14 @@ class AlertaService:
                 return {"criados": 0, "escalados": 0}
             else:
                 # Limiar mudou — expira o antigo e cria o novo
-                alerta_existente.status = StatusAlerta.EXPIRADO
+                alerta_existente.status_alerta = StatusAlerta.EXPIRADO
                 escalados += 1
 
         self.session.add(Alertas(
             lote_id        = lote.id,
             medicamento_id = lote.medicamento_id,
             tipo           = tipo_atual,
-            status         = StatusAlerta.PENDENTE,
+            status_alerta         = StatusAlerta.PENDENTE,
         ))
         criados += 1
 
@@ -267,7 +267,7 @@ class AlertaService:
                 and_(
                     Alertas.lote_id == lote.id,
                     Alertas.tipo   == TipoAlerta.ALERTA_ESTOQUE_CRITICO,
-                    Alertas.status.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
+                    Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
                 )
             )
         )
@@ -278,7 +278,7 @@ class AlertaService:
             lote_id        = lote.id,
             medicamento_id = lote.medicamento_id,
             tipo           = TipoAlerta.ALERTA_ESTOQUE_CRITICO,
-            status         = StatusAlerta.PENDENTE,
+            status_alerta         = StatusAlerta.PENDENTE,
         ))
         return True
 
@@ -293,7 +293,7 @@ class AlertaService:
                         TipoAlerta.ALERTA_15_DIAS,
                         TipoAlerta.ALERTA_7_DIAS,
                     ]),
-                    Alertas.status.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
+                    Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
                 )
             )
         )
@@ -310,13 +310,13 @@ class AlertaService:
                         TipoAlerta.ALERTA_15_DIAS,
                         TipoAlerta.ALERTA_7_DIAS,
                     ]),
-                    Alertas.status.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
+                    Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
                 )
             )
         )
         alertas = list(resultado.scalars().all())
         for a in alertas:
-            a.status = StatusAlerta.EXPIRADO
+            a.status_alerta = StatusAlerta.EXPIRADO
         return len(alertas)
 
     @staticmethod

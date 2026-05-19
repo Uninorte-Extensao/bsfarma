@@ -56,7 +56,7 @@ async def listar(
     ),
 ):
     return await AlertaService(session).listar(
-        status         = status_alerta,
+        status_alerta  = status_alerta,
         tipo           = tipo,
         medicamento_id = medicamento_id,
         apenas_ativos  = apenas_ativos,
@@ -77,7 +77,7 @@ async def buscar_por_id(
 
 
 @router.patch(
-    "/{alerta_id}/status",
+    "/{alerta_id}/status_alerta",
     response_model=AlertaResponse,
     summary="Atualizar status do alerta",
     description=(
@@ -97,7 +97,7 @@ async def atualizar_status(
 ):
     return await AlertaService(session).atualizar_status(
         alerta_id  = alerta_id,
-        novo_status = dados.status,
+        novo_status = dados.status_alerta,
         usuario_id  = str(usuario.id),
     )
 

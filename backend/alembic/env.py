@@ -3,11 +3,7 @@ import os
 import asyncio
 from logging.config import fileConfig
 from app.db.base import Base
-from app.usuario.model import Usuario
-from app.medicamentos.model import Medicamento
-from app.movimentacao.model import Movimentacao
-from app.lote.model import Lote
-from app.paciente.model import Paciente
+from app.db import models
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
