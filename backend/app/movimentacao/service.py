@@ -20,6 +20,7 @@ from app.movimentacao.schema import MovimentacaoCreate, MovimentacaoUpdate
 
 class MovimentacaoService:
     def __init__(self, session: AsyncSession) -> None:
+        self.session = session
         self.repo = MovimentacaoRepository(session)
 
     async def criar(self, dados: MovimentacaoCreate) -> Movimentacao:
@@ -54,14 +55,7 @@ class MovimentacaoService:
             justificativa = dados.justificativa,
             ocorrido_em   = datetime.now(timezone.utc),
         )
-        self.session.add(mov)
-
-        # flush persiste no banco mas ainda dentro da transação —
-        # o commit é responsabilidade do get_session() em core/dependencies.py
-        await self.session.flush()
-        await self.session.refresh(mov)
-
-        return mov
+        return await self.repo.create(mov)
 
     async def buscar_por_id(self, movimentacao_id: str) -> Movimentacao:
         """
@@ -99,7 +93,7 @@ class MovimentacaoService:
         if dados.tipo == TipoMovimentacao.ENTRADA:
             return saldo_atual + dados.quantidade
 
-        # Saídas: DISPENSACAO, PERDA, AJUSTE negativo
+        # Saídas: SAIDA, PERDA, AJUSTE negativo
         novo = saldo_atual - dados.quantidade
         if novo < 0:
             raise EstoqueInsuficiente(
@@ -129,7 +123,7 @@ class MovimentacaoService:
             )
 
         # Não permite dispensação de lote vencido
-        if dados.tipo == TipoMovimentacao.DISPENSACAO and lote.validade < date.today():
+        if dados.tipo == TipoMovimentacao.SAIDA and lote.validade < date.today():
             raise RegraDeNegocioViolada(
                 f"Lote {lote.numero_lote} está vencido ({lote.validade}). "
                 "Selecione um lote dentro da validade."
