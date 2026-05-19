@@ -23,6 +23,8 @@ from app.usuario.router import router as usuario_router
 from app.medicamentos.router import router as medicamentos_router
 from app.movimentacao.router import router as movimentacao_router
 from app.lote.router import router as lote_router
+from app.paciente.router import router as paciente_router
+from app.dispensacao.router import router as dispensacao_router
 
 app = FastAPI(
     title="RemédioEmDia API",
@@ -51,7 +53,8 @@ app.include_router(usuario_router)
 app.include_router(medicamentos_router)
 app.include_router(movimentacao_router)
 app.include_router(lote_router)
-
+app.include_router(paciente_router)
+app.include_router(dispensacao_router)
 # Exemplo de como registrar os próximos módulos:
 # from app.medicamento.router import router as medicamento_router
 # app.include_router(medicamento_router, prefix="/medicamentos")

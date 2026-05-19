@@ -7,38 +7,55 @@ PADRÃO DO PROJETO — regras do service:
   - Levanta exceções de domínio (app.core.exceptions).
   - É a camada testada nos testes unitários (sem banco real).
 """
-
+from datetime import datetime, timezone
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import RecursoNaoEncontrado
-from app.movimentacao.model import Movimentacao
+from app.core.exceptions import RecursoNaoEncontrado, EstoqueInsuficiente, RegraDeNegocioViolada
+from app.lote.model import Lote
+from app.movimentacao.model import Movimentacao, TipoMovimentacao
 from app.movimentacao.repository import MovimentacaoRepository
 from app.movimentacao.schema import MovimentacaoCreate, MovimentacaoUpdate
 
 
 class MovimentacaoService:
     def __init__(self, session: AsyncSession) -> None:
+        self.session = session
         self.repo = MovimentacaoRepository(session)
 
     async def criar(self, dados: MovimentacaoCreate) -> Movimentacao:
         """
-        Cria o registro histórico de uma movimentação.
+        Cria o registro histórico de uma movimentação, atualizando o saldo do lote.
+
+        Regras de negócio:
+        - Para SAÍDA: verifica se o lote tem saldo suficiente (raise EstoqueInsuficiente).
+        - Para ENTRADA: se o lote estiver vencido, exige justificativa (raise RegraDeNegocioViolada).
+        - O saldo do lote é atualizado atomica e consistentemente, evitando condições de corrida.
         """
-        movimentacao = Movimentacao(
-            lote_id=dados.lote_id,
-            usuario_id=dados.usuario_id,
-            tipo=dados.tipo,
-            quantidade=dados.quantidade,
-            justificativa=dados.justificativa,
+
+        resultado = await self.session.execute(
+            select(Lote)
+            .where(Lote.id == dados.lote_id)
+            .with_for_update()          # trava até o commit/rollback da transação
         )
-        
-        # TODO: Integração futura com o módulo Lote
-        # 1. Buscar o lote pelo dados.lote_id
-        # 2. Verificar se tipo == SAIDA e se quantidade solicitada > saldo do lote (raise EstoqueInsuficiente)
-        # 3. Atualizar o saldo do lote (lote.quantidade -= dados.quantidade)
-        # 4. Salvar o lote atualizado
-        
-        return await self.repo.create(movimentacao)
+        lote = resultado.scalar_one_or_none()
+
+        if not lote:
+            raise RecursoNaoEncontrado("Lote", dados.lote_id)
+
+        await self._validar(dados, lote)
+
+        lote.quantidade_atual = self._novo_saldo(lote.quantidade_atual, dados)
+
+        mov = Movimentacao(
+            lote_id       = lote.id,
+            usuario_id    = dados.usuario_id,
+            tipo          = dados.tipo,
+            quantidade    = dados.quantidade,
+            justificativa = dados.justificativa,
+            ocorrido_em   = datetime.now(timezone.utc),
+        )
+        return await self.repo.create(mov)
 
     async def buscar_por_id(self, movimentacao_id: str) -> Movimentacao:
         """
@@ -69,3 +86,45 @@ class MovimentacaoService:
         movimentacao = await self.buscar_por_id(movimentacao_id)
         campos = dados.model_dump(exclude_unset=True)
         return await self.repo.update(movimentacao, campos)
+    
+    @staticmethod
+    def _novo_saldo(saldo_atual: int, dados: MovimentacaoCreate) -> int:
+        """Calcula e valida o novo saldo após a movimentação."""
+        if dados.tipo == TipoMovimentacao.ENTRADA:
+            return saldo_atual + dados.quantidade
+
+        # Saídas: SAIDA, PERDA, AJUSTE negativo
+        novo = saldo_atual - dados.quantidade
+        if novo < 0:
+            raise EstoqueInsuficiente(
+                lote_id    = dados.lote_id,
+                disponivel = saldo_atual,
+                solicitado = dados.quantidade,
+            )
+        return novo
+
+    @staticmethod
+    async def _validar(dados: MovimentacaoCreate, lote: Lote) -> None:
+        """Aplica regras de negócio antes de qualquer escrita."""
+        from datetime import date
+
+        # Ajuste e perda exigem justificativa (requisito do briefing)
+        if dados.tipo in (TipoMovimentacao.AJUSTE, TipoMovimentacao.PERDA):
+            if not dados.justificativa or not dados.justificativa.strip():
+                raise RegraDeNegocioViolada(
+                    f"Justificativa é obrigatória para movimentações do tipo '{dados.tipo.value}'."
+                )
+
+        # Não permite entrada em lote vencido
+        if dados.tipo == TipoMovimentacao.ENTRADA and lote.validade < date.today():
+            raise RegraDeNegocioViolada(
+                f"Lote {lote.numero_lote} está vencido ({lote.validade}). "
+                "Não é permitido registrar entrada em lote vencido."
+            )
+
+        # Não permite dispensação de lote vencido
+        if dados.tipo == TipoMovimentacao.SAIDA and lote.validade < date.today():
+            raise RegraDeNegocioViolada(
+                f"Lote {lote.numero_lote} está vencido ({lote.validade}). "
+                "Selecione um lote dentro da validade."
+            )

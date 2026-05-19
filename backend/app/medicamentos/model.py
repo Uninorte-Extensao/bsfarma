@@ -9,13 +9,14 @@ PADRÃO DO PROJETO:
 """
 
 from datetime import datetime
-
+from typing import List, TYPE_CHECKING
 from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
+if TYPE_CHECKING:
+    from app.lote.model import Lote
 
 class Medicamento(Base):
     __tablename__ = "medicamento"
@@ -30,6 +31,20 @@ class Medicamento(Base):
     forma_farmaceutica: Mapped[str] = mapped_column(String(100), nullable=False)
     concentracao: Mapped[str] = mapped_column(String(100), nullable=False)
     via_administracao: Mapped[str] = mapped_column(String(100), nullable=False)
+
+    # Campos opcionais do dataset oficial da ANVISA (coloquei pq achei interessantes, mas não são obrigatórios)
+    fabricante: Mapped[str | None]      = mapped_column(String(200), nullable=True)
+    cod_ggrem: Mapped[str | None]       = mapped_column(String(30),  nullable=True, unique=True)
+    registro_anvisa: Mapped[str | None] = mapped_column(String(30),  nullable=True)
+    codigo_barras: Mapped[str | None]   = mapped_column(String(30),  nullable=True)
+    classe_terapeutica: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    tipo_produto: Mapped[str | None]    = mapped_column(String(30),  nullable=True)
+    tarja: Mapped[str | None]           = mapped_column(String(60),  nullable=True)
+    restricao_hospitalar: Mapped[bool]  = mapped_column(Boolean, default=False)
+
+    # Campo do programa Farmácia Popular (grupo do remedio, ex: Antidiabético, anticoncepcional, etc)
+    indicacao_farmacia_popular: Mapped[str | None] = mapped_column(String(60), nullable=True, index=True)
+
     estoque_minimo: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     ativo: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     criado_em: Mapped[datetime] = mapped_column(
@@ -38,6 +53,8 @@ class Medicamento(Base):
     atualizado_em: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), onupdate=func.now(), nullable=True
     )
+
+    lote: Mapped[List["Lote"]] = relationship(back_populates="medicamento")  # noqa: F821
 
     def __repr__(self) -> str:
         return f"<Medicamento id={self.id} nome_generico={self.nome_generico} ativo={self.ativo}>"

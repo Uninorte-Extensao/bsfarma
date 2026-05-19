@@ -41,7 +41,7 @@ async def test_criar_usuario_dados_validos_retorna_usuario(session: AsyncSession
     assert usuario.perfil == PerfilUsuario.ATENDENTE
     assert usuario.ativo is True
     # Senha nunca deve ser armazenada em texto plano.
-    assert usuario.senha_hash != "senha-segura-123"
+    assert usuario.senha_hash != "senha"
 
 
 @pytest.mark.asyncio
@@ -53,7 +53,7 @@ async def test_criar_usuario_login_duplicado_levanta_409(session: AsyncSession):
     dados = UsuarioCreate(
         nome="Usuário Original",
         login="login.duplicado",
-        senha="senha-segura-123",
+        senha="senha",
         perfil=PerfilUsuario.ATENDENTE,
     )
     await service.criar(dados)
