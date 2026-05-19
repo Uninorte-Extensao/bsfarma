@@ -9,7 +9,6 @@ import { LoadingService } from '../../shared/services/loading.service';
 import { ICreatePaciente, IPaciente, IRecuperarPaciente, IUpdatePaciente } from '../../shared/models/IPatient';
 import { Router } from '@angular/router';
 import { Dialog } from "primeng/dialog";
-import { InputText } from "primeng/inputtext";
 import { Textarea } from 'primeng/textarea';
 import { InputMask } from 'primeng/inputmask'
 import { FormsModule } from '@angular/forms';
@@ -20,7 +19,6 @@ import { FormsModule } from '@angular/forms';
     Button,
     TablePatientComponent,
     Dialog,
-    InputText,
     Textarea,
     InputMask,
     FormsModule
@@ -34,7 +32,6 @@ export class PatientComponent implements OnInit {
   private patientService = inject(PatientService)
   private toast = inject(ToastService)
   private loading = inject(LoadingService)
-  private router = inject(Router)
 
   public pacientes = signal<IPaciente[]>([])
   public pacientesAtivos = signal<IPaciente[]>([])
@@ -109,7 +106,7 @@ export class PatientComponent implements OnInit {
       return
     }
     const form: ICreatePaciente = {
-      cpf: this.cpf,
+      cpf: this.cpf.replace(/\D/g, ''),
       condicao_clinica: this.condicaoClinica
     }
     this.patientService.createPaciente(form)

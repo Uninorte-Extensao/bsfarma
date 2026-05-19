@@ -38,6 +38,10 @@
     .p-datatable-thead>tr>th {
         padding: 0.3rem 0.5rem;
     }
+
+    .p-datatable .p-datatable-header {
+    padding: 0 !important;
+    }
 }
 
 

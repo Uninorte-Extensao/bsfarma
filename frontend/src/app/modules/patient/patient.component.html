@@ -71,7 +71,7 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
 >
 
 @if(isVisible()) {
-    <form class="my-2 flex flex-column gap-3">
+    <div class="my-2 flex flex-column gap-3">
         @if(typeDialog() === 'criar' || typeDialog() === 'recuperar') {
             <div class="flex flex-column gap-2">
                 <label for="cpf">CPF</label>
@@ -107,7 +107,7 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
             <p-button label="Cancelar" severity="danger" (click)="closeModal()"/>
             <p-button label="Salvar" severity="success" (click)="submit()"/>
         </div>
-    </form>
+    </div>
 }
 
 </p-dialog>

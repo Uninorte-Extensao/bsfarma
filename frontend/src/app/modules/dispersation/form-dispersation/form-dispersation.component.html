@@ -1,0 +1,127 @@
+<div>
+    <header>
+        <small class="px-5 text-obs">Registro dispersação de medicamentos para pacientes cadastrados.</small>
+    </header>
+
+    <div class="" [formGroup]="form">
+
+        <div class="box-card flex ">
+            <div class="flex gap-4 align-items-center w-4">
+                <span class="pi pi-user box-icon"></span>
+                <div class="flex flex-column">
+                    <h3 class="m-0">Identificação do Paciente</h3>
+                    <small>Confirme os dados antes de prosseguir</small>
+                </div>
+            </div>
+            <div class="flex flex-column gap-2 w-8">
+                <label for="nome">ID interno do Paciente</label>
+                <p-autocomplete 
+                formControlName="paciente_id" 
+                [suggestions]="filteredPatient()" 
+                (completeMethod)="filterPatient($event)" 
+                optionLabel="id_interno"
+                optionValue="id" 
+                fluid
+                placeholder="Ex: PAC-001"
+                />
+            </div>
+        </div>
+        
+
+        <div class="box-card">
+            <div class="flex gap-4 align-items-center mb-4">
+                <span class="box-icon pi pi-plus"></span>
+                <h3 class="m-0">Seleção de Itens</h3>
+            </div>
+            <div class="flex flex-column gap-3">
+                <div class="flex w-full gap-3 align-items-end">
+                    <div class="flex flex-column gap-2 w-full">
+                        <label for="medicine">Medicamentos</label>
+                        <p-select
+                        id="medicine"
+                        [options]="availableLotes()"
+                        optionLabel="nomeGenerico"
+                        optionValue="id"
+                        fluid
+                        #select
+                        placeholder="Ex: Dipirona"
+                        filter
+                        >
+                        <ng-template let-item #item>
+                            {{ item.nomeGenerico }} - {{ item.concentracao }}
+                        </ng-template>
+    
+                        <ng-template let-item #selectedItem>
+                            {{ item.nomeGenerico }} - {{ item.concentracao }}
+                        </ng-template>
+                        </p-select>
+                    </div>
+        
+                    <p-button label="Adicionar" (click)="addLote(select.value)"/>
+                </div>
+    
+                <div class="container">
+                @if(batchSelected().length) {
+                        @for (item of batchSelected(); track $index) {
+                            <div class="bg-color my-3">
+                                <div class="flex justify-content-between">
+                                    <div class="flex flex-column gap-1">
+                                        <span>
+                                            {{item.nomeGenerico}}
+                                        </span>
+                                        <small>
+                                            {{item.concentracao}} - {{item.viaAdministracao}}  {{item.numero_lote}}
+                                        </small>
+                                    </div>
+        
+                                    <div class="flex gap-2 align-items-center">
+                                        <div>
+                                            <p-inputnumber 
+                                                [(ngModel)]="item.quantidade"
+                                                [showButtons]="true"
+                                                buttonLayout="horizontal"
+                                                spinnerMode="horizontal"
+                                                inputId="horizontal"
+                                                [ngModelOptions]="{ standalone: true }"
+                                            >
+            
+                                                <ng-template #incrementbuttonicon>
+                                                    <span class="pi pi-plus"></span>
+                                                </ng-template>
+            
+                                                <ng-template #decrementbuttonicon>
+                                                    <span class="pi pi-minus"></span>
+                                                </ng-template>
+            
+                                            </p-inputnumber>
+                                        </div>
+                                        <p-button
+                                            icon="pi pi-times"
+                                            severity="danger"
+                                            [outlined]="true"
+                                            (click)="removeLote($index)"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+    
+                <div class="flex justify-content-end gap-4 w-full pr-1">
+                    <!-- <p-button 
+                    label="Cancelar" 
+                    severity="danger" 
+                    (click)="clear()" /> -->
+                    
+                    <p-button 
+                    label="Salvar" 
+                    severity="success" 
+                    (click)="submit()" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

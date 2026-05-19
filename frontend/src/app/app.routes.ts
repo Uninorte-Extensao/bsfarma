@@ -135,12 +135,34 @@ export const routes: Routes = [
             {
                 path: 'dispersation',
                 data: {
-                    breadcrumb: 'Atendimento',
+                    breadcrumb: 'Atendimentos Realizados',
                     permission: 'dispersation.view'
                 },
                 loadComponent: () =>
                     import('./modules/dispersation/dispersation.component')
                         .then(r => r.DispersationComponent)
+            },
+
+            {
+                path: 'dispersation/create',
+                data: {
+                    breadcrumb: 'Novo Atendimento',
+                    permission: 'dispersation.create'
+                },
+                loadComponent: () =>
+                    import('./modules/dispersation/form-dispersation/form-dispersation.component')
+                        .then(r => r.FormDispersationComponent)
+            },
+
+            {
+                path: 'dispersation/edit',
+                data: {
+                    breadcrumb: 'Editar Atendimento',
+                    permission: 'dispersation.update'
+                },
+                loadComponent: () =>
+                    import('./modules/dispersation/form-dispersation/form-dispersation.component')
+                        .then(r => r.FormDispersationComponent)
             },
 
             // ALERTAS
