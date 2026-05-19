@@ -1,0 +1,142 @@
+<p-table
+    [value]="listPacientes()"
+    [paginator]="true"
+    [rows]="8"
+    [rowsPerPageOptions]="[8, 16, 32]"
+    dataKey="codigo"
+    [globalFilterFields]="[
+        'codigo',
+        'condicao_cronica',
+        'ativo'
+    ]"
+    #dt
+>
+
+    <ng-template #caption>
+        <div class="flex">
+            <p-iconfield iconPosition="left" >
+
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+
+                <input
+                    pInputText
+                    type="text"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Buscar"
+                />
+
+            </p-iconfield>
+        </div>
+    </ng-template>
+
+    <ng-template #header>
+        <tr>
+
+            <th pSortableColumn="codigo">
+                <div class="flex items-center gap-2">
+                    Código
+                    <p-sortIcon field="codigo" />
+                </div>
+            </th>
+
+            <th pSortableColumn="condicao_cronica">
+                <div class="flex items-center gap-2">
+                    Condição crônica
+                    <p-sortIcon field="condicao_cronica" />
+                </div>
+            </th>
+
+            @if(!isMobile()) {
+
+                <th pSortableColumn="criado_em">
+                    <div class="flex items-center gap-2">
+                        Criado em
+                        <p-sortIcon field="criado_em" />
+                    </div>
+                </th>
+
+                <th pSortableColumn="atualizado_em">
+                    <div class="flex items-center gap-2">
+                        Atualizado em
+                        <p-sortIcon field="atualizado_em" />
+                    </div>
+                </th>
+
+            }
+
+            <th pSortableColumn="ativo">
+                <div class="flex items-center gap-2">
+                    Status
+                    <p-sortIcon field="ativo" />
+                </div>
+            </th>
+
+            <th>
+                <div class="flex items-center gap-2">
+                    Ação
+                </div>
+            </th>
+
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-item>
+        <tr>
+
+            <td>{{ item.codigo }}</td>
+
+            <td>{{ item.condicao_cronica }}</td>
+
+            @if(!isMobile()) {
+
+                <td>
+                    {{ item.criado_em | date:'dd/MM/yyyy' }}
+                </td>
+
+                <td>
+                    {{ item.atualizado_em | date:'dd/MM/yyyy' }}
+                </td>
+
+            }
+
+            <td>
+                <span
+                    class="px-2 py-1 border-round text-sm font-semibold"
+                    [class]="item.ativo
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'"
+                >
+                    {{ item.ativo ? 'Ativo' : 'Inativo' }}
+                </span>
+            </td>
+
+            <td>
+
+                <div class="flex gap-1">
+
+                    <p-button
+                        icon="pi pi-pencil"
+                        rounded
+                        text
+                        severity="warn"
+                        (click)="goToEdit(item)"
+                    />
+
+                    <p-button
+                        icon="pi pi-trash"
+                        rounded
+                        text
+                        severity="danger"
+                        (click)="deleteItem(item)"
+                    />
+
+                </div>
+
+            </td>
+
+        </tr>
+    </ng-template>
+
+</p-table>

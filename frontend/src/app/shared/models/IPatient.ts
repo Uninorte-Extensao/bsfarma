@@ -1,12 +1,20 @@
-export interface IPatient {
-    id: string;
-    id_interno: string;
-    condicao_cronica: string;
+export interface IPaciente {
+    codigo: string;
+    condicao_clinica: string;
     ativo: boolean;
     criado_em: Date;
+    atualizado_em: Date;
 }
 
-export interface ICreatePAtient {
-    id_interno: string;
-    condicao_cronica: boolean;
+export interface ICreatePaciente {
+    cpf: string,
+    condicao_clinica: string
+}
+
+export interface IUpdatePaciente {
+    condicao_clinica: string
+}
+
+export interface IRecuperarPaciente {
+    cpf: string
 }

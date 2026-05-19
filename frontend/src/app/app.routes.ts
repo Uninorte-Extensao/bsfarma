@@ -38,7 +38,10 @@ export const routes: Routes = [
             },
             {
                 path: 'catalog/create',
-                data: { breadcrumb: 'Cadastro de medicamento' },
+                data: { 
+                    breadcrumb: 'Cadastro de medicamento',
+                    permission: 'catalog.create'
+                 },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -46,7 +49,10 @@ export const routes: Routes = [
 
             {
                 path: 'catalog/edit/:id',
-                data: { breadcrumb: 'Edição de medicamento' },
+                data: { 
+                    breadcrumb: 'Edição de medicamento',
+                    permission: 'catalog.update'
+                 },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -56,7 +62,10 @@ export const routes: Routes = [
 
             {
                 path: 'batch',
-                data: { breadcrumb: 'Lote' },
+                data: { 
+                    breadcrumb: 'Lote',
+                    permission: 'batch.view'
+                 },
                 loadComponent: () =>
                     import('./modules/batch/batch.component')
                         .then(r => r.BatchComponent)
@@ -64,7 +73,10 @@ export const routes: Routes = [
 
             {
                 path: 'batch/create',
-                data: { breadcrumb: 'Entrada de Lote' },
+                data: { 
+                    breadcrumb: 'Entrada de Lote',
+                    permission: 'batch.create'
+                 },
                 loadComponent: () =>
                     import('./modules/batch/form-batch/form-batch.component')
                         .then(r => r.FormBatchComponent)
@@ -73,7 +85,10 @@ export const routes: Routes = [
 
             {
                 path: 'batch/edit/:id',
-                data: { breadcrumb: 'Edição de Lote' },
+                data: { 
+                    breadcrumb: 'Edição de Lote',
+                    permission: 'batch.update'
+                },
                 loadComponent: () =>
                     import('./modules/batch/form-batch/form-batch.component')
                         .then(r => r.FormBatchComponent)
@@ -84,7 +99,10 @@ export const routes: Routes = [
 
             {
                 path: 'movement',
-                data: { breadcrumb: 'Movimentação de Lote' },
+                data: { 
+                    breadcrumb: 'Movimentação de Lote',
+                    permission: 'movement.view'
+                },
                 loadComponent: () =>
                     import('./modules/movement/movement.component')
                         .then(r => r.MovementComponent)
@@ -93,14 +111,20 @@ export const routes: Routes = [
 
             {
                 path: 'movement/create',
-                data: { breadcrumb: 'Criar Movimentação' },
+                data: { 
+                    breadcrumb: 'Criar Movimentação',
+                    permission: 'movement.create'
+                 },
                 loadComponent: () =>
                     import('./modules/movement/form-movement/form-movement.component')
                         .then(r => r.FormMovementComponent)
             },
             {
                 path: 'movement/edit/:id',
-                data: { breadcrumb: 'Editar Movimentação' },
+                data: { 
+                    breadcrumb: 'Editar Movimentação',
+                    permission: 'movement.update'
+                },
                 loadComponent: () =>
                     import('./modules/movement/form-movement/form-movement.component')
                         .then(r => r.FormMovementComponent)
@@ -144,11 +168,32 @@ export const routes: Routes = [
                     import('./modules//management/management.component')
                         .then(r => r.ManagementComponent)
             },
+            {
+                path: 'management/create',
+                data: {
+                    breadcrumb: 'Adicionar Usuário',
+                    permission: 'management.create'
+                },
+                loadComponent: () =>
+                    import('./modules/management/form-user/form-user.component')
+                        .then(r => r.FormUserComponent)
+            },
+
+            {
+                path: 'management/edit/:id',
+                data: {
+                    breadcrumb: 'Editar Usuário',
+                    permission: 'management.update'
+                },
+                loadComponent: () =>
+                    import('./modules/management/form-user/form-user.component')
+                        .then(r => r.FormUserComponent)
+            },
 
             {
                 path: 'patient',
                 data: {
-                    breadcrumb: 'Paciente',
+                    breadcrumb: 'Pacientes',
                     permission: 'patient.view'
                 },
                 loadComponent: () =>

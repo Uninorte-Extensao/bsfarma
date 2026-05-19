@@ -2,7 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { Button } from 'primeng/button';
 import { AutoComplete, AutoCompleteCompleteEvent } from "primeng/autocomplete";
 import { PACIENTE } from '../../shared/mocks/pacientes.mock';
-import { IPatient } from '../../shared/models/IPatient';
+import { IPaciente } from '../../shared/models/IPatient';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Select } from "primeng/select";
 import { IBatch } from '../../shared/models/IBatch';
@@ -24,10 +24,10 @@ import { InputNumber } from 'primeng/inputnumber';
   styleUrl: './dispersation.component.scss',
 })
 export class DispersationComponent {
-  public listPatient = signal<IPatient[]>(PACIENTE);
-  public filteredPatient = signal<IPatient[]>([]);
+  public listPatient = signal<IPaciente[]>(PACIENTE);
+  public filteredPatient = signal<IPaciente[]>([]);
   protected form: FormGroup;
-  public patientSelected = signal<IPatient | null>(null);
+  public patientSelected = signal<IPaciente | null>(null);
   public listLote = signal<IBatch[]>(LOTE);
   public listMedicine = signal<IMedicine[]>(MEDICAMENTOS);
 
@@ -75,12 +75,12 @@ export class DispersationComponent {
 
 
   filterPatient(event: AutoCompleteCompleteEvent) {
-    let filtered: IPatient[] = [];
+    let filtered: IPaciente[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.listPatient() as IPatient[]).length; i++) {
-      let patient = (this.listPatient() as IPatient[])[i];
-      if (patient.id_interno.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for (let i = 0; i < (this.listPatient() as IPaciente[]).length; i++) {
+      let patient = (this.listPatient() as IPaciente[])[i];
+      if (patient.codigo.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(patient);
       }
     }
@@ -94,7 +94,7 @@ export class DispersationComponent {
       patientId = value.paciente_id
     })
 
-    let patient = this.listPatient().find(item => item.id === patientId)
+    let patient = this.listPatient().find(item => item.codigo === patientId)
     if (patient) {
       this.patientSelected.set(patient)
     }
