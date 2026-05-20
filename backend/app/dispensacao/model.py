@@ -8,7 +8,7 @@ PADRÃO DO PROJETO:
 """
 
 from datetime import datetime
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from sqlalchemy import DateTime, ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,6 +17,8 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.movimentacao.model import Movimentacao
+    from app.paciente.model import Paciente
+
 class Dispensacao(Base):
     __tablename__ = "dispensacao"
 
@@ -33,6 +35,7 @@ class Dispensacao(Base):
         DateTime(timezone=True), server_default=func.now()
     )
 
+    paciente: Mapped["Paciente"] = relationship(back_populates="dispensacao")
     movimentacao: Mapped["Movimentacao"] = relationship(back_populates="dispensacao")
 
 

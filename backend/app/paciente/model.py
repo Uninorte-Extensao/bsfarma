@@ -1,9 +1,13 @@
 from datetime import datetime
+from typing import TYPE_CHECKING, List
 from sqlalchemy import Boolean, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.dispensacao.model import Dispensacao
 
 class Paciente(Base):
     __tablename__ = "paciente"
@@ -19,6 +23,8 @@ class Paciente(Base):
     criado_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    dispensacao: Mapped[List["Dispensacao"]] = relationship(back_populates="paciente")
 
     def __repr__(self) -> str:
         return f"<Paciente id={self.id}, ativo={self.ativo}>"

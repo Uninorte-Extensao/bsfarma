@@ -53,7 +53,8 @@ class Movimentacao(Base):
     )
 
     usuario: Mapped["Usuario"] = relationship(back_populates="movimentacoes")  # noqa: F821
-    lote: Mapped[List["Lote"]] = relationship(back_populates="movimentacoes")
+    lote: Mapped["Lote"] = relationship(back_populates="movimentacoes")
     dispensacao: Mapped["Dispensacao"] = relationship(back_populates="movimentacao")
+
     def __repr__(self) -> str:
         return f"<Movimentacao id={self.id} lote={self.lote_id} tipo={self.tipo} qtd={self.quantidade}>"
