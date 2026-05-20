@@ -8,14 +8,15 @@ PADRÃO DO PROJETO:
 """
 
 from datetime import datetime
-
+from typing import List, TYPE_CHECKING
 from sqlalchemy import DateTime, ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
-
+if TYPE_CHECKING:
+    from app.movimentacao.model import Movimentacao
 class Dispensacao(Base):
     __tablename__ = "dispensacao"
 
@@ -31,6 +32,9 @@ class Dispensacao(Base):
     dispensado_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    movimentacao: Mapped["Movimentacao"] = relationship(back_populates="dispensacao")
+
 
     def __repr__(self) -> str:
         return f"<Dispensacao id={self.id} paciente={self.paciente_id} mov={self.movimentacao_id}>"

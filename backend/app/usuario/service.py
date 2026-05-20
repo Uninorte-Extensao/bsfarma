@@ -7,7 +7,7 @@ PADRÃO DO PROJETO — regras do service:
   - Levanta exceções de domínio (app.core.exceptions), não HTTPException.
   - É a camada testada nos testes unitários (sem banco real).
 """
-
+from datetime import datetime, timezone
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
