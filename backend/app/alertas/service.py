@@ -123,7 +123,7 @@ class AlertaService:
     async def listar(
         self,
         status_alerta: StatusAlerta | None = None,
-        tipo: TipoAlerta | None = None,
+        tipo_alerta: TipoAlerta | None = None,
         medicamento_id: str | None = None,
         apenas_ativos: bool = True,
     ) -> list[Alertas]:
@@ -132,7 +132,7 @@ class AlertaService:
 
         Args:
             status:         Filtra por status (None = todos).
-            tipo:           Filtra por tipo de alerta.
+            tipo_alerta:           Filtra por tipo de alerta.
             medicamento_id: Filtra por medicamento.
             apenas_ativos:  Se True, exclui RESOLVIDO e EXPIRADO.
         """
@@ -152,8 +152,8 @@ class AlertaService:
                 Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO])
             )
 
-        if tipo:
-            stmt = stmt.where(Alertas.tipo == tipo)
+        if tipo_alerta:
+            stmt = stmt.where(Alertas.tipo_alerta == tipo_alerta)
 
         if medicamento_id:
             stmt = stmt.where(Alertas.medicamento_id == medicamento_id)
@@ -239,7 +239,7 @@ class AlertaService:
         alerta_existente = await self._alerta_aberto_vencimento(lote.id)
 
         if alerta_existente:
-            if alerta_existente.tipo == tipo_atual:
+            if alerta_existente.tipo_alerta == tipo_atual:
                 # Mesmo limiar — nada a fazer
                 return {"criados": 0, "escalados": 0}
             else:
@@ -250,7 +250,7 @@ class AlertaService:
         self.session.add(Alertas(
             lote_id        = lote.id,
             medicamento_id = lote.medicamento_id,
-            tipo           = tipo_atual,
+            tipo_alerta           = tipo_atual,
             status_alerta         = StatusAlerta.PENDENTE,
         ))
         criados += 1
@@ -266,7 +266,7 @@ class AlertaService:
             select(Alertas).where(
                 and_(
                     Alertas.lote_id == lote.id,
-                    Alertas.tipo   == TipoAlerta.ALERTA_ESTOQUE_CRITICO,
+                    Alertas.tipo_alerta   == TipoAlerta.ALERTA_ESTOQUE_CRITICO,
                     Alertas.status_alerta.in_([StatusAlerta.PENDENTE, StatusAlerta.EM_ANDAMENTO]),
                 )
             )
@@ -277,7 +277,7 @@ class AlertaService:
         self.session.add(Alertas(
             lote_id        = lote.id,
             medicamento_id = lote.medicamento_id,
-            tipo           = TipoAlerta.ALERTA_ESTOQUE_CRITICO,
+            tipo_alerta           = TipoAlerta.ALERTA_ESTOQUE_CRITICO,
             status_alerta         = StatusAlerta.PENDENTE,
         ))
         return True
@@ -288,7 +288,7 @@ class AlertaService:
             select(Alertas).where(
                 and_(
                     Alertas.lote_id == lote_id,
-                    Alertas.tipo.in_([
+                    Alertas.tipo_alerta.in_([
                         TipoAlerta.ALERTA_30_DIAS,
                         TipoAlerta.ALERTA_15_DIAS,
                         TipoAlerta.ALERTA_7_DIAS,
@@ -305,7 +305,7 @@ class AlertaService:
             select(Alertas).where(
                 and_(
                     Alertas.lote_id == lote_id,
-                    Alertas.tipo.in_([
+                    Alertas.tipo_alerta.in_([
                         TipoAlerta.ALERTA_30_DIAS,
                         TipoAlerta.ALERTA_15_DIAS,
                         TipoAlerta.ALERTA_7_DIAS,

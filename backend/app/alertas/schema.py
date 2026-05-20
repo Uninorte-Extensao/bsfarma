@@ -35,8 +35,8 @@ class AlertaResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: str
-    tipo: TipoAlerta
-    status: StatusAlerta
+    tipo_alerta: TipoAlerta
+    status_alerta: StatusAlerta
     gerado_em: datetime
     resolvido_em: datetime | None
 
@@ -52,7 +52,7 @@ class AlertaStatusUpdate(BaseModel):
         PENDENTE     → EM_ANDAMENTO ou RESOLVIDO
         EM_ANDAMENTO → RESOLVIDO
     """
-    status: StatusAlerta
+    status_alerta: StatusAlerta
 
 
 class AlertaResumoResponse(BaseModel):
@@ -60,8 +60,8 @@ class AlertaResumoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: str
-    tipo: TipoAlerta
-    status: StatusAlerta
+    tipo_alerta: TipoAlerta
+    status_alerta: StatusAlerta
     gerado_em: datetime
     resolvido_em: datetime | None
     medicamento_nome: str | None = None   # populado manualmente no router

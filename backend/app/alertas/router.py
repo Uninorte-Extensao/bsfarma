@@ -42,7 +42,7 @@ async def listar(
         default=None, alias="status",
         description="Filtra por status específico."
     ),
-    tipo: TipoAlerta | None = Query(
+    tipo_alerta: TipoAlerta | None = Query(
         default=None,
         description="Filtra por tipo de alerta."
     ),
@@ -57,7 +57,7 @@ async def listar(
 ):
     return await AlertaService(session).listar(
         status_alerta  = status_alerta,
-        tipo           = tipo,
+        tipo_alerta    = tipo_alerta,
         medicamento_id = medicamento_id,
         apenas_ativos  = apenas_ativos,
     )
@@ -89,15 +89,15 @@ async def buscar_por_id(
     ),
     dependencies=[Depends(require_perfil("atendente", "farmaceutico", "gestor"))],
 )
-async def atualizar_status(
+async def atualizar_status_alerta(
     alerta_id: str,
     dados: AlertaStatusUpdate,
     session: Annotated[AsyncSession, Depends(get_session)],
     usuario=Depends(require_perfil("atendente", "farmaceutico", "gestor")),
 ):
-    return await AlertaService(session).atualizar_status(
+    return await AlertaService(session).atualizar_status_alerta(
         alerta_id  = alerta_id,
-        novo_status = dados.status_alerta,
+        novo_status_alerta = dados.status_alerta,
         usuario_id  = str(usuario.id),
     )
 
