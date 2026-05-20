@@ -7,7 +7,7 @@ PADRÃO DO PROJETO — regras do service:
   - Levanta exceções de domínio (app.core.exceptions), não HTTPException.
   - É a camada testada nos testes unitários (sem banco real).
 """
-
+from datetime import datetime, timezone
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -64,6 +64,8 @@ class UsuarioService:
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Usuário inativo. Contate o gestor.",
             )
+        
+        await self.repo.update(usuario, {"ultimo_acesso": datetime.now(timezone.utc)})
 
         token = create_access_token(subject=usuario.id, perfil=usuario.perfil)
         return TokenResponse(access_token=token, token_type="bearer", id_user=usuario.id)

@@ -17,7 +17,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
-    from app.medicamentos.model import Medicamento
+    from app.dispensacao.model import Dispensacao
     from app.lote.model import Lote
     from app.usuario.model import Usuario
 
@@ -54,6 +54,6 @@ class Movimentacao(Base):
 
     usuario: Mapped["Usuario"] = relationship(back_populates="movimentacoes")  # noqa: F821
     lote: Mapped[List["Lote"]] = relationship(back_populates="movimentacoes")
-
+    dispensacao: Mapped["Dispensacao"] = relationship(back_populates="movimentacao")
     def __repr__(self) -> str:
         return f"<Movimentacao id={self.id} lote={self.lote_id} tipo={self.tipo} qtd={self.quantidade}>"

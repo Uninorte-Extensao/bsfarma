@@ -14,14 +14,14 @@ class PacienteRepository:
         )
         return result.scalar_one_or_none()
     
-    async def get_by_id_interno(self, paciente: str) -> Paciente | None:
+    async def get_by_codigo(self, codigo: str) -> Paciente | None:
         """
         Busca um paciente pelo ID interno do sistema. 
         
         Usado para dispensação de medicamentos.
         """
         result = await self.session.execute(
-            select(Paciente).where(Paciente.id_interno == paciente)
+            select(Paciente).where(Paciente.codigo == codigo)
         )
         return result.scalar_one_or_none()
     
@@ -51,5 +51,13 @@ class PacienteRepository:
         await self.session.flush()
         await self.session.refresh(paciente)
         return paciente
+    
+    async def inativar_paciente(self, codigo: str) -> Paciente | None:
+        paciente = await self.get_by_codigo(codigo)
+        paciente.ativo = False
+        await self.session.flush()
+        return paciente
+
+    
 
     
