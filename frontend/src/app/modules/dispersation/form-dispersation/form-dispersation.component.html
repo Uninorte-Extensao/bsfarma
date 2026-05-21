@@ -3,7 +3,7 @@
         <small class="px-5 text-obs">Registro dispersação de medicamentos para pacientes cadastrados.</small>
     </header>
 
-    <div class="" [formGroup]="form">
+    <form class="" [formGroup]="form">
 
         <div class="box-card flex ">
             <div class="flex gap-4 align-items-center w-4">
@@ -115,6 +115,7 @@
                     (click)="clear()" /> -->
                     
                     <p-button 
+                    type="submit"
                     label="Salvar" 
                     severity="success" 
                     (click)="submit()" />
@@ -122,6 +123,6 @@
             </div>
         </div>
 
-    </div>
+    </form>
 
 </div>

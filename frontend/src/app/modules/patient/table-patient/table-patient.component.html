@@ -6,7 +6,7 @@
     dataKey="codigo"
     [globalFilterFields]="[
         'codigo',
-        'condicao_cronica',
+        'condicao_clinica',
         'ativo'
     ]"
     #dt
@@ -41,10 +41,10 @@
                 </div>
             </th>
 
-            <th pSortableColumn="condicao_cronica">
+            <th pSortableColumn="condicao_clinica">
                 <div class="flex items-center gap-2">
-                    Condição crônica
-                    <p-sortIcon field="condicao_cronica" />
+                    Condição clínica
+                    <p-sortIcon field="condicao_clinica" />
                 </div>
             </th>
 
@@ -87,7 +87,7 @@
 
             <td>{{ item.codigo }}</td>
 
-            <td>{{ item.condicao_cronica }}</td>
+            <td>{{ item.condicao_clinica }}</td>
 
             @if(!isMobile()) {
 

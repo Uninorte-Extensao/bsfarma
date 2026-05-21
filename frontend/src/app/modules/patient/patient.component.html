@@ -71,7 +71,7 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
 >
 
 @if(isVisible()) {
-    <div class="my-2 flex flex-column gap-3">
+    <form class="my-2 flex flex-column gap-3" (ngSubmit)="submit()">
         @if(typeDialog() === 'criar' || typeDialog() === 'recuperar') {
             <div class="flex flex-column gap-2">
                 <label for="cpf">CPF</label>
@@ -81,6 +81,7 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
                 placeholder="000.000.000-00"
                 mask="999.999.999-99"
                 [(ngModel)]="cpf"
+                [ngModelOptions]=" {standalone : true }"
                 ></p-inputmask>
             </div>
         }
@@ -98,6 +99,7 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
                 fluid
                 id="condicao"
                 [(ngModel)]="condicaoClinica"
+                [ngModelOptions]="{standalone:true}"
                 >
                 </textarea>
             </div>
@@ -105,9 +107,9 @@ typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
         
         <div class="flex gap-2 justify-content-end">
             <p-button label="Cancelar" severity="danger" (click)="closeModal()"/>
-            <p-button label="Salvar" severity="success" (click)="submit()"/>
+            <p-button label="Salvar" severity="success" type="submit"/>
         </div>
-    </div>
+    </form>
 }
 
 </p-dialog>

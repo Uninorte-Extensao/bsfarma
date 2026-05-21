@@ -8,17 +8,37 @@ import { Permission } from "./permissions.enum";
 
 export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
     atendente: [
-        // 'catalog.view',
+        'catalog.view',
+        'catalog.create',
+        'catalog.update',
+        'catalog.delete',
 
-        // 'batch.view',
+        'batch.view',
+        'batch.create',
+        'batch.update',
+        'batch.delete',
 
         'dispersation.view',
         'dispersation.create',
+        'dispersation.update',
+        'dispersation.delete',
+
+        'alerts.view',
+
+        // 'management.view',
+        // 'management.create',
+        // 'management.update',
+        // 'management.delete',
 
         'patient.view',
         'patient.create',
         'patient.update',
-        'patient.delete'
+        'patient.delete',
+
+        // 'movement.create',
+        // 'movement.delete',
+        // 'movement.update',
+        // 'movement.view'
     ],
 
     farmaceutico: [
