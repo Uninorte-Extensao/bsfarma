@@ -12,7 +12,7 @@ QUERIES IMPLEMENTADAS:
   - alertas_abertos:  contagem por tipo para o dashboard
 """
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import and_, case, func, select, text
@@ -55,7 +55,7 @@ class RelatorioRepository:
             .join(Medicamento, Lote.medicamento_id == Medicamento.id)
             .where(
                 and_(
-                    Movimentacao.tipo == TipoMovimentacao.DISPENSACAO,
+                    Movimentacao.tipo == TipoMovimentacao.SAIDA,
                     Movimentacao.ocorrido_em >= datetime.combine(data_inicio, datetime.min.time()),
                     Movimentacao.ocorrido_em <= datetime.combine(data_fim,    datetime.max.time()),
                 )
@@ -104,9 +104,9 @@ class RelatorioRepository:
                 Medicamento.estoque_minimo,
                 # Coluna calculada: motivo do alerta
                 case(
-                    (Lote.validade <= hoje + text("INTERVAL '7 days'"),  "Vencimento em 7 dias"),
-                    (Lote.validade <= hoje + text("INTERVAL '15 days'"), "Vencimento em 15 dias"),
-                    (Lote.validade <= hoje + text("INTERVAL '30 days'"), "Vencimento em 30 dias"),
+                    (Lote.validade <= hoje + timedelta(days=7),  "Vencimento em 7 dias"),
+                    (Lote.validade <= hoje + timedelta(days=15), "Vencimento em 15 dias"),
+                    (Lote.validade <= hoje + timedelta(days=30), "Vencimento em 30 dias"),
                     (Lote.quantidade_atual <= Medicamento.estoque_minimo, "Estoque abaixo do mínimo"),
                     else_="Estoque crítico (< 10%)",
                 ).label("motivo"),
@@ -116,7 +116,7 @@ class RelatorioRepository:
                 and_(
                     Lote.quantidade_atual > 0,
                     (
-                        (Lote.validade <= hoje + text("INTERVAL '30 days'"))
+                        (Lote.validade <= hoje + timedelta(days=30))
                         | (Lote.quantidade_atual <= Medicamento.estoque_minimo)
                         | (Lote.quantidade_atual <= Lote.quantidade_inicial * 0.10)
                     ),
@@ -207,12 +207,12 @@ class RelatorioRepository:
                 Medicamento.nome_generico,
                 Medicamento.concentracao,
             )
-            .join(Lote,        Movimentacao.lote_id       == Lote.id)
+            .join(Lote, Movimentacao.lote_id == Lote.id)
             .join(Medicamento, Lote.medicamento_id == Medicamento.id)
             .where(
                 and_(
                     Movimentacao.ocorrido_em >= datetime.combine(data_inicio, datetime.min.time()),
-                    Movimentacao.ocorrido_em <= datetime.combine(data_fim,    datetime.max.time()),
+                    Movimentacao.ocorrido_em <= datetime.combine(data_fim, datetime.max.time()),
                 )
             )
         )
@@ -229,7 +229,7 @@ class RelatorioRepository:
         # Dados paginados
         dados_stmt = base.order_by(Movimentacao.ocorrido_em.desc()).limit(limit).offset(offset)
         resultado  = await self.session.execute(dados_stmt)
-        dados      = [dict(r._mapping) for r in resultado]
+        dados = [dict(r._mapping) for r in resultado]
 
         return dados, total
 
@@ -252,9 +252,9 @@ class RelatorioRepository:
         rows = {r.tipo_alerta: r.total for r in resultado}
 
         return {
-            "30_dias":        rows.get(TipoAlerta.ALERTA_30_DIAS, 0),
-            "15_dias":        rows.get(TipoAlerta.ALERTA_15_DIAS, 0),
-            "7_dias":         rows.get(TipoAlerta.ALERTA_7_DIAS, 0),
+            "30_dias": rows.get(TipoAlerta.ALERTA_30_DIAS, 0),
+            "15_dias":  rows.get(TipoAlerta.ALERTA_15_DIAS, 0),
+            "7_dias": rows.get(TipoAlerta.ALERTA_7_DIAS, 0),
             "estoque_critico": rows.get(TipoAlerta.ALERTA_ESTOQUE_CRITICO, 0),
-            "total":          sum(rows.values()),
+            "total": sum(rows.values()),
         }
