@@ -154,11 +154,11 @@ class PacienteService:
             )
         return paciente
 
-    async def listar(self, codigo: str | None = None) -> list[Paciente]:
+    async def listar(self, codigo: str | None = None, apenas_ativos: bool = True) -> list[Paciente]:
         """
         Lista pacientes, opcionalmente filtrando por um paciente específico.
         """
-        return await self.repo.list_all(codigo=codigo)
+        return await self.repo.list_all(codigo=codigo, apenas_ativos=apenas_ativos)
 
     async def atualizar(self, codigo: str, dados: PacienteUpdate) -> Paciente:
         """Atualiza a condição clínica de um paciente existente."""

@@ -40,7 +40,6 @@ class PacienteRepository:
         stmt = select(Paciente).order_by(Paciente.criado_em.desc())
         if codigo:
             stmt = stmt.where(Paciente.codigo == codigo)
-        
         if apenas_ativos:
             stmt = stmt.where(Paciente.ativo == True)
         result = await self.session.execute(stmt)
