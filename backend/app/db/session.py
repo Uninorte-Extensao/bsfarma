@@ -12,6 +12,7 @@ engine = create_async_engine(
     echo=not settings.is_production,  # loga SQL apenas fora de produção
     pool_size=10,
     max_overflow=20,
+    
 )
 
 AsyncSessionLocal = async_sessionmaker(

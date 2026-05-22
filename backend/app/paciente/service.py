@@ -7,7 +7,7 @@ from select import select
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import RecursoNaoEncontrado, RegraDeNegocioViolada
+from app.core.exceptions import RecursoNaoEncontrado, RegraDeNegocioViolada, ErroDeFormulario
 from app.paciente.model import Paciente
 from app.paciente.repository import PacienteRepository
 from app.paciente.schema import PacienteCreate, PacienteUpdate
@@ -84,7 +84,7 @@ class PacienteService:
     def __init__(self, session: AsyncSession) -> None:
         self.repo = PacienteRepository(session)
 
-    async def criar(self, dados: PacienteCreate, cpf: str) -> Paciente:
+    async def criar(self, dados: PacienteCreate) -> Paciente:
         """
         Cadastra um código de paciente para dispensação de medicamentos.
         
@@ -94,15 +94,14 @@ class PacienteService:
             RegraDeNegocioViolada: Se o CPF for inválido.
         """
 
-        if not validar_cpf(cpf):
+        if not validar_cpf(dados.cpf):
             raise RegraDeNegocioViolada("CPF inválido. Verifique os dígitos e tente novamente.")
 
-        codigo = gerar_codigo(cpf)
+        codigo = gerar_codigo(dados.cpf)
 
-        paciente_ja_cadastrado = await self.buscar_por_codigo(codigo)
+        paciente_ja_cadastrado = await self.paciente_ja_existe(codigo)
         if paciente_ja_cadastrado:
-            return paciente_ja_cadastrado
-
+            raise ErroDeFormulario("Paciente já cadastrado no sistema!")
         paciente = Paciente(
             codigo           = codigo,
             condicao_clinica = dados.condicao_clinica,
@@ -111,6 +110,13 @@ class PacienteService:
 
         return await self.repo.create(paciente)
 
+
+    async def paciente_ja_existe(self, codigo: str) -> Paciente:
+        paciente = await self.repo.get_by_codigo(codigo)
+        if paciente:
+            raise ErroDeFormulario("Paciente já cadastrado no sistema!")
+        return paciente
+        
 
     async def buscar_por_codigo(self, codigo: str) -> Paciente:
         """
@@ -121,8 +127,9 @@ class PacienteService:
         """
         paciente = await self.repo.get_by_codigo(codigo)
         if not paciente:
-            raise RecursoNaoEncontrado("Paciente não encontrado.")
+            raise RecursoNaoEncontrado("Paciente", codigo)
         return paciente
+        
     
     async def recuperar_por_cpf(self, cpf: str) -> Paciente:
         """

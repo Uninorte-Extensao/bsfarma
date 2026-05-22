@@ -12,12 +12,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.exceptions import (
+    ErroDeFormulario,
+    ErroInternoServidor,
     EstoqueInsuficiente,
     RecursoNaoEncontrado,
     RegraDeNegocioViolada,
     handler_estoque_insuficiente,
     handler_nao_encontrado,
     handler_regra_violada,
+    handler_bad_request,
+    handler_erro_servidor
 )
 
 from app.usuario.router import router as usuario_router
@@ -43,9 +47,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_exception_handler(RecursoNaoEncontrado, handler_nao_encontrado)
-app.add_exception_handler(EstoqueInsuficiente, handler_estoque_insuficiente)
+app.add_exception_handler(RecursoNaoEncontrado,  handler_nao_encontrado)
+app.add_exception_handler(EstoqueInsuficiente,   handler_estoque_insuficiente)
 app.add_exception_handler(RegraDeNegocioViolada, handler_regra_violada)
+app.add_exception_handler(ErroDeFormulario,      handler_bad_request)
+app.add_exception_handler(ErroInternoServidor,   handler_erro_servidor)
+
 
 app.include_router(usuario_router)
 app.include_router(medicamentos_router)
@@ -55,3 +62,7 @@ app.include_router(paciente_router)
 app.include_router(alertas_router)
 app.include_router(dispensacao_router)
 app.include_router(relatorio_router)
+
+@app.get("/health", tags=["Infra"])
+async def health():
+    return {"status": "ok", "service": "bsfarma-api-v1.0"}
