@@ -164,9 +164,8 @@ class PacienteService:
         """Atualiza a condição clínica de um paciente existente."""
         paciente = await self.buscar_por_codigo(codigo)
         campos = dados.model_dump(exclude_unset=True)
-        for campo, valor in campos.items():
-            setattr(paciente, campo, valor)
-        return await self.repo.atualizar()
+
+        return await self.repo.atualizar(paciente, campos)
 
     async def inativar(self, codigo: str) -> Paciente:
         """Inativa um paciente (soft delete — não apaga o registro)."""
