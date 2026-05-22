@@ -109,6 +109,8 @@ export class PatientComponent implements OnInit {
       cpf: this.cpf.replace(/\D/g, ''),
       condicao_clinica: this.condicaoClinica
     }
+
+    console.log(`faltando cpf`, this.cpf)
     this.patientService.createPaciente(form)
       .then((res: IPaciente) => {
         this.pacientes.update(pacientes => [...pacientes, res])

@@ -5,15 +5,15 @@
 
     <form class="" [formGroup]="form">
 
-        <div class="box-card flex ">
-            <div class="flex gap-4 align-items-center w-4">
+        <div class="box-card grid">
+            <div class="flex gap-4 align-items-center col-12 md:col-4">
                 <span class="pi pi-user box-icon"></span>
                 <div class="flex flex-column">
                     <h3 class="m-0">Identificação do Paciente</h3>
                     <small>Confirme os dados antes de prosseguir</small>
                 </div>
             </div>
-            <div class="flex flex-column gap-2 w-8">
+            <div class="flex flex-column gap-2 col-12 md:col-8">
                 <label for="nome">ID interno do Paciente</label>
                 <p-autocomplete 
                 formControlName="paciente_id" 
