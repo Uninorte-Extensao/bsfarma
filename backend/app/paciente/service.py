@@ -156,7 +156,7 @@ class PacienteService:
 
     async def listar(self, codigo: str | None = None) -> list[Paciente]:
         """
-        Lista movimentações, opcionalmente filtrando por um lote específico.
+        Lista pacientes, opcionalmente filtrando por um paciente específico.
         """
         return await self.repo.list_all(codigo=codigo)
 

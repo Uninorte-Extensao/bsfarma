@@ -36,12 +36,13 @@ class PacienteRepository:
         await self.session.refresh(paciente)
         return paciente
     
-    async def list_all(self, codigo: str | None = None) -> list[Paciente]:
+    async def list_all(self, codigo: str | None = None,  apenas_ativos: bool = True) -> list[Paciente]:
         stmt = select(Paciente).order_by(Paciente.criado_em.desc())
-        
         if codigo:
             stmt = stmt.where(Paciente.codigo == codigo)
-            
+        
+        if apenas_ativos:
+            stmt = stmt.where(Paciente.ativo == True)
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
     

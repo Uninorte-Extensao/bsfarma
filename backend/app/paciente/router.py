@@ -41,7 +41,7 @@ async def listar_pacientes(
     apenas_ativos: bool = True,
 ):
     service = PacienteService(session)
-    return await service.listar()
+    return await service.listar(apenas_ativos=apenas_ativos)
 
 
 @router.get(
