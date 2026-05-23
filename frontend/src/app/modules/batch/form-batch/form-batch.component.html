@@ -3,7 +3,7 @@
         <small class="px-5 text-obs">Registre a entrada de novos medicamentos no estoque.</small>
     </header>
     <aside class="box-card m-4">
-        <form class="m-0 grid" [formGroup]="form">
+        <form class="m-0 grid" [formGroup]="form" (ngSubmit)="submit()">
             @if(!isEdit()) {
                 <div class="col-12 md:col-6">
                     <div class="flex flex-column gap-2">
@@ -90,7 +90,7 @@
                 <p-button 
                 label="Salvar" 
                 severity="success" 
-                (click)="submit()" />
+                type="submit" />
             </div>
     
         </form>

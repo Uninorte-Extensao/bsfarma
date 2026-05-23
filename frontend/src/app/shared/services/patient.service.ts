@@ -15,13 +15,14 @@ export class PatientService {
   }
 
   getPacientes(ativo?: boolean) {
+
     let params = new HttpParams();
 
-    if (ativo) {
-      params = params.set('apenas_ativos', ativo)
+    if (ativo !== undefined) {
+      params = params.set('apenas_ativos', ativo.toString())
     }
 
-    return lastValueFrom(this.http.get<IPaciente[]>(`${environment.apiUrl}/pacientes`))
+    return lastValueFrom(this.http.get<IPaciente[]>(`${environment.apiUrl}/pacientes`, { params }));
   }
 
   getPacienteById(pacienteId: string) {

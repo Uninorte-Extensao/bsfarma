@@ -10,7 +10,20 @@ import { PACIENTE } from '../../../shared/mocks/pacientes.mock';
 import { Button } from "primeng/button";
 import { InputNumber } from "primeng/inputnumber";
 import { Select } from "primeng/select";
+import { inject } from '@angular/core';
+import { ToastService } from '../../../shared/services/toast.service';
+import { LoadingService } from '../../../shared/services/loading.service';
+import { DispersationService } from '../../../shared/services/dispersation.service';
+import { PatientService } from '../../../shared/services/patient.service';
+import { MedicineService } from '../../../shared/services/medicine.service';
+import { LoteService } from '../../../shared/services/batch.service';
 
+
+interface ILoteMedicamento extends IBatch {
+  nome_generico: string
+  concentracao: string
+  via_administracao: string
+}
 @Component({
   selector: 'app-form-dispersation',
   imports: [Button, InputNumber, Select, AutoComplete, ReactiveFormsModule, FormsModule],
@@ -18,17 +31,17 @@ import { Select } from "primeng/select";
   styleUrl: './form-dispersation.component.scss',
 })
 export class FormDispersationComponent {
-  public listPatient = signal<IPaciente[]>(PACIENTE);
+  public listPatient = signal<IPaciente[]>([]);
   public filteredPatient = signal<IPaciente[]>([]);
   protected form: FormGroup;
   public patientSelected = signal<IPaciente | null>(null);
-  public listLote = signal<IBatch[]>(LOTE);
-  public listMedicine = signal<IMedicine[]>(MEDICAMENTOS);
+  public listLote = signal<IBatch[]>([]);
+  public listMedicine = signal<IMedicine[]>([]);
 
   protected batchSelected = signal<any[]>([]);
   value = 0
 
-  public loteComputed = computed(() => {
+  public loteComputed = computed<ILoteMedicamento[]>(() => {
 
     return this.listLote().map((lote) => {
 
@@ -38,9 +51,9 @@ export class FormDispersationComponent {
 
       return {
         ...lote,
-        nomeGenerico: medicamento?.nome_generico ?? '',
+        nome_generico: medicamento?.nome_generico ?? '',
         concentracao: medicamento?.concentracao ?? '',
-        viaAdministracao: medicamento?.via_administracao ?? '',
+        via_administracao: medicamento?.via_administracao ?? '',
       };
 
     });
@@ -57,6 +70,16 @@ export class FormDispersationComponent {
 
   });
 
+  private toast = inject(ToastService);
+
+  private loading = inject(LoadingService);
+
+  private dispersationService = inject(DispersationService);
+  private pacienteService = inject(PatientService)
+  private medicamentoService = inject(MedicineService)
+  private loteService = inject(LoteService)
+  protected selectedLote!: ILoteMedicamento
+
   constructor() {
     const fb = new FormBuilder()
 
@@ -65,6 +88,12 @@ export class FormDispersationComponent {
     })
 
     this.onChangeValue()
+  }
+
+  ngOnInit() {
+    this.getAllPacientes()
+    this.getAllLotes()
+    this.getAllMedicamentos()
   }
 
 
@@ -83,18 +112,24 @@ export class FormDispersationComponent {
   }
 
   onChangeValue() {
-    let patientId = ''
-    this.form.valueChanges.subscribe(value => {
-      patientId = value.paciente_id
-    })
 
-    let patient = this.listPatient().find(item => item.codigo === patientId)
-    if (patient) {
-      this.patientSelected.set(patient)
-    }
+    this.form.get('paciente_id')
+      ?.valueChanges
+      .subscribe((patientId) => {
+
+        const patient = this.listPatient().find(
+          item => item.codigo === patientId
+        );
+
+        this.patientSelected.set(
+          patient ?? null
+        );
+      });
   }
 
-  addLote(item: any) {
+  addLote(item: ILoteMedicamento) {
+
+    console.log('add lote', item)
     this.batchSelected.update((items) => [
       ...items,
       {
@@ -104,13 +139,99 @@ export class FormDispersationComponent {
     ]);
   }
 
-  clear() { }
+  clear() {
 
-  submit() { }
+    this.form.reset();
+
+    this.batchSelected.set([]);
+
+    this.patientSelected.set(null);
+  }
+
+  submit() {
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    if (!this.batchSelected().length) {
+      return;
+    }
+
+    const pacienteId = this.form.get('paciente_id')?.value;
+
+    const payloads = this.batchSelected().map((item) => {
+
+      const payload = {
+        paciente_id: pacienteId,
+        lote_id: item.id,
+        quantidade: item.quantidade
+      };
+
+      return this.dispersationService
+        .createDispensacao(payload);
+    });
+
+    this.loading.show();
+
+    Promise.all(payloads)
+      .then(() => {
+
+        this.toast.showToastSuccess(
+          'Atendimento registrado com sucesso.'
+        );
+
+        this.clear();
+      })
+      .catch(() => {
+
+        this.toast.showToastError(
+          'Erro ao registrar atendimento.'
+        );
+
+      })
+      .finally(() => {
+        this.loading.hide();
+      });
+  }
 
   removeLote(index: number) {
     this.batchSelected.update((items) =>
       items.filter((_, i) => i !== index)
     );
+  }
+
+  getAllPacientes() {
+    this.loading.show()
+    this.pacienteService.getPacientes(true)
+      .then((res: IPaciente[]) => {
+        this.listPatient.set(res)
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
+  }
+
+  getAllLotes() {
+    this.loading.show()
+    this.loteService.getLotes()
+      .then((res: IBatch[]) => {
+        this.listLote.set(res)
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
+  }
+
+  getAllMedicamentos() {
+    this.loading.show()
+    this.medicamentoService.getMedicamentos()
+      .then((res: IMedicine[]) => {
+        this.listMedicine.set(res)
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
   }
 }

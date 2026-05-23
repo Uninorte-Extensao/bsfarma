@@ -71,21 +71,23 @@
     justify-content: center;
     padding-top: 20px;
     flex-direction: column;
-
+    
     span {
         font-size: 18px;
         font-weight: 600;
         text-align: center;
     }
-
+    
     img {
         width: 35px;
         height: 35px;
+        filter: brightness(0) invert(1);
     }
-
+    
     .logo-tipo {
         font-weight: 800;
-        color: #112D55;
+        color: #fff;
+        // color: #112D55;
         font-size: 1.2rem;
     }
 }

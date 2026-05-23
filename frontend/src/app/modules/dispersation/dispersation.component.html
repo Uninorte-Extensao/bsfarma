@@ -1,20 +1,31 @@
 <section>
-    <small class="text-obs pl-5">Histórico de dispersação de medicamentos na unidade.</small>
+
+    <small class="text-obs pl-5">
+        Histórico de dispersação de medicamentos na unidade.
+    </small>
 
     <aside class="px-5 pt-3">
+
         <p-table 
             [value]="dispensacoesComputed()"
             [paginator]="true"
             [rows]="8"
             [rowsPerPageOptions]="[8, 16, 32]"
-            dataKey="codigo"
-            [globalFilterFields]="['codigo', 'condicao_clinica', 'ativo']"
+            dataKey="id"
+            [globalFilterFields]="[
+                'id',
+                'paciente_id',
+                'medicamento',
+            ]"
             #dt
         >
 
             <ng-template #caption>
+
                 <div class="flex mb-3 justify-content-between">
+
                     <p-iconfield>
+
                         <p-inputicon>
                             <i class="pi pi-search"></i>
                         </p-inputicon>
@@ -23,53 +34,56 @@
                             pInputText 
                             type="text" 
                             (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
-                            placeholder="Buscar paciente" 
+                            placeholder="Buscar dispensação" 
                         />
+
                     </p-iconfield>
 
-                    <p-button label="Novo Atendimento" icon="pi pi-plus" (click)="goToAdd()"/>
+                    <p-button
+                        label="Novo Atendimento"
+                        icon="pi pi-plus"
+                        (click)="goToAdd()"
+                    />
+
                 </div>
+
             </ng-template>
 
             <ng-template #header>
+
                 <tr>
 
-                    <th pSortableColumn="codigo">
+                    <th pSortableColumn="paciente_id">
                         <div class="flex items-center gap-2">
-                            Código
-                            <p-sortIcon field="codigo" />
+                            Paciente
+                            <p-sortIcon field="paciente_id" />
                         </div>
                     </th>
 
-                    <th pSortableColumn="condicao_clinica">
+                    <th pSortableColumn="medicamento">
                         <div class="flex items-center gap-2">
-                            Condição clínica
-                            <p-sortIcon field="condicao_clinica" />
+                            Medicamento
+                            <p-sortIcon field="medicamento" />
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="quantidade">
+                        <div class="flex items-center gap-2">
+                            Quantidade
+                            <p-sortIcon field="quantidade" />
                         </div>
                     </th>
 
                     @if(!isMobile()) {
-                        <th pSortableColumn="criado_em">
+
+                        <th pSortableColumn="dispensado_em">
                             <div class="flex items-center gap-2">
-                                Criado em
-                                <p-sortIcon field="criado_em" />
+                                Dispensado em
+                                <p-sortIcon field="dispensado_em" />
                             </div>
                         </th>
 
-                        <th pSortableColumn="atualizado_em">
-                            <div class="flex items-center gap-2">
-                                Atualizado em
-                                <p-sortIcon field="atualizado_em" />
-                            </div>
-                        </th>
                     }
-
-                    <th pSortableColumn="ativo">
-                        <div class="flex items-center gap-2">
-                            Status
-                            <p-sortIcon field="ativo" />
-                        </div>
-                    </th>
 
                     <th>
                         <div class="flex items-center gap-2">
@@ -78,41 +92,38 @@
                     </th>
 
                 </tr>
+
             </ng-template>
 
             <ng-template #body let-item>
+
                 <tr>
 
                     <td>
-                        {{ item.codigo }}
+                        {{ item.paciente_id }}
                     </td>
 
                     <td>
-                        {{ item.condicao_clinica }}
+                        {{ item.medicamento }}
+                    </td>
+
+                    <td>
+                        {{ item.quantidade }}
                     </td>
 
                     @if(!isMobile()) {
-                        <td>
-                            {{ item.criado_em | date:'dd/MM/yyyy HH:mm' }}
-                        </td>
 
                         <td>
-                            {{ item.atualizado_em | date:'dd/MM/yyyy HH:mm' }}
+                            {{
+                                item.dispensado_em
+                                | date:'dd/MM/yyyy HH:mm'
+                            }}
                         </td>
+
                     }
 
                     <td>
-                        <span 
-                            class="px-2 py-1 border-round text-sm font-semibold"
-                            [class]="item.ativo
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-red-100 text-red-700'"
-                        >
-                            {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                        </span>
-                    </td>
 
-                    <td>
                         <div class="flex gap-1">
 
                             <p-button
@@ -132,11 +143,15 @@
                             />
 
                         </div>
+
                     </td>
 
                 </tr>
+
             </ng-template>
 
         </p-table>
+
     </aside>
+
 </section>

@@ -3,7 +3,7 @@
         <small class="px-5 text-obs">Registro dispersação de medicamentos para pacientes cadastrados.</small>
     </header>
 
-    <form class="" [formGroup]="form">
+    <form class="" [formGroup]="form" (ngSubmit)="submit()">
 
         <div class="box-card grid">
             <div class="flex gap-4 align-items-center col-12 md:col-4">
@@ -19,8 +19,8 @@
                 formControlName="paciente_id" 
                 [suggestions]="filteredPatient()" 
                 (completeMethod)="filterPatient($event)" 
-                optionLabel="id_interno"
-                optionValue="id" 
+                optionLabel="codigo"
+                optionValue="codigo" 
                 fluid
                 placeholder="Ex: PAC-001"
                 />
@@ -40,24 +40,25 @@
                         <p-select
                         id="medicine"
                         [options]="availableLotes()"
-                        optionLabel="nomeGenerico"
-                        optionValue="id"
+                        optionLabel="nome_generico"
                         fluid
-                        #select
                         placeholder="Ex: Dipirona"
                         filter
+                        #select
+                        [(ngModel)]="selectedLote"
+                        [ngModelOptions]="{standalone : true}"
                         >
                         <ng-template let-item #item>
-                            {{ item.nomeGenerico }} - {{ item.concentracao }}
+                            {{ item.nome_generico }} - {{ item.concentracao }}
                         </ng-template>
     
                         <ng-template let-item #selectedItem>
-                            {{ item.nomeGenerico }} - {{ item.concentracao }}
+                            {{ item.nome_generico }} - {{ item.concentracao }}
                         </ng-template>
                         </p-select>
                     </div>
         
-                    <p-button label="Adicionar" (click)="addLote(select.value)"/>
+                    <p-button label="Adicionar" (click)="addLote(selectedLote)"/>
                 </div>
     
                 <div class="container">
@@ -67,10 +68,10 @@
                                 <div class="flex justify-content-between">
                                     <div class="flex flex-column gap-1">
                                         <span>
-                                            {{item.nomeGenerico}}
+                                            {{item.nome_generico}}
                                         </span>
                                         <small>
-                                            {{item.concentracao}} - {{item.viaAdministracao}}  {{item.numero_lote}}
+                                            {{item.concentracao}} - {{item.via_administracao}}  {{item.numero_lote}}
                                         </small>
                                     </div>
         
@@ -116,9 +117,9 @@
                     
                     <p-button 
                     type="submit"
-                    label="Salvar" 
+                    label="Confirmar Atendimento" 
                     severity="success" 
-                    (click)="submit()" />
+                    type="submit" />
                 </div>
             </div>
         </div>

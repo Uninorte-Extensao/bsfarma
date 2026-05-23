@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { TableModule } from "primeng/table";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
@@ -15,6 +15,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { IDispensacao } from '../../shared/models/IDispersation';
 import { MovementService } from '../../shared/services/movement.service';
 import { IMovimentacao } from '../../shared/models/IMovement';
+import { LoteService } from '../../shared/services/batch.service';
 @Component({
   selector: 'app-dispersation',
   imports: [
@@ -28,7 +29,7 @@ import { IMovimentacao } from '../../shared/models/IMovement';
   templateUrl: './dispersation.component.html',
   styleUrl: './dispersation.component.scss',
 })
-export class DispersationComponent {
+export class DispersationComponent implements OnInit {
   protected listPacientes = signal<IPaciente[]>(PACIENTE)
   protected isMobile = inject(IS_MOBILE)
   private router = inject(Router)
@@ -37,20 +38,32 @@ export class DispersationComponent {
   private service = inject(DispersationService)
   private toast = inject(ToastService)
   private movimentacaoService = inject(MovementService)
+  private loteService = inject(LoteService)
 
   protected dispensacoes = signal<IDispensacao[]>([])
-  protected dispensacoesComputed = computed<IDispensacao[]>(() => {
+  protected dispensacoesComputed = computed(() => {
+
     return this.dispensacoes().map((dispensacao) => {
-      const movimentacoes = this.movimentacoes().find(
-        (item) => item.id === dispensacao.movimentacao_id
+
+      const movimentacao = this.movimentacoes().find(
+        item => item.id === dispensacao.movimentacao_id
       );
 
       return {
         ...dispensacao,
-        
-      }
-    })
-  })
+
+        medicamento:
+          movimentacao?.lote_id,
+
+        quantidade:
+          movimentacao?.quantidade,
+
+        tipo_movimentacao:
+          movimentacao?.tipo
+      };
+    });
+
+  });
   protected movimentacoes = signal<IMovimentacao[]>([])
 
   deleteItem(_t48: any) {
@@ -64,7 +77,7 @@ export class DispersationComponent {
   goToAdd() {
     this.router.navigate(['/dispersation/create'])
   }
-  
+
   ngOnInit() {
     this.getDispensacoes()
     this.getMovimentacoes()
@@ -73,26 +86,26 @@ export class DispersationComponent {
   private getDispensacoes(pacienteId?: string) {
     this.loading.show()
     this.service.getAllDispersacoes(pacienteId)
-    .then((res: IDispensacao[]) => {
-      this.dispensacoes.set(res)
-    })
-    .catch(() => {
-      this.toast.showToastError('Erro ao buscar dispensações')
-    })
-    .finally(() => {
-      this.loading.hide()
-    })
+      .then((res: IDispensacao[]) => {
+        this.dispensacoes.set(res)
+      })
+      .catch(() => {
+        this.toast.showToastError('Erro ao buscar dispensações')
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
   }
 
   private getMovimentacoes() {
     this.loading.show()
     this.movimentacaoService.getMovimentacao()
-    .then((res: IMovimentacao[]) => {
-      this.movimentacoes.set(res)
-    })
-    .finally(() => {
-      this.loading.hide()
-    })
+      .then((res: IMovimentacao[]) => {
+        this.movimentacoes.set(res)
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
   }
 
 }
