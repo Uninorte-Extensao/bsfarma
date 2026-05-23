@@ -1,7 +1,9 @@
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
-export function buildMenuItems(authService: AuthService): MenuItem[] {
+export function buildMenuItems(authService: AuthService, quantidadeAlertas: number): MenuItem[] {
+    // const qtd = 
     return [
         {
             label: 'Catálogo',
@@ -53,7 +55,9 @@ export function buildMenuItems(authService: AuthService): MenuItem[] {
                     icon: 'pi pi-bell',
                     routerLink: '/alerts',
                     visible: authService.hasPermission('alerts.view'),
-                    badge: '3'
+                    badge: quantidadeAlertas > 0
+                        ? String(quantidadeAlertas)
+                        : undefined
                 }
             ]
         },

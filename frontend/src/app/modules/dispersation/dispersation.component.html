@@ -15,7 +15,7 @@
             [globalFilterFields]="[
                 'id',
                 'paciente_id',
-                'medicamento',
+                'lote',
             ]"
             #dt
         >
@@ -62,7 +62,7 @@
 
                     <th pSortableColumn="medicamento">
                         <div class="flex items-center gap-2">
-                            Medicamento
+                            Número do Lote
                             <p-sortIcon field="medicamento" />
                         </div>
                     </th>
@@ -74,8 +74,6 @@
                         </div>
                     </th>
 
-                    @if(!isMobile()) {
-
                         <th pSortableColumn="dispensado_em">
                             <div class="flex items-center gap-2">
                                 Dispensado em
@@ -83,13 +81,6 @@
                             </div>
                         </th>
 
-                    }
-
-                    <th>
-                        <div class="flex items-center gap-2">
-                            Ação
-                        </div>
-                    </th>
 
                 </tr>
 
@@ -104,14 +95,13 @@
                     </td>
 
                     <td>
-                        {{ item.medicamento }}
+                        {{ item.numero_lote }}
                     </td>
 
                     <td>
                         {{ item.quantidade }}
                     </td>
 
-                    @if(!isMobile()) {
 
                         <td>
                             {{
@@ -119,32 +109,7 @@
                                 | date:'dd/MM/yyyy HH:mm'
                             }}
                         </td>
-
-                    }
-
-                    <td>
-
-                        <div class="flex gap-1">
-
-                            <p-button
-                                icon="pi pi-pencil"
-                                rounded
-                                text
-                                severity="warn"
-                                (click)="goToEdit(item)"
-                            />
-
-                            <p-button
-                                icon="pi pi-trash"
-                                rounded
-                                text
-                                severity="danger"
-                                (click)="deleteItem(item)"
-                            />
-
-                        </div>
-
-                    </td>
+                    
 
                 </tr>
 

@@ -16,6 +16,7 @@ import { IDispensacao } from '../../shared/models/IDispersation';
 import { MovementService } from '../../shared/services/movement.service';
 import { IMovimentacao } from '../../shared/models/IMovement';
 import { LoteService } from '../../shared/services/batch.service';
+import { IBatch } from '../../shared/models/IBatch';
 @Component({
   selector: 'app-dispersation',
   imports: [
@@ -30,7 +31,6 @@ import { LoteService } from '../../shared/services/batch.service';
   styleUrl: './dispersation.component.scss',
 })
 export class DispersationComponent implements OnInit {
-  protected listPacientes = signal<IPaciente[]>(PACIENTE)
   protected isMobile = inject(IS_MOBILE)
   private router = inject(Router)
 
@@ -40,39 +40,30 @@ export class DispersationComponent implements OnInit {
   private movimentacaoService = inject(MovementService)
   private loteService = inject(LoteService)
 
+  protected lotes = signal<IBatch[]>([])
   protected dispensacoes = signal<IDispensacao[]>([])
   protected dispensacoesComputed = computed(() => {
-
     return this.dispensacoes().map((dispensacao) => {
 
       const movimentacao = this.movimentacoes().find(
         item => item.id === dispensacao.movimentacao_id
       );
 
+      const lote = this.lotes().find(
+        item => item.id === movimentacao?.lote_id
+      );
+
       return {
         ...dispensacao,
 
-        medicamento:
-          movimentacao?.lote_id,
+        numero_lote: lote?.numero_lote,
 
-        quantidade:
-          movimentacao?.quantidade,
+        quantidade: movimentacao?.quantidade,
 
-        tipo_movimentacao:
-          movimentacao?.tipo
       };
     });
-
   });
   protected movimentacoes = signal<IMovimentacao[]>([])
-
-  deleteItem(_t48: any) {
-    throw new Error('Method not implemented.');
-  }
-
-  goToEdit(_t48: any) {
-    throw new Error('Method not implemented.');
-  }
 
   goToAdd() {
     this.router.navigate(['/dispersation/create'])
@@ -81,6 +72,7 @@ export class DispersationComponent implements OnInit {
   ngOnInit() {
     this.getDispensacoes()
     this.getMovimentacoes()
+    this.getLotes()
   }
 
   private getDispensacoes(pacienteId?: string) {
@@ -102,6 +94,17 @@ export class DispersationComponent implements OnInit {
     this.movimentacaoService.getMovimentacao()
       .then((res: IMovimentacao[]) => {
         this.movimentacoes.set(res)
+      })
+      .finally(() => {
+        this.loading.hide()
+      })
+  }
+
+  private getLotes() {
+    this.loading.show()
+    this.loteService.getLotes()
+      .then((res: IBatch[]) => {
+        this.lotes.set(res)
       })
       .finally(() => {
         this.loading.hide()

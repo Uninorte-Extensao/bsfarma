@@ -1,47 +1,69 @@
 <section>
     <header>
         <small class="px-5 text-obs">Lista de Lotes</small>
+        <!-- <button (click)="verificarAgora()">Verificar agora</button> -->
     </header>
 
     <aside class="px-5 pt-3">
         <div class="grid">
             @for(item of cards(); track $index) {
-                <app-card-view
-                class="col-12 md:col-4"
-                    [title]="item.title"
-                    [value]="item.value"
-                    [subtitle]="item.subtitle"
-                    [icon]="item.icon"
-                    [variant]="item.variant"
-                />
+            <app-card-view class="col-12 md:col-4" [title]="item.title" [value]="item.value" [subtitle]="item.subtitle"
+                [icon]="item.icon" [variant]="item.variant" />
             }
         </div>
 
         <div>
-            <p-tabs value="0">
+            <p-tabs [value]="selectedTab()" (valueChange)="changeTab($event)">
+
                 <p-tablist>
                     <p-tab value="0">Abertos</p-tab>
                     <p-tab value="1">Resolvidos</p-tab>
                     <p-tab value="2">Todos</p-tab>
                 </p-tablist>
+
                 <p-tabpanels>
+
                     <p-tabpanel value="0">
+
                         <div class="container-alert">
-                            @for(item of listAlerts(); track $index) {
-                                <app-table-alerts [item]="item"/>
+
+                            @for(item of listAlerts(); track item.id) {
+                            <app-table-alerts [item]="item" (reload)="reloadCurrentTab()" />
                             }
+
                         </div>
+
                     </p-tabpanel>
+
                     <p-tabpanel value="1">
 
-                    </p-tabpanel>
-                    <p-tabpanel value="2">
+                        <div class="container-alert">
+
+                            @for(item of listAlerts(); track item.id) {
+                            <app-table-alerts [item]="item" />
+                            }
+
+                        </div>
 
                     </p-tabpanel>
+
+                    <p-tabpanel value="2">
+
+                        <div class="container-alert">
+
+                            @for(item of listAlerts(); track item.id) {
+                            <app-table-alerts [item]="item" (reload)="reloadCurrentTab()" />
+                            }
+
+                        </div>
+
+                    </p-tabpanel>
+
                 </p-tabpanels>
+
             </p-tabs>
         </div>
 
-        
+
     </aside>
 </section>

@@ -7,17 +7,28 @@
     align-items: center;
 }
 
-
 .container.border-red {
-    border-color: var(--primary-red);
+    border-color: #ef4444;
 }
 
 .container.border-yellow {
-    border-color: var(--primary-yellow);
+    border: var(--border-yellow);
 }
 
 .container.border-green {
-    border-color: var(--primary-green);
+    border-color: #22c55e;
+}
+
+.container.border-blue {
+    border: var(--border-blue);
+}
+
+.container.border-orange {
+    border-color: #f97316;
+}
+
+.container.border-gray {
+    border-color: #9ca3af;
 }
 
 
@@ -35,26 +46,50 @@
 }
 
 .box-icon.box-red {
-    background: var(--color-red);
+    background: #fee2e2;
 
     i {
-        color: var(--primary-red);
+        color: #ef4444;
     }
 }
 
 .box-icon.box-yellow {
-    background: var(--color-yellow);
+    background: #fef9c3;
 
     i {
-        color: var(--primary-yellow);
+        color: #eab308;
     }
 }
 
 .box-icon.box-green {
-    background: var(--color-green);
+    background: #dcfce7;
 
     i {
-        color: var(--primary-green);
+        color: #22c55e;
+    }
+}
+
+.box-icon.box-blue {
+    background: var(--color-blue);
+
+    i {
+        color: var(--text-color-blue);
+    }
+}
+
+.box-icon.box-orange {
+    background: #ffedd5;
+
+    i {
+        color: #f97316;
+    }
+}
+
+.box-icon.box-gray {
+    background: #f3f4f6;
+
+    i {
+        color: #6b7280;
     }
 }
 
@@ -67,16 +102,31 @@
 }
 
 .tag-red {
-    background: var(--color-red);
-    color: var(--primary-red);
-}
-
-.tag-green {
-    background: var(--color-green);
-    color: var(--primary-green);
+    background: #fee2e2;
+    color: #b91c1c;
 }
 
 .tag-yellow {
-    background: var(--color-yellow);
-    color: var(--primary-yellow);
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.tag-green {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.tag-blue {
+    background: #dbeafe;
+    color: var(--text-color-blue);
+}
+
+.tag-orange {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.tag-gray {
+    background: #f3f4f6;
+    color: #4b5563;
 }

@@ -16,6 +16,7 @@ import { ICreateMovimentacao, IMovimentacao, ITypeMovimentacao, IUpdateMovimenta
 import { IUser } from '../../../shared/models/IUser';
 import { IMedicine } from '../../../shared/models/IMedicine';
 import { Textarea} from 'primeng/textarea'
+import { AlertService } from '../../../shared/services/alert.service';
 @Component({
   selector: 'app-form-movement',
   imports: [
@@ -53,6 +54,7 @@ export class FormMovementComponent implements OnInit {
   private auth = inject(AuthService)
   private service = inject(MovementService)
   private medicamentoService = inject(MedicineService)
+  private alertService = inject(AlertService)
 
   protected isEdit = signal<boolean>(false)
   private movimentacaoId = signal<string | null>(null)
@@ -165,7 +167,12 @@ export class FormMovementComponent implements OnInit {
     this.loading.show()
 
     this.service.createMovimentacao(lote)
-      .then(() => {
+      .then(async () => {
+
+        await this.alertService.verificarAlertas();
+
+        this.alertService.atualizarQuantidadeAlertas();
+
         this.toast.showToastSuccess('Lote criado com sucesso.')
         this.router.navigate(['/movement'])
       })

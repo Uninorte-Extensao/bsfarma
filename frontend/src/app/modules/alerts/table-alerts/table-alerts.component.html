@@ -1,38 +1,111 @@
 <div
     class="container mb-3"
-    [class.border-red]="alert().tipo === 'Vencimento'"
-    [class.border-yellow]="alert().tipo !== 'Vencimento'"
+    [class]="getBorderClass()"
 >
+
     <div class="flex gap-3">
-        @if(alert().tipo === 'Vencimento') {
-        <div class="box-icon box-red">
-            <i class="pi pi-calendar"></i>
+
+        <div
+            class="box-icon"
+            [class]="getIconClass()"
+        >
+            <i
+            [class]="
+                isEstoqueCritico()
+                ? 'pi pi-exclamation-triangle'
+                : 'pi pi-calendar'
+            "
+            ></i>
         </div>
-        } @else {
-        <div class="box-icon box-yellow">
-            <i class="pi pi-home"></i>
-        </div>
-        }
 
         <div class="flex flex-column gap-1">
+
             <div class="flex flex-column md:flex-row w-full gap-4 flex-wrap">
-                @if(alert().tipo === 'Vencimento') {
-                <h4 class="m-0">Lote vence em {{alert().dias_vencimento}} dias - {{alert().nome_medicamento}}</h4>
-                <small>Lote {{alert().nome_lote}} - Validade: {{alert().validade | date : 'dd/MM/yyyy'}}</small>
+
+                @if(!isEstoqueCritico()) {
+
+                    <h4 class="m-0">
+                        Lote vence em
+                        {{ diasVencimento() }}
+                        dias -
+                        {{ item().medicamento.nome_generico }}
+                    </h4>
+
+                    <small>
+                        Lote {{ item().lote.numero_lote }}
+                        -
+                        Validade:
+                        {{ item().lote.validade | date:'dd/MM/yyyy' }}
+                    </small>
+
                 } @else {
-                <h4 class="m-0">Estoque abaixo do mínimo - {{alert().nome_medicamento}}</h4>
-                <small>Estoque atual {{alert().estoque_atual}} - Mínimo: {{alert().estoque_minimo}}</small>
+
+                    <h4 class="m-0">
+                        Estoque abaixo do mínimo -
+                        {{ item().medicamento.nome_generico }}
+                    </h4>
+
+                    <small>
+                        Estoque atual:
+                        {{ item().lote.quantidade_atual }}
+                        -
+                        Mínimo:
+                        {{ item().medicamento.estoque_minimo }}
+                    </small>
+
                 }
+
             </div>
+
             <div class="flex gap-3">
-                <small class="tag" [class]="getTag(alert().tipo)">{{alert().tipo}}</small>
-                <small class="tag" [class]="getTag(alert().status)">{{alert().status}}</small>
+
+                <small
+                    class="tag"
+                    [class]="getTag(item().tipo_alerta)"
+                >
+                    {{ item().tipo_alerta }}
+                </small>
+
+                <small
+                    class="tag"
+                    [class]="getTag(item().status_alerta)"
+                >
+                    {{ item().status_alerta }}
+                </small>
+
             </div>
+
         </div>
+
     </div>
 
     <div class="flex flex-column gap-1">
-        <small>Gerado: {{alert().gerado_em | date: 'dd/MM/yyyy'}}</small>
-        <p-button label="Marcar resolvido" size="small"/>
+
+        <small>
+            Gerado:
+            {{ item().gerado_em | date:'dd/MM/yyyy HH:mm' }}
+        </small>
+
+        @if(
+            item().status_alerta !== 'Resolvido' &&
+            item().status_alerta !== 'Expirado'
+        ) {
+
+        <p-button
+            icon="pi pi-angle-down"
+            label="Ações"
+            iconPos="right"
+            (click)="menu.toggle($event)"
+        />
+
+        <p-menu
+            #menu
+            [popup]="true"
+            [model]="getStatusMenuItems()"
+        />
+
+        }
+
     </div>
+
 </div>

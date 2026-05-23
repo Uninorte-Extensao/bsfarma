@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { TitleCasePipe, UpperCasePipe, NgClass } from '@angular/common';
 import { getInitials } from '../../utils/initialsName';
 import { buildMenuItems, buildProfileMenu } from './menu.config';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-menu',
@@ -23,28 +24,42 @@ import { buildMenuItems, buildProfileMenu } from './menu.config';
 })
 export class MenuComponent implements OnInit {
   private authService = inject(AuthService)
-  protected items: MenuItem[] = [];
+  // protected items: MenuItem[] = [];
   protected isCollapsed = false;
   protected itemsProfile: MenuItem[] = []
   readonly user = this.authService.user;
+  private alertService = inject(AlertService)
+
+  items = computed(() => {
+
+    const menu = buildMenuItems(
+      this.authService,
+      this.alertService.quantidadeAlertas()
+    );
+
+    return menu
+      .map(group => ({
+        ...group,
+        items: group.items?.filter(
+          item => item.visible !== false
+        )
+      }))
+      .filter(
+        group => group.items && group.items.length > 0
+      );
+
+  });
 
   ngOnInit() {
     const stored = localStorage.getItem('isCollapsed');
     this.isCollapsed = stored === 'true';
 
-    this.items = buildMenuItems(this.authService);
+    this.alertService.atualizarQuantidadeAlertas();
 
-    this.itemsProfile = buildProfileMenu(() => this.logout());
-
-    this.items = this.items
-      .map(group => ({
-        ...group,
-        items: group.items?.filter(item => item.visible !== false)
-      }))
-      .filter(group => group.items && group.items.length > 0);
-
+    this.itemsProfile = buildProfileMenu(
+      () => this.logout()
+    );
   }
-
   protected toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
     localStorage.setItem('isCollapsed', String(this.isCollapsed));

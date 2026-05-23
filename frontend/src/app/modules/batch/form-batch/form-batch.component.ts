@@ -15,6 +15,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { IUser } from '../../../shared/models/IUser';
 import { MedicineService } from '../../../shared/services/medicine.service';
+import { AlertService } from '../../../shared/services/alert.service';
 
 type ITypeDialog = 'create' | 'update'
 
@@ -44,6 +45,7 @@ export class FormBatchComponent implements OnInit {
   private toast = inject(ToastService)
   private auth = inject(AuthService)
   private medicamentoService = inject(MedicineService)
+  private alertService = inject(AlertService)
 
   protected isEdit = signal<boolean>(false)
   private loteId = signal<string | null>(null)
@@ -127,19 +129,35 @@ export class FormBatchComponent implements OnInit {
   }
 
   private create(lote: ICreateLote) {
-    this.loading.show()
+
+    this.loading.show();
 
     this.service.createLote(lote)
-      .then(() => {
-        this.toast.showToastSuccess('Lote criado com sucesso.')
-        this.router.navigate(['/batch'])
+      .then(async () => {
+
+        await this.alertService.verificarAlertas();
+
+        this.alertService.atualizarQuantidadeAlertas();
+
+        this.toast.showToastSuccess(
+          'Lote criado com sucesso.'
+        );
+
+        this.router.navigate(['/batch']);
+
       })
       .catch(() => {
-        this.toast.showToastError('Erro ao criar lote.')
+
+        this.toast.showToastError(
+          'Erro ao criar lote.'
+        );
+
       })
       .finally(() => {
-        this.loading.hide()
-      })
+
+        this.loading.hide();
+
+      });
   }
 
   private update(lote: IUpdateLote) {
