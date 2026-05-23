@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
@@ -29,6 +29,9 @@ export class MenuComponent implements OnInit {
   protected itemsProfile: MenuItem[] = []
   readonly user = this.authService.user;
   private alertService = inject(AlertService)
+  protected qtd = computed(() => {
+    return this.alertService.quantidadeAlertas()
+  })
 
   items = computed(() => {
 
