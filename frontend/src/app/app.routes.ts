@@ -26,6 +26,16 @@ export const routes: Routes = [
                 pathMatch: 'full'
             },
             {
+                path: 'report',
+                data: {
+                    breadcrumb: 'Painel de Controle',
+                    permission: 'report.view'
+                },
+                loadComponent: () =>
+                    import('./modules/report/report.component')
+                        .then(r => r.ReportComponent)
+            },
+            {
 
                 path: 'catalog',
                 data: {
@@ -38,10 +48,10 @@ export const routes: Routes = [
             },
             {
                 path: 'catalog/create',
-                data: { 
+                data: {
                     breadcrumb: 'Cadastro de medicamento',
                     permission: 'catalog.create'
-                 },
+                },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -49,10 +59,10 @@ export const routes: Routes = [
 
             {
                 path: 'catalog/edit/:id',
-                data: { 
+                data: {
                     breadcrumb: 'Edição de medicamento',
                     permission: 'catalog.update'
-                 },
+                },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component')
                         .then(r => r.FormMedicineComponent)
@@ -62,10 +72,10 @@ export const routes: Routes = [
 
             {
                 path: 'batch',
-                data: { 
+                data: {
                     breadcrumb: 'Lote',
                     permission: 'batch.view'
-                 },
+                },
                 loadComponent: () =>
                     import('./modules/batch/batch.component')
                         .then(r => r.BatchComponent)
@@ -73,10 +83,10 @@ export const routes: Routes = [
 
             {
                 path: 'batch/create',
-                data: { 
+                data: {
                     breadcrumb: 'Entrada de Lote',
                     permission: 'batch.create'
-                 },
+                },
                 loadComponent: () =>
                     import('./modules/batch/form-batch/form-batch.component')
                         .then(r => r.FormBatchComponent)
@@ -85,7 +95,7 @@ export const routes: Routes = [
 
             {
                 path: 'batch/edit/:id',
-                data: { 
+                data: {
                     breadcrumb: 'Edição de Lote',
                     permission: 'batch.update'
                 },
@@ -99,7 +109,7 @@ export const routes: Routes = [
 
             {
                 path: 'movement',
-                data: { 
+                data: {
                     breadcrumb: 'Movimentação de Lote',
                     permission: 'movement.view'
                 },
@@ -111,17 +121,17 @@ export const routes: Routes = [
 
             {
                 path: 'movement/create',
-                data: { 
+                data: {
                     breadcrumb: 'Criar Movimentação',
                     permission: 'movement.create'
-                 },
+                },
                 loadComponent: () =>
                     import('./modules/movement/form-movement/form-movement.component')
                         .then(r => r.FormMovementComponent)
             },
             {
                 path: 'movement/edit/:id',
-                data: { 
+                data: {
                     breadcrumb: 'Editar Movimentação',
                     permission: 'movement.update'
                 },
@@ -221,7 +231,8 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./modules/patient/patient.component')
                         .then(r => r.PatientComponent)
-            }
+            },
+
 
         ]
     },

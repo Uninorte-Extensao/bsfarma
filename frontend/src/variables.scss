@@ -41,4 +41,34 @@
     --border-card-blue: var(--border-blue);
     --border-card-yellow: var(--border-yellow);
     --border-card-red: var(--border-red);
+
+
+
+    // variveis para os cards reutilizaveis
+
+
+    /* Cyan */
+    --border-card-cyan: 1px solid #67e8f9;
+    --bg-card-cyan: #ecfeff;
+    --text-color-cyan: #0891b2;
+
+    /* Purple */
+    --border-card-purple: 1px solid #c4b5fd;
+    --bg-card-purple: #f5f3ff;
+    --text-color-purple: #7c3aed;
+
+    /* Orange */
+    --border-card-orange: 1px solid #fdba74;
+    --bg-card-orange: #fff7ed;
+    --text-color-orange: #ea580c;
+
+    /* Pink */
+    --border-card-pink: 1px solid #f9a8d4;
+    --bg-card-pink: #fdf2f8;
+    --text-color-pink: #db2777;
+
+    /* Teal */
+    --border-card-teal: 1px solid #5eead4;
+    --bg-card-teal: #f0fdfa;
+    --text-color-teal: #0f766e;
 }

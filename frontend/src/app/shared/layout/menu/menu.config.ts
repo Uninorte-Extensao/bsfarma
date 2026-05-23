@@ -1,9 +1,7 @@
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
-import { AlertService } from '../../services/alert.service';
 
 export function buildMenuItems(authService: AuthService, quantidadeAlertas: number): MenuItem[] {
-    // const qtd = 
     return [
         {
             label: 'Catálogo',
@@ -14,6 +12,17 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
                     routerLink: '/catalog',
                     visible: authService.hasPermission('catalog.view')
                 },
+            ]
+        },
+        {
+            label: 'Relatórios',
+            items: [
+                {
+                    label: 'Painel de Controle',
+                    icon: 'pi pi-chart-bar',
+                    routerLink: '/report',
+                    visible: authService.hasPermission('report.view')
+                }
             ]
         },
 
@@ -46,6 +55,7 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
                 },
             ],
         },
+
 
         {
             label: 'Alertas',

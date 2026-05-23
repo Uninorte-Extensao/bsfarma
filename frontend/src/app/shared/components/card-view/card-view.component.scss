@@ -70,6 +70,71 @@
         }
     }
 
+    &.info {
+        border: var(--border-card-cyan);
+
+        .icon-container {
+            background: var(--bg-card-cyan);
+            color: var(--text-color-cyan);
+        }
+
+        .subtitle {
+            color: var(--text-color-cyan);
+        }
+    }
+
+    &.purple {
+        border: var(--border-card-purple);
+
+        .icon-container {
+            background: var(--bg-card-purple);
+            color: var(--text-color-purple);
+        }
+
+        .subtitle {
+            color: var(--text-color-purple);
+        }
+    }
+
+    &.orange {
+        border: var(--border-card-orange);
+
+        .icon-container {
+            background: var(--bg-card-orange);
+            color: var(--text-color-orange);
+        }
+
+        .subtitle {
+            color: var(--text-color-orange);
+        }
+    }
+
+    &.pink {
+        border: var(--border-card-pink);
+
+        .icon-container {
+            background: var(--bg-card-pink);
+            color: var(--text-color-pink);
+        }
+
+        .subtitle {
+            color: var(--text-color-pink);
+        }
+    }
+
+    &.teal {
+        border: var(--border-card-teal);
+
+        .icon-container {
+            background: var(--bg-card-teal);
+            color: var(--text-color-teal);
+        }
+
+        .subtitle {
+            color: var(--text-color-teal);
+        }
+    }
+
     .icon-container {
         min-width: 44px;
         min-height: 44px;
@@ -145,4 +210,5 @@
             }
         }
     }
+
 }

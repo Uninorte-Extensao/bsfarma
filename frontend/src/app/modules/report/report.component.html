@@ -1,0 +1,51 @@
+<div class="dashboard-header">
+        <!-- <small class="text-obs px-4">
+            Acompanhe indicadores de estoque, consumo e movimentações
+        </small> -->
+
+    <div class="dashboard-actions">
+        <p-button
+            icon="pi pi-refresh"
+            severity="secondary"
+            outlined
+            label="Atualizar">
+        </p-button>
+    </div>
+</div>
+<div class="grid px-4 m-0">
+    @for (card of cards(); track card.title) {
+        <div class="col-12 md:col-6 lg:col-3">
+            <app-card-view
+                [title]="card.title"
+                [value]="card.value"
+                [subtitle]="card.subtitle"
+                [icon]="card.icon"
+                [variant]="card.variant">
+            </app-card-view>
+        </div>
+    }
+</div>
+
+<div class="grid px-4 m-0">
+    <div class="col-12 lg:col-6">
+        <app-dashboard-movement
+            [movimentacoes]="movimentacoes()">
+        </app-dashboard-movement>
+    </div>
+
+    <div class="col-12 lg:col-6">
+        <div [style]="{height: '265px'}">
+            <app-dashboard-alert
+                [alerts]="itensCriticos()">
+            </app-dashboard-alert>
+        </div>
+    </div>
+</div>
+
+<div class="grid px-4 m-0">
+    <div class="col-12 lg:col-6">
+        <app-dashboard-monthly-consumption
+        [consumoMensal]="consumoMensal()"
+        />
+    </div>
+</div>

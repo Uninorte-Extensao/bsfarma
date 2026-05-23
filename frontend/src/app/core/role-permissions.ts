@@ -98,6 +98,11 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'movement.create',
         'movement.delete',
         'movement.update',
-        'movement.view'
+        'movement.view',
+
+        'report.create',
+        'report.delete',
+        'report.update',
+        'report.view'
     ]
 }

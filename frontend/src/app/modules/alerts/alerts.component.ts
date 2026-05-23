@@ -142,7 +142,7 @@ export class AlertsComponent implements OnInit {
         undefined,
         undefined,
         undefined,
-        false
+        true
       )
       .then((res) => {
 

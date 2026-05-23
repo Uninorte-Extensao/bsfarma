@@ -1,0 +1,66 @@
+<div class="card-alerts border-round-lg bg-gray-100 p-2">
+
+    <div class="header">
+
+        <span class="title">
+            Alertas
+        </span>
+
+        <p-button icon="pi pi-arrow-right" label="Ver Painel" severity="secondary" size="small" iconPos="right" routerLink="/alerts"/>
+
+    </div>
+
+    @for (alerta of alerts().slice(0,4); track alerta.lote_id) {
+
+        <div class="alert-item">
+
+            <div class="flex justify-content-between align-items-start">
+
+                <div>
+
+                    <div class="font-semibold">
+                        {{ alerta.nome_generico }}
+                    </div>
+
+                    <small class="text-color-secondary">
+                        {{ alerta.concentracao }}
+                    </small>
+
+                </div>
+
+                <p-tag
+                    [severity]="getSeverity(alerta.motivo)"
+                    [value]="alerta.motivo">
+                </p-tag>
+
+            </div>
+
+            <!-- <div class="details">
+
+                <small>
+                    Lote: {{ alerta.numero_lote }}
+                </small>
+
+                <small>
+                    Estoque: {{ alerta.quantidade_atual }}
+                    / mínimo {{ alerta.estoque_minimo }}
+                </small>
+
+                <small>
+                    Validade:
+                    {{ alerta.validade | date:'dd/MM/yyyy' }}
+                </small>
+
+            </div> -->
+
+        </div>
+
+    } @empty {
+
+        <div class="empty-state">
+            Nenhum alerta crítico encontrado.
+        </div>
+
+    }
+
+</div>
