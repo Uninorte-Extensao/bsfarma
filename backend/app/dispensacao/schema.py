@@ -18,7 +18,7 @@ class DispensacaoCreate(BaseModel):
     Note que ele recebe lote_id e quantidade, que NÃO pertencem à tabela dispensacao.
     O Service usará esses dados para criar a Movimentacao vinculada de forma atômica.
     """
-    paciente_id: str = Field(..., description="UUID do paciente que está recebendo o medicamento")
+    codigo: str = Field(..., description="Código interno do paciente que está recebendo o medicamento")
     lote_id: str = Field(..., description="UUID do lote de onde o medicamento será baixado")
     quantidade: int = Field(..., gt=0, description="Quantidade a ser dispensada", examples=[2])
 

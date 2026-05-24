@@ -7,16 +7,19 @@ PADRÃO DO PROJETO — regras do service:
   - Levanta exceções de domínio ou HTTPException.
 """
 
+from sqlalchemy import select
+
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import RecursoNaoEncontrado
+from app.core.exceptions import RecursoNaoEncontrado, RegraDeNegocioViolada
 from app.dispensacao.model import Dispensacao
 from app.dispensacao.repository import DispensacaoRepository
 from app.dispensacao.schema import DispensacaoCreate
 from app.lote.repository import LoteRepository
 from app.movimentacao.model import Movimentacao, TipoMovimentacao
 from app.movimentacao.repository import MovimentacaoRepository
+from app.paciente.model import Paciente
 
 
 class DispensacaoService:
@@ -61,10 +64,10 @@ class DispensacaoService:
             justificativa="Dispensação direta ao paciente"
         )
         movimentacao = await self.mov_repo.create(nova_movimentacao)
-
+        paciente = await self.retornar_id_paciente_pelo_codigo(dados.codigo)
         # 5. Registrar a Dispensação (o evento clínico)
         nova_dispensacao = Dispensacao(
-            paciente_id=dados.paciente_id,
+            paciente_id=paciente.id,
             movimentacao_id=movimentacao.id,
         )
         dispensacao = await self.repo.create(nova_dispensacao)
@@ -85,3 +88,19 @@ class DispensacaoService:
     async def listar(self, paciente_id: str | None = None) -> list[Dispensacao]:
         """Lista histórico de dispensações, podendo filtrar por paciente."""
         return await self.repo.list_all(paciente_id=paciente_id)
+    
+    async def retornar_id_paciente_pelo_codigo(self, codigo: str) -> Paciente:
+        resultado = await self.session.execute(
+            select(Paciente).where(Paciente.codigo == codigo.upper())
+        )
+        paciente = resultado.scalar_one_or_none()
+        if not paciente:
+            raise RecursoNaoEncontrado(
+                "Paciente",
+                f"código '{codigo}' — verifique o cartão ou cadastre o paciente",
+            )
+        if not paciente.ativo:
+            raise RegraDeNegocioViolada(
+                f"Paciente com código '{codigo}' está inativo no sistema."
+            )
+        return paciente

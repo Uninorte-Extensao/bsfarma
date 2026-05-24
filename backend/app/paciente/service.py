@@ -80,6 +80,8 @@ def gerar_codigo(cpf: str) -> str:
     )
     return mac.hexdigest()[:12].upper()
 
+
+
 class PacienteService:
     def __init__(self, session: AsyncSession) -> None:
         self.repo = PacienteRepository(session)
@@ -116,7 +118,6 @@ class PacienteService:
         if paciente:
             raise ErroDeFormulario("Paciente já cadastrado no sistema!")
         return paciente
-        
 
     async def buscar_por_codigo(self, codigo: str) -> Paciente:
         """

@@ -58,7 +58,7 @@ class PacienteUpdate(BaseModel):
 class PacienteResponse(BaseModel):
     """Dados do paciente retornados pela API. """
     model_config = ConfigDict(from_attributes=True)  # permite criar a partir de ORM
-
+    id: str
     codigo: str
     condicao_clinica: str
     ativo: bool
