@@ -17,7 +17,7 @@ export class AlertsComponent implements OnInit {
   cards = signal<any[]>([
     {
       title: 'VENCIMENTO PRÓXIMO',
-      value: '3 alertas',
+      value: '0 alertas',
       subtitle: 'Lotes próximos do vencimento',
       icon: 'pi pi-calendar',
       variant: 'danger'
@@ -25,7 +25,7 @@ export class AlertsComponent implements OnInit {
 
     {
       title: 'ESTOQUE MÍNIMO',
-      value: '3 itens',
+      value: '0 itens',
       subtitle: 'Necessitam reposição',
       icon: 'pi pi-exclamation-triangle',
       variant: 'warning'

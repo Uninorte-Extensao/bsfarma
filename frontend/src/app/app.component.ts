@@ -33,11 +33,11 @@ export class AppComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const token = localStorage.getItem('tokenBsFarma')
 
     if(token) {
-      this.authService.loadUser()
+     await this.authService.loadUser()
     }
   }
 }

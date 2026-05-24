@@ -98,9 +98,16 @@ export class ReportService {
   }
 
   exportarConsumoCsv(dataInicio: string, dataFim: string) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set('data_inicio', dataInicio)
       .set('data_fim', dataFim);
+
+    // const url = `${environment.apiUrl}/relatorios/exportar/consumo.csv?${params.toString()}`;
+
+    // window.open(url, '_blank');
+
+
+    // HTTPCLIENT
 
     return lastValueFrom(
       this.http.get(
@@ -111,12 +118,18 @@ export class ReportService {
         }
       )
     );
+
   }
 
   exportarConsumoXlsx(dataInicio: string, dataFim: string) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set('data_inicio', dataInicio)
       .set('data_fim', dataFim);
+
+    // const url = `${environment.apiUrl}/relatorios/exportar/consumo.xlsx?${params.toString()}`;
+
+    // window.open(url, '_blank');
+
 
     return lastValueFrom(
       this.http.get(
@@ -127,9 +140,13 @@ export class ReportService {
         }
       )
     );
+
   }
 
   exportarEstoqueXlsx() {
+    // const url = `${environment.apiUrl}/relatorios/exportar/estoque.xlsx`;
+    // window.open(url, '_blank');
+
     return lastValueFrom(
       this.http.get(
         `${environment.apiUrl}/relatorios/exportar/estoque.xlsx`,
@@ -138,6 +155,7 @@ export class ReportService {
         }
       )
     );
+
   }
 
   exportarMovimentacoesCsv(
@@ -153,6 +171,11 @@ export class ReportService {
       params = params.set('tipo', tipo);
     }
 
+    // const url = `${environment.apiUrl}/relatorios/exportar/movimentacoes.csv?${params.toString()}`;
+
+    // window.open(url, '_blank');
+
+
     return lastValueFrom(
       this.http.get(
         `${environment.apiUrl}/relatorios/exportar/movimentacoes.csv`,
@@ -162,5 +185,6 @@ export class ReportService {
         }
       )
     );
+  
   }
 }

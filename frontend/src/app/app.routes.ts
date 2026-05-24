@@ -22,7 +22,7 @@ export const routes: Routes = [
             // MEDICAMENTOS
             {
                 path: '',
-                redirectTo: 'catalog',
+                redirectTo: '',
                 pathMatch: 'full'
             },
             {
