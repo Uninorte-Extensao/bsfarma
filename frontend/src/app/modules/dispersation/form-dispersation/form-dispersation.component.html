@@ -15,7 +15,7 @@
             </div>
             <div class="flex flex-column gap-2 col-12 md:col-8">
                 <label for="nome">ID interno do Paciente</label>
-                <p-autocomplete formControlName="paciente_id" [suggestions]="filteredPatient()"
+                <p-autocomplete formControlName="codigo" [suggestions]="filteredPatient()"
                     (completeMethod)="filterPatient($event)" optionLabel="codigo" optionValue="codigo" fluid
                     placeholder="Ex: PAC-001" />
             </div>

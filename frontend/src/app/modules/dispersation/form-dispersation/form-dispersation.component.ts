@@ -17,6 +17,7 @@ import { DispersationService } from '../../../shared/services/dispersation.servi
 import { PatientService } from '../../../shared/services/patient.service';
 import { MedicineService } from '../../../shared/services/medicine.service';
 import { LoteService } from '../../../shared/services/batch.service';
+import { Router } from '@angular/router';
 
 
 interface ILoteMedicamento extends IBatch {
@@ -79,12 +80,13 @@ export class FormDispersationComponent {
   private medicamentoService = inject(MedicineService)
   private loteService = inject(LoteService)
   protected selectedLote!: ILoteMedicamento
+  private router = inject(Router)
 
   constructor() {
     const fb = new FormBuilder()
 
     this.form = fb.group({
-      paciente_id: [null, [Validators.required]],
+      codigo: [null, [Validators.required]],
     })
 
     this.onChangeValue()
@@ -113,7 +115,7 @@ export class FormDispersationComponent {
 
   onChangeValue() {
 
-    this.form.get('paciente_id')
+    this.form.get('codigo')
       ?.valueChanges
       .subscribe((patientId) => {
 
@@ -159,12 +161,12 @@ export class FormDispersationComponent {
       return;
     }
 
-    const pacienteId = this.form.get('paciente_id')?.value;
+    const pacienteId = this.form.get('codigo')?.value;
 
     const payloads = this.batchSelected().map((item) => {
 
       const payload = {
-        paciente_id: pacienteId,
+        codigo: pacienteId,
         lote_id: item.id,
         quantidade: item.quantidade
       };
@@ -183,6 +185,7 @@ export class FormDispersationComponent {
         );
 
         this.clear();
+        this.router.navigate(['/dispersation'])
       })
       .catch(() => {
 
