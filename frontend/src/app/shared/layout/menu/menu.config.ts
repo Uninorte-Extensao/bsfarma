@@ -4,17 +4,6 @@ import { AuthService } from '../../services/auth.service';
 export function buildMenuItems(authService: AuthService, quantidadeAlertas: number): MenuItem[] {
     return [
         {
-            label: 'Catálogo',
-            items: [
-                {
-                    label: 'Medicamentos',
-                    icon: 'pi pi-inbox',
-                    routerLink: '/catalog',
-                    visible: authService.hasPermission('catalog.view')
-                },
-            ]
-        },
-        {
             label: 'Relatórios',
             items: [
                 {
@@ -23,6 +12,17 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
                     routerLink: '/report',
                     visible: authService.hasPermission('report.view')
                 }
+            ]
+        },
+        {
+            label: 'Catálogo',
+            items: [
+                {
+                    label: 'Medicamentos',
+                    icon: 'pi pi-inbox',
+                    routerLink: '/catalog',
+                    visible: authService.hasPermission('catalog.view')
+                },
             ]
         },
 

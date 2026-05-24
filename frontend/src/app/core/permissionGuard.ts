@@ -6,38 +6,22 @@ import { filter, firstValueFrom, timeout, catchError } from 'rxjs';
 import { of } from 'rxjs';
 import { Permission } from './permissions.enum';
 import { ToastService } from '../shared/services/toast.service';
+import { HOME_BY_PROFILE } from './authGuard';
 
 // Guard funcional assíncrono — aguarda o user ser carregado
-export const permissionGuard: CanActivateFn = async (route) => {
-    const authService = inject(AuthService);
+export const permissionGuard: CanActivateFn = (route) => {
+    const auth = inject(AuthService);
     const router = inject(Router);
-    const toastService = inject(ToastService);
+    const toast = inject(ToastService);
 
-    // Se o user ainda não foi carregado, aguarda (com timeout de segurança)
-    if (!authService.user()) {
-        const loaded = await firstValueFrom(
-            toObservable(authService.user).pipe(
-                filter(user => user !== null),
-                timeout(5000), // evita travar infinitamente
-                catchError(() => of(null))
-            )
-        );
+    const requiredPermission = getPermissionFromRoute(route);
+    console.log('[PERMISSION GUARD] rota:', route.routeConfig?.path, '| permission:', requiredPermission, '| perfil:', auth.user()?.perfil, '| tem permissão:', auth.hasPermission(requiredPermission as any));
 
-        // Se mesmo após aguardar não carregou, redireciona pro auth
-        if (!loaded) {
-            router.navigate(['/auth']);
-            return false;
-        }
-    }
+    if (!requiredPermission) return true;
 
-    const permission = getPermissionFromRoute(route);
-
-    // Rota sem restrição de permissão — libera
-    if (!permission) return true;
-
-    if (!authService.hasPermission(permission)) {
-        toastService.showToastError('Você não tem permissão para acessar este módulo.')
-        const fallback = getFallbackRoute(authService);
+    if (!auth.hasPermission(requiredPermission)) {
+        toast.showToastError('Você não tem permissão para acessar este módulo.');
+        const fallback = HOME_BY_PROFILE[auth.user()?.perfil ?? ''] ?? '/catalog';
         return router.parseUrl(fallback);
     }
 
@@ -61,7 +45,7 @@ function getFallbackRoute(authService: AuthService): string {
     const fallbackByProfile: Record<string, string> = {
         atendente: '/catalog',
         farmaceutico: '/catalog',
-        gestor: '/catalog'
+        gestor: '/report'
     };
 
     return fallbackByProfile[user?.perfil ?? ''] ?? '/catalog';

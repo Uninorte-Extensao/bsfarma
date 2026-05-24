@@ -8,6 +8,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { LoadingService } from '../../shared/services/loading.service';
 import { Router } from '@angular/router';
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
+import { AuthService } from '../../shared/services/auth.service';
 @Component({
   selector: 'app-catalog',
   imports: [
@@ -28,6 +29,7 @@ export class CatalogComponent implements OnInit {
   private loading = inject(LoadingService)
   private router = inject(Router)
   protected isMobile = inject(IS_MOBILE)
+  protected authService = inject(AuthService)
 
   ngOnInit() {
     this.getAllMedicamentos()

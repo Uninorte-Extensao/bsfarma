@@ -21,12 +21,14 @@
                 </p-tabpanel>
             </p-tabpanels>
         </p-tabs>
-        <div class="btn-add">
-            <p-button 
-            [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'" 
-            icon="pi pi-plus"
-            (click)="goToCreate()" />
-        </div>
+        @if(authService.hasPermission('catalog.create')) {
+            <div class="btn-add">
+                <p-button 
+                [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'" 
+                icon="pi pi-plus"
+                (click)="goToCreate()" />
+            </div>
+        }
     </div>
 
 </div>
