@@ -1,9 +1,12 @@
-<div class="card-alerts border-round-lg bg-gray-100 p-2">
+<div class="card-alerts">
 
     <div class="header">
 
-        <span class="title">
-            Alertas
+        <span>
+            <h4 class="m-0">
+                Alertas
+            </h4>
+            <small class="text-obs">lotes com vencimento nos próximos 30 dias ou saldo abaixo do estoque mínimo</small>
         </span>
 
         <p-button icon="pi pi-arrow-right" label="Ver Painel" severity="secondary" size="small" iconPos="right" routerLink="/alerts"/>
@@ -19,12 +22,13 @@
                 <div>
 
                     <div class="font-semibold">
-                        {{ alerta.nome_generico }}
-                    </div>
-
-                    <small class="text-color-secondary">
+                        {{ alerta.nome_generico }} - 
+                        <small class="text-color-secondary">
                         {{ alerta.concentracao }}
                     </small>
+                    </div>
+
+ 
 
                 </div>
 

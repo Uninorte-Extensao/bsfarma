@@ -80,8 +80,8 @@ export class DashboardMonthlyConsumptionComponent implements OnInit, OnChanges {
 
           borderRadius: 12,
           borderSkipped: false,
-          barThickness: 24,
-          maxBarThickness: 30
+          barThickness: 10,
+          maxBarThickness: 15
         }
       ]
     };

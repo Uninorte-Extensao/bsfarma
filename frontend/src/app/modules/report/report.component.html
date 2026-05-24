@@ -1,44 +1,61 @@
-<div class="dashboard-header">
-        <!-- <small class="text-obs px-4">
-            Acompanhe indicadores de estoque, consumo e movimentações
-        </small> -->
-
-    <div class="dashboard-actions">
+<div class="flex justify-content-between align-items-start px-4">
+        <small class="text-obs pl-2">
+            Visão Geral do Inventário
+        </small>
+    <div class="flex gap-2">
         <p-button
+        size="small"
+        icon="pi pi-download"
+        label="Exportar Consumo"
+        (click)="showModal('consumo')">
+        </p-button>
+
+        <p-button
+        size="small"
+        icon="pi pi-download"
+        label="Exportar Movimentação"
+        (click)="showModal('movimentacao')">
+        </p-button>
+
+        <p-button
+        size="small"
+        icon="pi pi-download"
+        label="Exportar Estoque"
+        (click)="exportarEstoqueXlsx()"
+        />
+
+        <!-- <p-button
             icon="pi pi-refresh"
             severity="secondary"
             outlined
             label="Atualizar">
-        </p-button>
+        </p-button> -->
     </div>
-</div>
-<div class="grid px-4 m-0">
-    @for (card of cards(); track card.title) {
-        <div class="col-12 md:col-6 lg:col-3">
-            <app-card-view
-                [title]="card.title"
-                [value]="card.value"
-                [subtitle]="card.subtitle"
-                [icon]="card.icon"
-                [variant]="card.variant">
-            </app-card-view>
-        </div>
-    }
 </div>
 
 <div class="grid px-4 m-0">
+    <div class="col-12 lg:col-6">
+        <div class="container-cards grid m-0">
+            <h4 class="m-0">Acompanhe indicadores de estoque, consumo e movimentações</h4>
+            @for (card of cards(); track card.title) {
+                <div class="col-12 lg:col-6">
+                    <app-card-view
+                        [title]="card.title"
+                        [value]="card.value"
+                        [subtitle]="card.subtitle"
+                        [icon]="card.icon"
+                        [variant]="card.variant">
+                    </app-card-view>
+                </div>
+            }
+        </div>
+    </div>
+    
     <div class="col-12 lg:col-6">
         <app-dashboard-movement
             [movimentacoes]="movimentacoes()">
         </app-dashboard-movement>
-    </div>
 
-    <div class="col-12 lg:col-6">
-        <div [style]="{height: '265px'}">
-            <app-dashboard-alert
-                [alerts]="itensCriticos()">
-            </app-dashboard-alert>
-        </div>
     </div>
 </div>
 
@@ -48,4 +65,98 @@
         [consumoMensal]="consumoMensal()"
         />
     </div>
+
+    <div class="col-12 lg:col-6">
+        <app-dashboard-alert
+            [alerts]="itensCriticos()">
+        </app-dashboard-alert>
+    </div>
 </div>
+
+<p-dialog
+    [header]="typeDialog === 'consumo' ? 'Exportar Consumos' : 'Exportar Movimentações'"
+    [(visible)]="exportDialogVisible"
+    [modal]="true"
+    (onHide)="closeModal()"
+    [style]="{ width: '500px' }">
+
+    <form
+        [formGroup]="exportForm"
+        class="flex flex-column gap-3">
+
+        <div>
+            <label for="date">Período</label>
+
+            <p-datepicker
+            id="date"
+                selectionMode="range"
+                formControlName="periodo"
+                [showIcon]="true"
+                appendTo="body"
+                fluid
+                placeholder="Selecione um período">
+            </p-datepicker>
+        </div>
+
+        
+        @if(typeDialog === 'movimentacao') {
+
+            <div class="flex flex-column gap-2">
+    
+                <label for="tipo">
+                    Tipo de Movimentação
+                </label>
+    
+                <p-select
+                    formControlName="tipo"
+                    [options]="listTipoMovimentacao()"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Selecione"
+                    fluid
+                    appendTo="body"
+                />
+    
+            </div>
+        }
+
+        <div class="flex gap-2 justify-content-between">
+
+            <p-button
+                label="Cancelar"
+                severity="danger"
+                fluid
+                (click)="closeModal()">
+            </p-button>
+
+            @if(typeDialog === 'consumo') {
+                <p-button
+                    label="CSV"
+                    icon="pi pi-file"
+                    fluid
+                    (click)="exportarConsumoCsv()">
+                </p-button>
+    
+                <p-button
+                    label="XLSX"
+                    icon="pi pi-file-excel"
+                    severity="success"
+                    fluid
+                    (click)="exportarConsumoXlsx()">
+                </p-button>
+            }
+
+            @if(typeDialog === 'movimentacao') {
+                <p-button
+                    label="CSV"
+                    icon="pi pi-file-excel"
+                    severity="success"
+                    (click)="exportarMovimentacoesCsv()">
+                </p-button>
+            }
+
+        </div>
+
+    </form>
+
+</p-dialog>

@@ -2,9 +2,10 @@ import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject, effect, inpu
 import { ChartModule } from 'primeng/chart';
 import { isPlatformBrowser } from '@angular/common';
 import { IMovimentacaoRelatorio } from '../../../shared/models/IReport';
+import { Button } from "primeng/button";
 @Component({
   selector: 'app-dashboard-movement',
-  imports: [ChartModule],
+  imports: [ChartModule, Button],
   templateUrl: './dashboard-movement.component.html',
   styleUrl: './dashboard-movement.component.scss',
 })
