@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 """
 Service de usuário — regras de negócio.
 
@@ -13,9 +11,8 @@ from datetime import datetime, timezone
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core import blocklist, timeout
 from app.core.exceptions import RecursoNaoEncontrado
-from app.core.security import create_access_token, hash_password, verify_password, decode_access_token
+from app.core.security import create_access_token, hash_password, verify_password
 from app.usuario.model import Usuario
 from app.usuario.repository import UsuarioRepository
 from app.usuario.schema import TokenResponse, UsuarioCreate, UsuarioUpdate
@@ -48,22 +45,20 @@ class UsuarioService:
         return await self.repo.create(usuario)
 
     async def autenticar(self, login: str, senha: str):
-        bloqueado, segundos = timeout.verificar_bloqueio(login)
-        if bloqueado:
-            raise HTTPException(
-                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                detail=f"Muitas tentativas. Tente novamente em {segundos}s.",
-                headers={"Retry-After": str(segundos)},
-            )
+        """
+        Valida credenciais e retorna um JWT.
 
+        Raises:
+            HTTPException 401: Se as credenciais forem inválidas.
+        """
         usuario = await self.repo.get_by_login(login)
+
+        # Verificação unificada: não revelar se o login existe ou não.
         if not usuario or not verify_password(senha, usuario.senha_hash):
-            timeout.registrar_falha(login)          # incrementa contador
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Login ou senha incorretos.",
             )
-        
         if not usuario.ativo:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -72,16 +67,9 @@ class UsuarioService:
         
         await self.repo.update(usuario, {"ultimo_acesso": datetime.now(timezone.utc)})
 
-        # limpar histórico de falhas
-        timeout.resetar(login)
-
         token = create_access_token(subject=usuario.id, perfil=usuario.perfil)
-        return TokenResponse(
-            access_token=token,
-            token_type="bearer",
-            id_user=usuario.id,
-        )
-    
+        return TokenResponse(access_token=token, token_type="bearer", id_user=usuario.id)
+
     async def buscar_por_id(self, usuario_id: str) -> Usuario:
         """
         Retorna um usuário pelo ID.
@@ -108,30 +96,3 @@ class UsuarioService:
         # exclude_unset=True garante que só campos enviados sejam atualizados.
         campos = dados.model_dump(exclude_unset=True)
         return await self.repo.update(usuario, campos)
-    
-    async def logout(self, token: str) -> None:
-        """
-        Invalida um JWT adicionando-o à blocklist até sua expiração.
-        Raises:
-            HTTPException 401: Se o token já for inválido.
-        """
-        payload = decode_access_token(token)  # já levanta 401 se inválido
-
-        exp = payload.get("exp")
-        expira_em = datetime.fromtimestamp(payload.get("exp"), tz=timezone.utc) if exp else datetime.now(tz=timezone.utc)
-
-        blocklist.adicionar(token, expira_em)
-
-    async def verificar_token(self, token: str) -> dict:
-        """
-        Verifica se um token é válido e não está na blocklist.
-        Raises:
-            HTTPException 401: Se inválido, expirado ou invalidado por logout.
-        """
-        if blocklist.esta_bloqueado(token):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token invalidado. Faça login novamente.",
-            )
-        return decode_access_token(token)
-    
