@@ -3,8 +3,7 @@ Segurança: hashing de senha e geração/validação de tokens JWT.
 
 Não contém lógica de negócio — apenas mecanismos de autenticação.
 """
-import hashlib
-
+from fastapi import HTTPException, status
 from datetime import datetime, timedelta, timezone
 
 from jose import JWTError, jwt
@@ -38,7 +37,7 @@ def create_access_token(subject: str, perfil: str) -> str:
     Returns:
         Token JWT assinado como string.
     """
-    expire = datetime.now(timezone.utc) + timedelta(
+    expire = datetime.now(tz=timezone.utc) + timedelta(
         minutes=settings.access_token_expire_minutes
     )
     payload = {
@@ -54,6 +53,12 @@ def decode_access_token(token: str) -> dict:
     Decodifica e valida um JWT.
 
     Raises:
-        JWTError: Se o token for inválido ou expirado.
+        JWTError (se o token for inválido ou expirado) / Erro 401 Unauthorized
     """
-    return jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+    try:
+        return jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido ou expirado.",
+        )

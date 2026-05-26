@@ -22,7 +22,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from app.usuario.schema import LogoutRequest
 from app.core.dependencies import get_session, require_perfil
 from app.usuario.schema import TokenResponse, UsuarioCreate, UsuarioResponse, UsuarioUpdate
 from app.usuario.service import UsuarioService
@@ -108,3 +108,13 @@ async def atualizar_usuario(
 ):
     service = UsuarioService(session)
     return await service.atualizar(usuario_id, dados)
+
+# ── Logout ─────────────────────────────────────────────────────────────
+
+@router.post("/logout", status_code=204)
+async def logout(
+    body: LogoutRequest,
+    session: AsyncSession = Depends(get_session),
+):
+    service = UsuarioService(session)
+    await service.logout(body.access_token)
