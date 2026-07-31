@@ -18,95 +18,96 @@ export const routes: Routes = [
             {
                 path: '',
                 pathMatch: 'full',
+                canActivate: [homeRedirectGuard],
                 component: HomeComponent
             },
             {
                 path: 'report',
-                data: { breadcrumb: 'Painel de Controle', permission: 'report.view' },
+                data: { breadcrumb: 'Painel de Controle', subLabel: 'Visão Geral do Inventário', permission: 'report.view' },
                 loadComponent: () =>
                     import('./modules/report/report.component').then(r => r.ReportComponent)
             },
             {
                 path: 'catalog',
-                data: { breadcrumb: 'Medicamentos', permission: 'catalog.view' },
+                data: { breadcrumb: 'Medicamentos', subLabel: 'Lista de medicamentos.', permission: 'catalog.view' },
                 loadComponent: () =>
                     import('./modules/catalog/catalog.component').then(r => r.CatalogComponent)
             },
             {
                 path: 'catalog/create',
-                data: { breadcrumb: 'Cadastro de medicamento', permission: 'catalog.create' },
+                data: { breadcrumb: 'Cadastro de medicamento', subLabel: 'Cadastro de medicamento.', permission: 'catalog.create' },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component').then(r => r.FormMedicineComponent)
             },
             {
                 path: 'catalog/edit/:id',
-                data: { breadcrumb: 'Edição de medicamento', permission: 'catalog.update' },
+                data: { breadcrumb: 'Edição de medicamento', subLabel: 'Cadastro de medicamento.', permission: 'catalog.update' },
                 loadComponent: () =>
                     import('./modules/catalog/form-medicine/form-medicine.component').then(r => r.FormMedicineComponent)
             },
             {
                 path: 'batch',
-                data: { breadcrumb: 'Lote', permission: 'batch.view' },
+                data: { breadcrumb: 'Lote', subLabel: 'Lista de Lotes', permission: 'batch.view' },
                 loadComponent: () =>
                     import('./modules/batch/batch.component').then(r => r.BatchComponent)
             },
             {
                 path: 'batch/create',
-                data: { breadcrumb: 'Entrada de Lote', permission: 'batch.create' },
+                data: { breadcrumb: 'Entrada de Lote', subLabel: 'Registre a entrada de novos medicamentos no estoque.', permission: 'batch.create' },
                 loadComponent: () =>
                     import('./modules/batch/form-batch/form-batch.component').then(r => r.FormBatchComponent)
             },
             {
                 path: 'batch/edit/:id',
-                data: { breadcrumb: 'Edição de Lote', permission: 'batch.update' },
+                data: { breadcrumb: 'Edição de Lote', subLabel: 'Registre a entrada de novos medicamentos no estoque.', permission: 'batch.update' },
                 loadComponent: () =>
                     import('./modules/batch/form-batch/form-batch.component').then(r => r.FormBatchComponent)
             },
             {
                 path: 'movement',
-                data: { breadcrumb: 'Movimentação de Lote', permission: 'movement.view' },
+                data: { breadcrumb: 'Movimentação de Lote', subLabel: 'Novo Atendimento.', permission: 'movement.view' },
                 loadComponent: () =>
                     import('./modules/movement/movement.component').then(r => r.MovementComponent)
             },
             {
                 path: 'movement/create',
-                data: { breadcrumb: 'Criar Movimentação', permission: 'movement.create' },
+                data: { breadcrumb: 'Criar Movimentação', subLabel: 'Registre movimentações de estoque.', permission: 'movement.create' },
                 loadComponent: () =>
                     import('./modules/movement/form-movement/form-movement.component').then(r => r.FormMovementComponent)
             },
             {
                 path: 'movement/edit/:id',
-                data: { breadcrumb: 'Editar Movimentação', permission: 'movement.update' },
+                data: { breadcrumb: 'Editar Movimentação', subLabel: 'Registre movimentações de estoque.', permission: 'movement.update' },
                 loadComponent: () =>
                     import('./modules/movement/form-movement/form-movement.component').then(r => r.FormMovementComponent)
             },
             {
                 path: 'dispersation',
-                data: { breadcrumb: 'Atendimentos Realizados', permission: 'dispersation.view' },
+                data: { breadcrumb: 'Atendimentos Realizados', subLabel: 'Histórico de dispersação de medicamentos na unidade.', permission: 'dispersation.view' },
                 loadComponent: () =>
                     import('./modules/dispersation/dispersation.component').then(r => r.DispersationComponent)
             },
             {
                 path: 'dispersation/create',
-                data: { breadcrumb: 'Novo Atendimento', permission: 'dispersation.create' },
+                data: { breadcrumb: 'Novo Atendimento', subLabel: 'Registro dispersação de medicamentos para pacientes cadastrados.', permission: 'dispersation.create' },
                 loadComponent: () =>
                     import('./modules/dispersation/form-dispersation/form-dispersation.component').then(r => r.FormDispersationComponent)
             },
             {
                 path: 'dispersation/edit',
-                data: { breadcrumb: 'Editar Atendimento', permission: 'dispersation.update' },
+                data: { breadcrumb: 'Editar Atendimento', subLabel: 'Registro dispersação de medicamentos para pacientes cadastrados.', permission: 'dispersation.update' },
                 loadComponent: () =>
                     import('./modules/dispersation/form-dispersation/form-dispersation.component').then(r => r.FormDispersationComponent)
             },
             {
                 path: 'alerts',
-                data: { breadcrumb: 'Notificações', permission: 'alerts.view' },
+                data: { breadcrumb: 'Notificações', subLabel: 'Lista de Alertas', permission: 'alerts.view' },
                 loadComponent: () =>
                     import('./modules/alerts/alerts.component').then(r => r.AlertsComponent)
             },
             {
                 path: 'management',
-                data: { breadcrumb: 'Usuários', permission: 'management.view' },
+                data: { breadcrumb: 'Usuários', subLabel: 'Lista de usuários.', permission: 'management.view' },
                 loadComponent: () =>
                     import('./modules/management/management.component').then(r => r.ManagementComponent)
             },
@@ -124,7 +125,7 @@ export const routes: Routes = [
             },
             {
                 path: 'patient',
-                data: { breadcrumb: 'Pacientes', permission: 'patient.view' },
+                data: { breadcrumb: 'Pacientes', subLabel: 'Lista de pacientes.', permission: 'patient.view' },
                 loadComponent: () =>
                     import('./modules/patient/patient.component').then(r => r.PatientComponent)
             }

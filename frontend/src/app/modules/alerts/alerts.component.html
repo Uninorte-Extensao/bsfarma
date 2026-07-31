@@ -1,69 +1,142 @@
 <section>
-    <header>
-        <small class="px-5 text-obs">Lista de Alertas</small>
-        <!-- <button (click)="verificarAgora()">Verificar agora</button> -->
-    </header>
-
     <aside class="px-5 pt-3">
-        <div class="grid">
-            @for(item of cards(); track $index) {
-            <app-card-view class="col-12 md:col-4" [title]="item.title" [value]="item.value" [subtitle]="item.subtitle"
-                [icon]="item.icon" [variant]="item.variant" />
-            }
+
+        <div class="groups-row">
+
+            <div class="card group-card">
+                <div class="group-header">
+                    <div class="group-header-info">
+                        <div class="box-icon box-red small">
+                            <i class="pi pi-box"></i>
+                        </div>
+                        <div>
+                            <h4 class="m-0">Estoque crítico</h4>
+                            <small class="text-obs">Ação imediata necessária</small>
+                        </div>
+                    </div>
+                    <span class="group-count">{{ criticos().length }}</span>
+                </div>
+
+                <div class="group-list">
+                    @for (item of criticos(); track item.id) {
+                        <div class="alert-row">
+                            <div class="alert-info">
+                                <div class="item-name">
+                                    {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}
+                                </div>
+                                <small class="item-meta">
+                                    {{ item.lote.quantidade_atual }} comp · mín {{ item.medicamento.estoque_minimo }} · val {{ item.lote.validade | date:'MM/yyyy' }}
+                                </small>
+                                <div class="tag-row">
+                                    <p-tag value="Crítico" severity="danger" />
+                                    <p-tag [value]="item.status_alerta" [severity]="getStatusSeverity(item.status_alerta)" />
+                                </div>
+                            </div>
+
+                            @if (item.status_alerta !== 'Resolvido' && item.status_alerta !== 'Expirado') {
+                                <button type="button" class="check-btn" (click)="menu.toggle($event)" title="Ações">
+                                    <i class="pi pi-check"></i>
+                                </button>
+                                <p-menu #menu [popup]="true" [model]="getStatusMenuItems(item)" appendTo="body" />
+                            }
+                        </div>
+                    } @empty {
+                        <div class="empty-state">Nenhum item crítico.</div>
+                    }
+                </div>
+            </div>
+
+            <div class="card group-card">
+                <div class="group-header">
+                    <div class="group-header-info">
+                        <div class="box-icon box-orange small">
+                            <i class="pi pi-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h4 class="m-0">Estoque baixo</h4>
+                            <small class="text-obs">Abaixo do mínimo definido</small>
+                        </div>
+                    </div>
+                    <span class="group-count">{{ estoqueBaixo().length }}</span>
+                </div>
+
+                <div class="group-list">
+                    @for (item of estoqueBaixo(); track item.id) {
+                        <div class="alert-row">
+                            <div class="alert-info">
+                                <div class="item-name">
+                                    {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}
+                                </div>
+                                <small class="item-meta">
+                                    {{ item.lote.quantidade_atual }} comp · mín {{ item.medicamento.estoque_minimo }} · val {{ item.lote.validade | date:'MM/yyyy' }}
+                                </small>
+                                <div class="tag-row">
+                                    <p-tag value="Estoque Baixo" severity="warn" />
+                                    <p-tag [value]="item.status_alerta" [severity]="getStatusSeverity(item.status_alerta)" />
+                                </div>
+                            </div>
+
+                            @if (item.status_alerta !== 'Resolvido' && item.status_alerta !== 'Expirado') {
+                                <button type="button" class="check-btn" (click)="menu.toggle($event)" title="Ações">
+                                    <i class="pi pi-check"></i>
+                                </button>
+                                <p-menu #menu [popup]="true" [model]="getStatusMenuItems(item)" appendTo="body" />
+                            }
+                        </div>
+                    } @empty {
+                        <div class="empty-state">Nenhum item com estoque baixo.</div>
+                    }
+                </div>
+            </div>
+
+            <div class="card group-card">
+                <div class="group-header">
+                    <div class="group-header-info">
+                        <div class="box-icon box-purple small">
+                            <i class="pi pi-clock"></i>
+                        </div>
+                        <div>
+                            <h4 class="m-0">Validade</h4>
+                            <small class="text-obs">Vencendo ou já vencidos</small>
+                        </div>
+                    </div>
+                    <span class="group-count">{{ validade().length }}</span>
+                </div>
+
+                <div class="group-list">
+                    @for (item of validade(); track item.id) {
+                        <div class="alert-row">
+                            <div class="alert-info">
+                                <div class="item-name">
+                                    {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}
+                                </div>
+                                <small class="item-meta">
+                                    {{ item.lote.quantidade_atual }} comp · mín {{ item.medicamento.estoque_minimo }} · val {{ item.lote.validade | date:'MM/yyyy' }}
+                                </small>
+                                <div class="tag-row">
+                                    @if (isVencido(item)) {
+                                        <p-tag value="Vencido" severity="secondary" />
+                                    } @else {
+                                        <p-tag value="Vencendo" class="tag-purple" />
+                                    }
+                                    <p-tag [value]="item.status_alerta" [severity]="getStatusSeverity(item.status_alerta)" />
+                                </div>
+                            </div>
+
+                            @if (item.status_alerta !== 'Resolvido' && item.status_alerta !== 'Expirado') {
+                                <button type="button" class="check-btn" (click)="menu.toggle($event)" title="Ações">
+                                    <i class="pi pi-check"></i>
+                                </button>
+                                <p-menu #menu [popup]="true" [model]="getStatusMenuItems(item)" appendTo="body" />
+                            }
+                        </div>
+                    } @empty {
+                        <div class="empty-state">Nenhum alerta de validade.</div>
+                    }
+                </div>
+            </div>
+
         </div>
-
-        <div>
-            <p-tabs [value]="selectedTab()" (valueChange)="changeTab($event)">
-
-                <p-tablist>
-                    <p-tab value="0">Abertos</p-tab>
-                    <p-tab value="1">Resolvidos</p-tab>
-                    <p-tab value="2">Todos</p-tab>
-                </p-tablist>
-
-                <p-tabpanels>
-
-                    <p-tabpanel value="0">
-
-                        <div class="container-alert">
-
-                            @for(item of listAlerts(); track item.id) {
-                            <app-table-alerts [item]="item" (reload)="reloadCurrentTab()" />
-                            }
-
-                        </div>
-
-                    </p-tabpanel>
-
-                    <p-tabpanel value="1">
-
-                        <div class="container-alert">
-
-                            @for(item of listAlerts(); track item.id) {
-                            <app-table-alerts [item]="item" />
-                            }
-
-                        </div>
-
-                    </p-tabpanel>
-
-                    <p-tabpanel value="2">
-
-                        <div class="container-alert">
-
-                            @for(item of listAlerts(); track item.id) {
-                            <app-table-alerts [item]="item" (reload)="reloadCurrentTab()" />
-                            }
-
-                        </div>
-
-                    </p-tabpanel>
-
-                </p-tabpanels>
-
-            </p-tabs>
-        </div>
-
 
     </aside>
 </section>

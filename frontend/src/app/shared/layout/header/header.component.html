@@ -1,14 +1,37 @@
 <div class="container">
-    <!-- <p-iconfield>
-        <p-inputicon class="pi pi-search" />
-        <input type="text" pInputText placeholder="Buscar" />
-    </p-iconfield> -->
+    <app-breadcrumb />
 
-    <div class="flex flex-column">
-        <span class="text-center">{{showGreeting(date())}}</span>
-        <div class="flex gap-3 mt-2">
-            <small>{{date() | date: "d 'de' MMMM 'de' y"}}</small>
-            <small>{{date() | date: 'HH:mm:ss'}}</small>
+    <div class="actions">
+        <button
+            type="button"
+            class="icon-btn"
+            [title]="themeService.isDark() ? 'Modo claro' : 'Modo escuro'"
+            (click)="toggleTheme()">
+            <i class="pi" [class.pi-sun]="themeService.isDark()" [class.pi-moon]="!themeService.isDark()"></i>
+        </button>
+
+        <button type="button" class="icon-btn" routerLink="/alerts" title="Notificações">
+            <i class="pi pi-bell"></i>
+            @if(qtd() > 0) {
+                <span class="dot"></span>
+            }
+        </button>
+
+        <div class="divider"></div>
+
+        <div class="profile cursor-pointer" (click)="menu.toggle($event)">
+            <div class="circle-name" [ngClass]="getProfileClass(user()?.perfil)">
+                @if(user()?.nome) {
+                    <span>{{ inititalName(user()!.nome) | uppercase }}</span>
+                }
+            </div>
+
+            <div class="profile-info">
+                <span class="name">{{ user()?.nome }}</span>
+                <small class="role">{{ user()?.perfil | titlecase }}</small>
+            </div>
         </div>
+
+        <p-menu #menu [model]="itemsProfile" [popup]="true" appendTo="body" />
     </div>
 </div>

@@ -5,10 +5,11 @@
     justify-content: space-between;
     border: 1px solid transparent;
     align-items: center;
+    background: var(--bg-surface);
 }
 
 .container.border-red {
-    border-color: #ef4444;
+    border-color: var(--primary-red);
 }
 
 .container.border-yellow {
@@ -16,7 +17,7 @@
 }
 
 .container.border-green {
-    border-color: #22c55e;
+    border-color: var(--primary-green);
 }
 
 .container.border-blue {
@@ -24,11 +25,11 @@
 }
 
 .container.border-orange {
-    border-color: #f97316;
+    border-color: var(--text-color-orange);
 }
 
 .container.border-gray {
-    border-color: #9ca3af;
+    border-color: var(--text-color-gray);
 }
 
 
@@ -46,26 +47,26 @@
 }
 
 .box-icon.box-red {
-    background: #fee2e2;
+    background: var(--bg-card-red);
 
     i {
-        color: #ef4444;
+        color: var(--text-color-red);
     }
 }
 
 .box-icon.box-yellow {
-    background: #fef9c3;
+    background: var(--bg-card-yellow);
 
     i {
-        color: #eab308;
+        color: var(--text-color-yellow);
     }
 }
 
 .box-icon.box-green {
-    background: #dcfce7;
+    background: var(--bg-card-green);
 
     i {
-        color: #22c55e;
+        color: var(--text-color-green);
     }
 }
 
@@ -78,18 +79,18 @@
 }
 
 .box-icon.box-orange {
-    background: #ffedd5;
+    background: var(--bg-card-orange);
 
     i {
-        color: #f97316;
+        color: var(--text-color-orange);
     }
 }
 
 .box-icon.box-gray {
-    background: #f3f4f6;
+    background: var(--bg-card-gray);
 
     i {
-        color: #6b7280;
+        color: var(--text-color-gray);
     }
 }
 
@@ -102,31 +103,31 @@
 }
 
 .tag-red {
-    background: #fee2e2;
-    color: #b91c1c;
+    background: var(--bg-card-red);
+    color: var(--text-color-red);
 }
 
 .tag-yellow {
-    background: #fef9c3;
-    color: #a16207;
+    background: var(--bg-card-yellow);
+    color: var(--text-color-yellow);
 }
 
 .tag-green {
-    background: #dcfce7;
-    color: #15803d;
+    background: var(--bg-card-green);
+    color: var(--text-color-green);
 }
 
 .tag-blue {
-    background: #dbeafe;
+    background: var(--color-blue);
     color: var(--text-color-blue);
 }
 
 .tag-orange {
-    background: #ffedd5;
-    color: #c2410c;
+    background: var(--bg-card-orange);
+    color: var(--text-color-orange);
 }
 
 .tag-gray {
-    background: #f3f4f6;
-    color: #4b5563;
+    background: var(--bg-card-gray);
+    color: var(--text-color-gray);
 }

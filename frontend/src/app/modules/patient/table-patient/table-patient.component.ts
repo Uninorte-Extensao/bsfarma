@@ -1,21 +1,21 @@
-import { Component, inject, model, output } from '@angular/core';
+import { Component, computed, inject, model, output, signal } from '@angular/core';
 import { IS_MOBILE } from '../../../shared/services/is-mobile.service';
 import { IPaciente } from '../../../shared/models/IPatient';
 
-import { TableModule } from 'primeng/table';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { Button } from 'primeng/button';
+import { Tag } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-table-patient',
   imports: [
-    TableModule,
     IconField,
     InputIcon,
     Button,
+    Tag,
     DatePipe,
     InputText
   ],
@@ -35,6 +35,20 @@ export class TablePatientComponent {
   onItemDelete = output<IPaciente>();
 
   onItemEdit = output<IPaciente>();
+
+  protected searchTerm = signal('');
+
+  protected filteredList = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const list = this.listPacientes();
+
+    if (!term) return list;
+
+    return list.filter(item =>
+      item.codigo.toLowerCase().includes(term) ||
+      item.condicao_clinica.toLowerCase().includes(term)
+    );
+  });
 
   deleteItem(item: IPaciente) {
     this.onItemDelete.emit(item);

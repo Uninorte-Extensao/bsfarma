@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { Toast } from 'primeng/toast';
 import { LoadingComponent } from './shared/components/loading/loading.component';
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -13,6 +14,7 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
 export class AppComponent {
     isAuthRoute = false;
     private router = inject(Router);
+    private themeService = inject(ThemeService);
 
     constructor() {
         this.router.events

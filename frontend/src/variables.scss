@@ -1,24 +1,61 @@
-:root {
-    --primary-green: #01A768;
-    --primary-blue: #03A9F5;
-    --primary-yellow: #a88e04;
-    --primary-red: #F0483E;
+/*
+ * Tokens extraídos do protótipo (paleta farmacêutica/clínica).
+ * Mantém os MESMOS nomes de variável já consumidos pelo app — só os
+ * valores mudam entre :root (claro) e :root.dark (escuro).
+ *
+ * Todas as cores aqui são hex simples (#RRGGBB). Pra trocar uma cor,
+ * é só editar o hex — não precisa entender nenhuma fórmula.
+ */
 
+:root {
+    color-scheme: light;
+
+    /* Superfícies do shell (sidebar, header, páginas, cards) */
+    --bg-page: #FAF8F4;
+    --bg-surface: #FFFFFF;
+    --bg-sidebar: #F3F2EC;
+
+    --bg-menu: var(--bg-sidebar);
+    --bg-header: var(--bg-page);
+    --bg-auth: var(--ocean-blue);
+    --bg-color: var(--bg-page);
+    --bg-card: var(--bg-page);
+
+    --text-primary: #0F1B2D;
+    --text-secondary: #647289;
+    --text-muted: #7C8799;
+    --color-dark: var(--text-primary);
+
+    --border-color: #D7E1DC;
+    --hover-surface: color-mix(in oklch, var(--text-primary) 5%, transparent);
+    --shadow-card: 0 1px 3px color-mix(in oklab, var(--text-primary) 6%, transparent),
+                   0 1px 2px color-mix(in oklab, var(--text-primary) 4%, transparent);
+
+    /* Hues de marca/status — "green" é o verde de sucesso/ativo usado em todo o app */
+    --primary-green: #00944D;
+    --primary-blue: #3D77D7;
+    --primary-yellow: #DE9300;
+    --primary-red: #DF202E;
 
     --ocean-blue: #4C8EA9;
     --ocean-blue-secondary: #ecfeff;
 
-    --slate-3: #EDF1F5;
+    --slate-3: #E6EDEA;
 
-    --border-green: 1px solid #01A768;
-    --border-blue: 1px solid #03A9F5;
-    --border-yellow: 1px solid #a88e04;
-    --border-red: 1px solid #F0483E;
+    --border-green: 1px solid var(--primary-green);
+    --border-blue: 1px solid var(--primary-blue);
+    --border-yellow: 1px solid var(--primary-yellow);
+    --border-red: 1px solid var(--primary-red);
 
-    --color-green: #01A7684D;
-    --color-blue: #03A9F54D;
-    --color-yellow: #FED6004D;
-    --color-red: #F0483E4D;
+    /* Fundos "tint" (badges, pills) — mistura da cor sólida acima com o fundo do card */
+    --color-green: color-mix(in oklch, var(--primary-green) 18%, var(--bg-surface));
+    --color-blue: color-mix(in oklch, var(--primary-blue) 18%, var(--bg-surface));
+    --color-yellow: color-mix(in oklch, var(--primary-yellow) 18%, var(--bg-surface));
+    --color-red: color-mix(in oklch, var(--primary-red) 18%, var(--bg-surface));
+
+    /* Item ativo do menu lateral — isolado dos tokens de status/badge acima */
+    --bg-menu-active: color-mix(in oklch, var(--primary-green) 18%, var(--bg-surface));
+    --text-menu-active: var(--primary-green);
 
     --text-color-green: var(--primary-green);
     --text-color-blue: var(--primary-blue);
@@ -26,11 +63,7 @@
     --text-color-red: var(--primary-red);
 
     --color-white: #fff;
-
-    --bg-menu: var(--ocean-blue);
-    --bg-header: var(--ocean-blue);
-    --bg-auth: var(--ocean-blue);
-    --bg-color: var(--color-white);
+    --color-black: #000;
 
     --bg-card-green: var(--color-green);
     --bg-card-blue: var(--color-blue);
@@ -44,7 +77,7 @@
 
 
 
-    // variveis para os cards reutilizaveis
+    // variveis para os cards reutilizaveis (fora da paleta principal do protótipo)
 
 
     /* Cyan */
@@ -71,4 +104,76 @@
     --border-card-teal: 1px solid #5eead4;
     --bg-card-teal: #f0fdfa;
     --text-color-teal: #0f766e;
+
+    /* Gray (neutro / vencido) */
+    --border-card-gray: 1px solid #cbd5e1;
+    --bg-card-gray: #f1f5f9;
+    --text-color-gray: #64748b;
+}
+
+:root.dark {
+    color-scheme: dark;
+
+    --bg-page: #050D1C;
+    --bg-surface: #121B29;
+    --bg-sidebar: #030915;
+    --bg-card: var(--bg-sidebar);
+
+    --text-primary: #EFEEEB;
+    --text-secondary: #8190A8;
+    --text-muted: #677284;
+
+    --border-color: #FFFFFF1F;
+    --hover-surface: color-mix(in oklch, var(--text-primary) 8%, transparent);
+    --shadow-card: 0 4px 16px color-mix(in oklab, black 40%, transparent),
+                   0 2px 8px color-mix(in oklab, black 30%, transparent);
+
+    --primary-green: #32B36E;
+    --primary-blue: #5F97F4;
+    --primary-yellow: #EFA831;
+    --primary-red: #F3625D;
+
+    --slate-3: #202938;
+
+    --border-green: 1px solid var(--primary-green);
+    --border-blue: 1px solid var(--primary-blue);
+    --border-yellow: 1px solid var(--primary-yellow);
+    --border-red: 1px solid var(--primary-red);
+
+    --color-green: color-mix(in oklch, var(--primary-green) 22%, var(--bg-surface));
+    --color-blue: color-mix(in oklch, var(--primary-blue) 22%, var(--bg-surface));
+    --color-yellow: color-mix(in oklch, var(--primary-yellow) 22%, var(--bg-surface));
+    --color-red: color-mix(in oklch, var(--primary-red) 22%, var(--bg-surface));
+
+    --bg-menu-active: color-mix(in oklch, var(--primary-green) 22%, var(--bg-surface));
+
+    /* Cyan */
+    --border-card-cyan: 1px solid #22D3EE;
+    --bg-card-cyan: #164E63;
+    --text-color-cyan: #67E8F9;
+
+    /* Purple */
+    --border-card-purple: 1px solid #A78BFA;
+    --bg-card-purple: #4C1D95;
+    --text-color-purple: #C4B5FD;
+
+    /* Orange */
+    --border-card-orange: 1px solid #FB923C;
+    --bg-card-orange: #7C2D12;
+    --text-color-orange: #FDBA74;
+
+    /* Pink */
+    --border-card-pink: 1px solid #F472B6;
+    --bg-card-pink: #831843;
+    --text-color-pink: #F9A8D4;
+
+    /* Teal */
+    --border-card-teal: 1px solid #2DD4BF;
+    --bg-card-teal: #134E4A;
+    --text-color-teal: #5EEAD4;
+
+    /* Gray (neutro / vencido) */
+    --border-card-gray: 1px solid #475569;
+    --bg-card-gray: #1E293B;
+    --text-color-gray: #CBD5E1;
 }

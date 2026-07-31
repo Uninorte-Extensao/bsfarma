@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
       ripple: true,
       theme: {
         preset: BsFarmaTheme,
-        options: { prefix: 'p', cssLayer: false, darkModeSelector: 'off' }
+        options: { prefix: 'p', cssLayer: false, darkModeSelector: '.dark' }
       },
       translation: BsFarmaTranslation
     }),

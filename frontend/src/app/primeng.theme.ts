@@ -135,8 +135,7 @@ export const BsFarmaTheme = definePreset(Aura, {
       200: "#a5f3fc",
       300: "#67e8f9",
       400: "#22d3ee",
-    // 500: "#06b6d4",
-      500: "#4C8EA9",
+      500: "#06b6d4",
       600: "#0891b2",
       700: "#0e7490",
       800: "#155e75",
@@ -437,16 +436,16 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#0f172a",
         },
         primary: {
-          color: "{cyan.500}",
-          contrastColor: "#ffffff",
-          hoverColor: "{cyan.600}",
-          activeColor: "{cyan.700}"
+          color: "#00734B",
+          contrastColor: "#FDFCF8",
+          hoverColor: "#00643D",
+          activeColor: "#005630"
         },
         highlight: {
-          background: "{cyan.50}",
-          focusBackground: "{cyan.100}",
-          color: "{cyan.700}",
-          focusColor: "{cyan.800}"
+          background: "#D0E4DA",
+          focusBackground: "#C0D8CC",
+          color: "#162235",
+          focusColor: "#0B1628"
         },
         mask: {
           background: "rgba(0,0,0,0.4)",
@@ -562,16 +561,16 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#09090b"
         },
         primary: {
-          color: "{primary.400}",
-          contrastColor: "{surface.0}",
-          hoverColor: "{primary.300}",
-          activeColor: "{primary.200}"
+          color: "#00B481",
+          contrastColor: "#020511",
+          hoverColor: "#17C590",
+          activeColor: "#37D59F"
         },
         highlight: {
-          background: "color-mix(in srgb, {primary.400}, transparent 84%)",
-          focusBackground: "color-mix(in srgb, {primary.400}, transparent 76%)",
-          color: "rgba(255,255,255,.87)",
-          focusColor: "rgba(255,255,255,.87)"
+          background: "#163B2C",
+          focusBackground: "#184735",
+          color: "#EFEEEB",
+          focusColor: "#FDFCF8"
         },
         mask: {
           background: "rgba(0,0,0,0.6)",
