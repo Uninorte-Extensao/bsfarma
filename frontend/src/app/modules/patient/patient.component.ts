@@ -3,7 +3,6 @@ import {
   inject,
   model,
   signal,
-  WritableSignal,
   OnInit
 } from '@angular/core';
 
@@ -58,8 +57,8 @@ export class PatientComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   public pacientes = signal<IPaciente[]>([]);
-  public pacientesAtivos = signal<IPaciente[]>([]);
-  public pacientesInativos = signal<IPaciente[]>([]);
+
+  private currentFilter: boolean | undefined = undefined;
 
   public isVisible = model<boolean>(false);
   public typeDialog = signal<string>('criar');
@@ -77,22 +76,18 @@ export class PatientComponent implements OnInit {
     this.loadPacientes();
   }
 
-  private loadPacientes(): void {
-    this.fetchPacientes(this.pacientes);
-    this.fetchPacientes(this.pacientesAtivos, true);
-    this.fetchPacientes(this.pacientesInativos, false);
+  public onFilter(filter: boolean | undefined) {
+    this.currentFilter = filter;
+    this.loadPacientes();
   }
 
-  private fetchPacientes(
-    state: WritableSignal<IPaciente[]>,
-    ativo?: boolean
-  ): void {
+  private loadPacientes(): void {
 
     this.loading.show();
 
-    this.patientService.getPacientes(ativo)
+    this.patientService.getPacientes(this.currentFilter)
       .then((res: IPaciente[]) => {
-        state.set(res);
+        this.pacientes.set(res);
       })
       .catch(() => {
         this.toast.showToastError(
@@ -111,33 +106,11 @@ export class PatientComponent implements OnInit {
     this.patientService.deletePaciente(item.codigo)
       .then(() => {
 
-        this.pacientes.update(
-          pacientes =>
-            pacientes.filter(
-              p => p.codigo !== item.codigo
-            )
-        );
-
-        this.pacientesAtivos.update(
-          pacientes =>
-            pacientes.filter(
-              p => p.codigo !== item.codigo
-            )
-        );
-
-        this.pacientesInativos.update(
-          pacientes => [
-            ...pacientes,
-            {
-              ...item,
-              ativo: false
-            }
-          ]
-        );
-
         this.toast.showToastSuccess(
           'Paciente inativado com sucesso.'
         );
+
+        this.loadPacientes();
       })
       .catch(() => {
         this.toast.showToastError(
@@ -210,15 +183,13 @@ export class PatientComponent implements OnInit {
     };
 
     this.patientService.createPaciente(form)
-      .then((res: IPaciente) => {
+      .then(() => {
 
-        this.pacientes.update(
-          pacientes => [...pacientes, res]
+        this.toast.showToastSuccess(
+          'Paciente cadastrado com sucesso.'
         );
 
-        this.pacientesAtivos.update(
-          pacientes => [...pacientes, res]
-        );
+        this.loadPacientes();
 
         this.closeModal();
       })
@@ -245,44 +216,7 @@ export class PatientComponent implements OnInit {
     this.patientService.recuperarPaciente(form)
       .then((res: IPaciente) => {
 
-        // LISTA GERAL
-        this.pacientes.update((pacientes) => {
-
-          const exists = pacientes.some(
-            p => p.codigo === res.codigo
-          );
-
-          if (exists) {
-            return pacientes.map(
-              p => p.codigo === res.codigo ? res : p
-            );
-          }
-
-          return [...pacientes, res];
-        });
-
-        // LISTA ATIVOS
-        this.pacientesAtivos.update((pacientes) => {
-
-          const exists = pacientes.some(
-            p => p.codigo === res.codigo
-          );
-
-          if (exists) {
-            return pacientes.map(
-              p => p.codigo === res.codigo ? res : p
-            );
-          }
-
-          return [...pacientes, res];
-        });
-
-        // REMOVE DOS INATIVOS
-        this.pacientesInativos.update((pacientes) =>
-          pacientes.filter(
-            p => p.codigo !== res.codigo
-          )
-        );
+        this.loadPacientes();
 
         this.toast.showToastSuccess(
           'Paciente recuperado com sucesso.'
@@ -314,25 +248,13 @@ export class PatientComponent implements OnInit {
       this.codigo(),
       form
     )
-      .then((res: IPaciente) => {
-
-        this.pacientes.update(
-          pacientes =>
-            pacientes.map(p =>
-              p.codigo === res.codigo ? res : p
-            )
-        );
-
-        this.pacientesAtivos.update(
-          pacientes =>
-            pacientes.map(p =>
-              p.codigo === res.codigo ? res : p
-            )
-        );
+      .then(() => {
 
         this.toast.showToastSuccess(
           'Paciente atualizado com sucesso.'
         );
+
+        this.loadPacientes();
 
         this.closeModal();
       })

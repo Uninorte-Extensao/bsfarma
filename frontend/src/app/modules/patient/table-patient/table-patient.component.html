@@ -3,12 +3,22 @@
         <p-inputicon>
             <i class="pi pi-search"></i>
         </p-inputicon>
-        <input pInputText type="text" (input)="searchTerm.set($event.target.value)" placeholder="Buscar" />
+        <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
     </p-iconfield>
+
+    <p-select
+        class="status-filter"
+        [options]="filterOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="statusFilter()"
+        (ngModelChange)="onStatusChange($event)"
+        placeholder="Status"
+    />
 </div>
 
 <div class="cards-grid">
-    @for (item of filteredList(); track item.codigo) {
+    @for (item of pagedList(); track item.codigo) {
         <div class="card entity-card">
 
             <div class="entity-card-header">
@@ -41,3 +51,11 @@
         <div class="empty-state">Nenhum paciente encontrado.</div>
     }
 </div>
+
+<p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 36]"
+    (onPageChange)="onPageChange($event)"
+/>

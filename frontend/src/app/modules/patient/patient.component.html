@@ -1,40 +1,11 @@
-<div>
-    <div class="relative">
-        <p-tabs value="0">
-
-            <p-tablist>
-                <p-tab value="0">Todos</p-tab>
-                <p-tab value="1">Ativos</p-tab>
-                <p-tab value="2">Inativos</p-tab>
-            </p-tablist>
-
-            <p-tabpanels>
-
-                <p-tabpanel value="0">
-                    <app-table-patient
-                        [listPacientes]="pacientes()"
-                        (onItemDelete)="delete($event)"
-                        (onItemEdit)="handleEdit($event)"
-                        [(isVisible)]="isVisible"
-                        [(codigo)]="codigo"
-                    />
-                </p-tabpanel>
-
-                <p-tabpanel value="1">
-                    <app-table-patient
-                        [listPacientes]="pacientesAtivos()"
-                    />
-                </p-tabpanel>
-
-                <p-tabpanel value="2">
-                    <app-table-patient
-                        [listPacientes]="pacientesInativos()"
-                    />
-                </p-tabpanel>
-
-            </p-tabpanels>
-
-        </p-tabs>
+<div class="relative">
+    <app-table-patient
+        [listPacientes]="pacientes()"
+        (onItemDelete)="delete($event)"
+        (onItemEdit)="handleEdit($event)"
+        [(isVisible)]="isVisible"
+        (onFilter)="onFilter($event)"
+        [(codigo)]="codigo"/>
 
         <div class="btn-add flex gap-2">
             <p-button
@@ -50,7 +21,7 @@
             />
         </div>
 
-    </div>
+
 </div>
 
 <p-dialog
