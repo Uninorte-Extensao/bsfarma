@@ -20,6 +20,7 @@
     --bg-auth: var(--ocean-blue);
     --bg-color: var(--bg-page);
     --bg-card: var(--bg-page);
+    --card-shadow: 0px 0px 15px -3px rgba(0, 0, 0, 0.1);
 
     --text-primary: #0F1B2D;
     --text-secondary: #647289;
@@ -118,6 +119,7 @@
     --bg-surface: #121B29;
     --bg-sidebar: #030915;
     --bg-card: var(--bg-sidebar);
+    --card-shadow: 0px 0px 15px -3px rgb(255 255 255 / 10%);
 
     --text-primary: #EFEEEB;
     --text-secondary: #8190A8;

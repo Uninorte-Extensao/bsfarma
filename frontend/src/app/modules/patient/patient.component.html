@@ -39,126 +39,16 @@
 >
 
 @if(isVisible()) {
-
-<form
-    class="my-2 flex flex-column gap-3"
-    [formGroup]="form"
-    (ngSubmit)="submit()"
->
-
-    @if(typeDialog() === 'criar' || typeDialog() === 'recuperar') {
-
-    <div class="flex flex-column gap-2">
-
-        <label for="cpf">CPF</label>
-
-        <p-inputmask
-            id="cpf"
-            fluid
-            placeholder="000.000.000-00"
-            mask="999.999.999-99"
-            formControlName="cpf"
-        />
-
-    </div>
-
-    }
-
-    @if(typeDialog() === 'criar' || typeDialog() === 'editar') {
-
-    <div class="flex flex-column gap-2">
-
-        <label for="condicao">
-            Condição clínica
-        </label>
-
-        <textarea
-            pInputTextarea
-            rows="4"
-            placeholder="Descreva a condição clínica"
-            fluid
-            id="condicao"
-            formControlName="condicaoClinica"
-        >
-        </textarea>
-
-    </div>
-
-    }
-
-        @if(
-        typeDialog() === 'recuperar' &&
-        dadosRecuperados()
-        ) {
-
-        <div class="surface-100 border-round p-3 mt-3">
-
-            <div class="flex flex-column gap-2">
-
-                <small class="text-500">
-                    Paciente recuperado
-                </small>
-
-                <div>
-                    <strong>Código:</strong>
-                    {{ dadosRecuperados()?.codigo }}
-                </div>
-
-                <div>
-                    <strong>Condição clínica:</strong>
-                    {{ dadosRecuperados()?.condicao_clinica }}
-                </div>
-
-                <div>
-                    <strong>Status:</strong>
-
-                    <span
-                        class="ml-2 px-2 py-1 border-round text-sm font-semibold"
-                        [class]="dadosRecuperados()?.ativo
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'"
-                    >
-                        {{
-                            dadosRecuperados()?.ativo
-                            ? 'Ativo'
-                            : 'Inativo'
-                        }}
-                    </span>
-                </div>
-
-                <div>
-                    <strong>Criado em:</strong>
-
-                    {{
-                    dadosRecuperados()?.criado_em
-                    | date:'dd/MM/yyyy'
-                    }}
-                </div>
-
-            </div>
-
-        </div>
-
-        }
-
-    <div class="flex gap-2 justify-content-end">
-
-        <p-button
-            label="Cancelar"
-            severity="danger"
-            (click)="closeModal()"
-        />
-
-        <p-button
-            label="Salvar"
-            severity="success"
-            type="submit"
-        />
-
-    </div>
-
-</form>
-
+    <app-form-patient
+        [(isVisible)]="isVisible"
+        [(typeDialog)]="typeDialog"
+        [paciente]="pacienteSelecionado()"
+        [dadosRecuperados]="dadosRecuperados()"
+        (onChangeCreate)="criarPaciente($event)"
+        (onChangeRecuperar)="recuperarPaciente($event)"
+        (onChangeEditar)="editarPaciente($event)"
+        (onInvalid)="onInvalidForm()"
+    />
 }
 
 </p-dialog>
