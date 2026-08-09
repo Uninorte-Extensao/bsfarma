@@ -19,7 +19,7 @@
 
                 <div class="group-list">
                     @for (item of criticos(); track item.id) {
-                        <div class="alert-row">
+                        <div class="alert-row mb-2" [class.is-resolved]="isResolvido(item)">
                             <div class="alert-info">
                                 <div class="item-name">
                                     {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}
@@ -62,7 +62,7 @@
 
                 <div class="group-list">
                     @for (item of estoqueBaixo(); track item.id) {
-                        <div class="alert-row">
+                        <div class="alert-row mb-2" [class.is-resolved]="isResolvido(item)">
                             <div class="alert-info">
                                 <div class="item-name">
                                     {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}
@@ -105,7 +105,7 @@
 
                 <div class="group-list">
                     @for (item of validade(); track item.id) {
-                        <div class="alert-row">
+                        <div class="alert-row mb-2" [class.is-resolved]="isResolvido(item)">
                             <div class="alert-info">
                                 <div class="item-name">
                                     {{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }}

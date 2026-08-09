@@ -49,7 +49,7 @@ export class AlertsComponent implements OnInit {
     this.loadingService.show();
 
     this.alertService
-      .getAlertas(undefined, undefined, undefined, true)
+      .getAlertas(undefined, undefined, undefined, false)
       .then(res => this.listAlertas.set(res))
       .catch(() => this.toastService.showToastError('Erro ao buscar alertas'))
       .finally(() => this.loadingService.hide());
@@ -73,6 +73,10 @@ export class AlertsComponent implements OnInit {
 
   protected isVencido(item: IAlertaValidade): boolean {
     return this.diasParaVencer(item.lote.validade) < 0;
+  }
+
+  protected isResolvido(item: IAlertaValidade): boolean {
+    return item.status_alerta === 'Resolvido';
   }
 
   protected getStatusSeverity(status: string): TagSeverity {
