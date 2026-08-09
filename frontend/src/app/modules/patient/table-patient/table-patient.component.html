@@ -1,3 +1,5 @@
+<p-confirmpopup />
+
 <div class="list-toolbar">
     <p-iconfield iconPosition="left">
         <p-inputicon>
@@ -27,13 +29,13 @@
                 </div>
 
                 <div class="entity-info">
-                    <div class="entity-title">{{ item.codigo }}</div>
+                    <div class="entity-title" [pTooltip]="item.codigo">{{ item.codigo }}</div>
                     <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
                 </div>
 
                 <div class="entity-actions">
                     <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
-                    <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item)" />
+                    <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item, $event)" />
                 </div>
             </div>
 

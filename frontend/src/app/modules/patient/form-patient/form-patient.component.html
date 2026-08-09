@@ -4,6 +4,19 @@
     (ngSubmit)="submit()"
 >
 
+@if(typeDialog() === 'editar') {
+    <div class="flex gap-2">
+        <div class="entity-avatar">
+            <i class="pi pi-user"></i>
+        </div>
+
+        <div class="entity-info">
+            <div class="entity-title">{{ paciente()?.codigo }}</div>
+            <p-tag [value]="paciente()?.ativo ? 'Ativo' : 'Inativo'" [severity]="paciente()?.ativo ? 'success' : 'danger'" />
+        </div>
+    </div>
+}
+
     @if(typeDialog() === 'criar' || typeDialog() === 'recuperar') {
 
     <div class="flex flex-column gap-2">

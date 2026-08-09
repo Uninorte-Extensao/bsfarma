@@ -1,5 +1,5 @@
 export interface ICreateDispensacao {
-    paciente_id: string,
+    codigo: string,
     lote_id: string,
     quantidade: number
 }

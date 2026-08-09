@@ -2,7 +2,7 @@ import { APP_INITIALIZER, ApplicationConfig, DEFAULT_CURRENCY_CODE, LOCALE_ID, p
 import { provideRouter, Router, withDisabledInitialNavigation } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { routes } from './app.routes';
@@ -34,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
     // { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MessageService,
+    ConfirmationService,
     {
       provide: IS_MOBILE,
       useFactory: (s: IsMobileService) => s.isMobile,

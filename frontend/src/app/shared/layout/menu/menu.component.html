@@ -2,7 +2,7 @@
     <section class="container-menu" [class.collapsed]="isCollapsed">
 
     <header>
-        <div class="container-logo">
+        <div class="container-logo cursor-pointer" (click)="toggleMenu()">
             <img src="assets/icon-logo.png">
             <span class="logo-tipo">BS <span>farma</span></span>
         </div>
@@ -39,8 +39,8 @@
     </section>
 
 
-  <button class="collapse-btn" (click)="toggleMenu()" [title]="isCollapsed ? 'Expandir menu' : 'Colapsar menu'">
+  <!-- <button class="collapse-btn" (click)="toggleMenu()" [title]="isCollapsed ? 'Expandir menu' : 'Colapsar menu'">
     <i class="pi" [class]="isCollapsed ? 'pi-angle-right' : 'pi-angle-left'"></i>
-  </button>
+  </button> -->
 
 </div>

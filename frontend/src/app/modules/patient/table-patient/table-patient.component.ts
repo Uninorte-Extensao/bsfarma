@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
+import { Tooltip} from 'primeng/tooltip'
+import { ConfirmPopup } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-table-patient',
@@ -23,7 +26,9 @@ import { InputText } from 'primeng/inputtext';
     FormsModule,
     Paginator,
     DatePipe,
-    InputText
+    InputText,
+    Tooltip,
+    ConfirmPopup
   ],
   templateUrl: './table-patient.component.html',
   styleUrl: './table-patient.component.scss',
@@ -31,6 +36,7 @@ import { InputText } from 'primeng/inputtext';
 export class TablePatientComponent {
 
   protected isMobile = inject(IS_MOBILE);
+  private confirmationService = inject(ConfirmationService);
 
   public isVisible = model<boolean>(false);
 
@@ -88,8 +94,19 @@ export class TablePatientComponent {
     this.rows.set(event.rows ?? 8);
   }
 
-  deleteItem(item: IPaciente) {
-    this.onItemDelete.emit(item);
+  deleteItem(item: IPaciente, event: Event) {
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+      message: `Deseja realmente inativar o paciente ${item.codigo}?`,
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      acceptButtonProps: { severity: 'danger' },
+      rejectButtonProps: { severity: 'secondary', outlined: true },
+      accept: () => {
+        this.onItemDelete.emit(item);
+      }
+    });
   }
 
   goToEdit(item: IPaciente) {

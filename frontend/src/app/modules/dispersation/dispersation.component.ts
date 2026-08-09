@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
-import { TableModule } from "primeng/table";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { Button } from "primeng/button";
@@ -7,6 +6,7 @@ import { IPaciente } from '../../shared/models/IPatient';
 import { PACIENTE } from '../../shared/mocks/pacientes.mock';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
+import { Paginator, PaginatorState } from 'primeng/paginator';
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -17,16 +17,18 @@ import { MovementService } from '../../shared/services/movement.service';
 import { IMovimentacao } from '../../shared/models/IMovement';
 import { LoteService } from '../../shared/services/batch.service';
 import { IBatch } from '../../shared/models/IBatch';
+import { Tooltip } from "primeng/tooltip";
 @Component({
   selector: 'app-dispersation',
   imports: [
-    TableModule,
     IconField,
     InputIcon,
     Button,
     DatePipe,
-    InputText
-  ],
+    InputText,
+    Paginator,
+    Tooltip
+],
   templateUrl: './dispersation.component.html',
   styleUrl: './dispersation.component.scss',
 })
@@ -64,6 +66,36 @@ export class DispersationComponent implements OnInit {
     });
   });
   protected movimentacoes = signal<IMovimentacao[]>([])
+
+  protected searchTerm = signal('');
+  protected first = signal(0);
+  protected rows = signal(8);
+
+  protected filteredList = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const list = this.dispensacoesComputed();
+
+    if (!term) return list;
+
+    return list.filter(item =>
+      item.paciente_id.toLowerCase().includes(term) ||
+      (item.numero_lote ?? '').toLowerCase().includes(term)
+    );
+  });
+
+  protected pagedList = computed(() =>
+    this.filteredList().slice(this.first(), this.first() + this.rows())
+  );
+
+  protected onSearch(value: string) {
+    this.searchTerm.set(value);
+    this.first.set(0);
+  }
+
+  protected onPageChange(event: PaginatorState) {
+    this.first.set(event.first ?? 0);
+    this.rows.set(event.rows ?? 8);
+  }
 
   goToAdd() {
     this.router.navigate(['/dispersation/create'])

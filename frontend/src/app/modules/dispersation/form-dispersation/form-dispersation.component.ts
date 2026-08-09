@@ -17,6 +17,7 @@ import { DispersationService } from '../../../shared/services/dispersation.servi
 import { PatientService } from '../../../shared/services/patient.service';
 import { MedicineService } from '../../../shared/services/medicine.service';
 import { LoteService } from '../../../shared/services/batch.service';
+import { RouterLink } from "@angular/router";
 
 
 interface ILoteMedicamento extends IBatch {
@@ -26,7 +27,7 @@ interface ILoteMedicamento extends IBatch {
 }
 @Component({
   selector: 'app-form-dispersation',
-  imports: [Button, InputNumber, Select, AutoComplete, ReactiveFormsModule, FormsModule],
+  imports: [Button, InputNumber, Select, AutoComplete, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './form-dispersation.component.html',
   styleUrl: './form-dispersation.component.scss',
 })
@@ -65,7 +66,9 @@ export class FormDispersationComponent {
     const selectedIds = this.batchSelected().map(item => item.id);
 
     return this.loteComputed().filter(
-      lote => !selectedIds.includes(lote.id)
+      lote =>
+        !selectedIds.includes(lote.id) &&
+        lote.quantidade_atual > 0
     );
 
   });
@@ -129,12 +132,15 @@ export class FormDispersationComponent {
 
   addLote(item: ILoteMedicamento) {
 
-    console.log('add lote', item)
+    if (!item || item.quantidade_atual <= 0) {
+      return;
+    }
+
     this.batchSelected.update((items) => [
       ...items,
       {
         ...item,
-        quantidade: 0
+        quantidade: 1
       }
     ]);
   }
@@ -164,7 +170,7 @@ export class FormDispersationComponent {
     const payloads = this.batchSelected().map((item) => {
 
       const payload = {
-        paciente_id: pacienteId,
+        codigo: pacienteId,
         lote_id: item.id,
         quantidade: item.quantidade
       };

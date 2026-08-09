@@ -10,6 +10,7 @@ import {
   IRecuperarPaciente,
   IUpdatePaciente
 } from '../../../shared/models/IPatient';
+import { Tag } from 'primeng/tag';
 
 type ITypeDialog = 'criar' | 'recuperar' | 'editar';
 
@@ -20,7 +21,8 @@ type ITypeDialog = 'criar' | 'recuperar' | 'editar';
     Button,
     InputMask,
     Textarea,
-    DatePipe
+    DatePipe,
+    Tag
   ],
   templateUrl: './form-patient.component.html',
   styleUrl: './form-patient.component.scss',

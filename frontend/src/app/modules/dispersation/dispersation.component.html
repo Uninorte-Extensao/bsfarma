@@ -1,117 +1,55 @@
 <section>
 
-    <aside class="px-5 pt-3">
+    <aside class="">
 
-        <p-table 
-            [value]="dispensacoesComputed()"
-            [paginator]="true"
-            [rows]="8"
-            [rowsPerPageOptions]="[8, 16, 32]"
-            dataKey="id"
-            [globalFilterFields]="[
-                'id',
-                'paciente_id',
-                'lote',
-            ]"
-            #dt
-        >
+        <div class="list-toolbar">
+            <p-iconfield iconPosition="left">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar dispensação" />
+            </p-iconfield>
 
-            <ng-template #caption>
+            <p-button
+                label="Novo Atendimento"
+                icon="pi pi-plus"
+                (click)="goToAdd()"
+            />
+        </div>
 
-                <div class="flex mb-3 justify-content-between">
+        <div class="cards-grid">
+            @for (item of pagedList(); track item.id) {
+                <div class="card entity-card">
 
-                    <p-iconfield>
+                    <div class="entity-card-header">
+                        <div class="entity-avatar">
+                            <i class="pi pi-user"></i>
+                        </div>
 
-                        <p-inputicon>
-                            <i class="pi pi-search"></i>
-                        </p-inputicon>
+                        <div class="entity-info">
+                            <div class="entity-title" [pTooltip]="item.paciente_id">{{ item.paciente_id }}</div>
+                            <small class="entity-subtitle">Lote {{ item.numero_lote || '-' }}</small>
+                        </div>
+                    </div>
 
-                        <input 
-                            pInputText 
-                            type="text" 
-                            (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
-                            placeholder="Buscar dispensação" 
-                        />
-
-                    </p-iconfield>
-
-                    <p-button
-                        label="Novo Atendimento"
-                        icon="pi pi-plus"
-                        (click)="goToAdd()"
-                    />
+                    <div class="entity-meta">
+                        <span>Quantidade: {{ item.quantidade ?? '-' }}</span>
+                        <span>Dispensado em {{ item.dispensado_em | date:'dd/MM/yyyy' }}</span>
+                    </div>
 
                 </div>
+            } @empty {
+                <div class="empty-state">Nenhuma dispensação encontrada.</div>
+            }
+        </div>
 
-            </ng-template>
-
-            <ng-template #header>
-
-                <tr>
-
-                    <th pSortableColumn="paciente_id">
-                        <div class="flex items-center gap-2">
-                            Paciente
-                            <p-sortIcon field="paciente_id" />
-                        </div>
-                    </th>
-
-                    <th pSortableColumn="medicamento">
-                        <div class="flex items-center gap-2">
-                            Número do Lote
-                            <p-sortIcon field="medicamento" />
-                        </div>
-                    </th>
-
-                    <th pSortableColumn="quantidade">
-                        <div class="flex items-center gap-2">
-                            Quantidade
-                            <p-sortIcon field="quantidade" />
-                        </div>
-                    </th>
-
-                        <th pSortableColumn="dispensado_em">
-                            <div class="flex items-center gap-2">
-                                Dispensado em
-                                <p-sortIcon field="dispensado_em" />
-                            </div>
-                        </th>
-
-
-                </tr>
-
-            </ng-template>
-
-            <ng-template #body let-item>
-
-                <tr>
-
-                    <td>
-                        {{ item.paciente_id }}
-                    </td>
-
-                    <td>
-                        {{ item.numero_lote }}
-                    </td>
-
-                    <td>
-                        {{ item.quantidade }}
-                    </td>
-
-
-                        <td>
-                            {{
-                                item.dispensado_em
-                                | date:'dd/MM/yyyy HH:mm'
-                            }}
-                        </td>
-                    
-
-                </tr>
-
-            </ng-template>
-
-        </p-table>
+        <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="filteredList().length"
+            [rowsPerPageOptions]="[8, 16, 32]"
+            (onPageChange)="onPageChange($event)"
+        />
 
     </aside>
 
