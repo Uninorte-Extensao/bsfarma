@@ -28,18 +28,21 @@
     --color-dark: var(--text-primary);
 
     --border-color: #D7E1DC;
-    --hover-surface: color-mix(in oklch, var(--text-primary) 5%, transparent);
+    --hover-surface: var(--bg-menu-active);
     --shadow-card: 0 1px 3px color-mix(in oklab, var(--text-primary) 6%, transparent),
                    0 1px 2px color-mix(in oklab, var(--text-primary) 4%, transparent);
 
     /* Hues de marca/status — "green" é o verde de sucesso/ativo usado em todo o app */
-    --primary-green: #00944D;
+    /* Verde da logo: #015C4D */
+    --primary-green: #015C4D;
     --primary-blue: #3D77D7;
     --primary-yellow: #DE9300;
     --primary-red: #DF202E;
 
     --ocean-blue: #4C8EA9;
     --ocean-blue-secondary: #ecfeff;
+
+    --primary-light-green: #41c8b2;
 
     --slate-3: #E6EDEA;
 
@@ -118,7 +121,7 @@
     --bg-page: #050D1C;
     --bg-surface: #121B29;
     --bg-sidebar: #030915;
-    --bg-card: var(--bg-sidebar);
+    --bg-card: var(--bg-surface);
     --card-shadow: 0px 0px 15px -3px rgb(255 255 255 / 10%);
 
     --text-primary: #EFEEEB;
@@ -126,16 +129,19 @@
     --text-muted: #677284;
 
     --border-color: #FFFFFF1F;
-    --hover-surface: color-mix(in oklch, var(--text-primary) 8%, transparent);
+    --hover-surface: var(--bg-menu-active);
     --shadow-card: 0 4px 16px color-mix(in oklab, black 40%, transparent),
                    0 2px 8px color-mix(in oklab, black 30%, transparent);
 
-    --primary-green: #32B36E;
+    /* Mesma matiz da logo (#015C4D), mais clara/dessaturada pra ler bem no escuro */
+    --primary-green: #015C4D;
     --primary-blue: #5F97F4;
     --primary-yellow: #EFA831;
     --primary-red: #F3625D;
 
     --slate-3: #202938;
+
+    --text-menu-active: #41c8b2;
 
     --border-green: 1px solid var(--primary-green);
     --border-blue: 1px solid var(--primary-blue);
