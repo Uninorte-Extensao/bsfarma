@@ -1,117 +1,74 @@
-<p-table 
-[value]="listMedicine()"
-[paginator]="true"
-[rows]="8"
-[rowsPerPageOptions]="[5,10,15]"
-dataKey="id"
-[globalFilterFields]="['nome_generico', 'nome_comercial', 'forma_farmaceutica', 'concentracao', 'via_administracao', 'ativo']"
-#dt
->
+<div class="list-toolbar">
+    <div class="list-toolbar-filters">
+        <p-iconfield iconPosition="left">
+            <p-inputicon>
+                <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
+        </p-iconfield>
 
-    <ng-template #caption>
-        <div class="flex">
-            <p-iconfield iconPosition="left" class="ml-auto">
-                <p-inputicon>
-                    <i class="pi pi-search"></i>
-                </p-inputicon>
-                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
-            </p-iconfield>
-        </div>
-    </ng-template>
+        <p-select
+            class="status-filter"
+            [options]="filterOptions"
+            optionLabel="label"
+            optionValue="value"
+            [ngModel]="statusFilter()"
+            (ngModelChange)="onStatusChange($event)"
+            placeholder="Status"
+        />
+    </div>
 
-    <ng-template #header>
-        <tr>
-            <th pSortableColumn="nomeGenerico">
-                <div class="flex items-center gap-2">
-                    Nome genérico
-                    <p-sortIcon field="nomeGenerico" />
+    @if (authService.hasPermission('catalog.create')) {
+        <p-button
+            [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'"
+            icon="pi pi-plus"
+            (click)="goToCreate()"
+        />
+    }
+</div>
+
+<div class="cards-grid">
+    @for (item of pagedList(); track item.id) {
+        <div class="card entity-card">
+
+            <div class="entity-card-header">
+                <div class="entity-avatar">
+                    <i class="pi pi-box"></i>
                 </div>
-            </th>
 
-            @if(!isMobile()) {
-                <th pSortableColumn="nomeComercial">
-                    <div class="flex items-center gap-2">
-                        Nome comercial
-                        <p-sortIcon field="nomeComercial" />
-                    </div>
-                </th>
-                <th pSortableColumn="formaFarmaceutica">
-                    <div class="flex items-center gap-2">
-                        Forma farm.
-                        <p-sortIcon field="formaFarmaceutica" />
-                    </div>
-                </th>
-                <th pSortableColumn="concentracao">
-                    <div class="flex items-center gap-2">
-                        Concentração
-                        <p-sortIcon field="concentracao" />
-                    </div>
-                </th>
-
-                <th pSortableColumn="viaAdministracao">
-                    <div class="flex items-center gap-2">
-                        Via
-                        <p-sortIcon field="viaAdministracao" />
-                    </div>
-                </th>
-                }
-
-            <th pSortableColumn="ativo">
-                <div class="flex items-center gap-2">
-                    Status
-                    <p-sortIcon field="ativo" />
+                <div class="entity-info">
+                    <div class="entity-title">{{ item.nome_generico }}</div>
+                    <small class="entity-subtitle">{{ item.nome_comercial }}</small>
                 </div>
-            </th>
 
-            <th pSortableColumn="acao">
-                <div class="flex items-center gap-2">
-                    Ação
-                    <p-sortIcon field="acao" />
+                <div class="entity-actions">
+                    <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
+                    <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item)" />
                 </div>
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template #body let-item>
-        <tr>
-            <td>{{ item.nome_generico }}</td>
-            @if(!isMobile()) {
-                <td>{{ item.nome_comercial }}</td>
-                <td>{{ item.forma_farmaceutica }}</td>
-                <td>{{ item.concentracao }}</td>
-                <td>{{ item.via_administracao }}</td>
+            </div>
+
+            <div class="entity-tags">
+                <p-tag [value]="item.concentracao" severity="secondary" />
+                <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+            </div>
+
+            @if (!isMobile()) {
+                <div class="entity-meta">
+                    <small>{{ item.forma_farmaceutica }}</small>
+                    <small>Via {{ item.via_administracao }}</small>
+                </div>
             }
-            <td>
-                <span class="px-2 py-1 border-round text-sm font-semibold"
-                        [class]="item.ativo
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'">
-                    {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                </span>
-            </td>
-            <td>
-                <!-- <span class="flex gap-1 cursor-pointer" (click)="goToEdit(item)">
-                    <small>Editar</small>
-                    <i class="pi pi-angle-double-right"></i>
-                </span> -->
 
-                <div class="flex gap-1">
-                    <p-button
-                    icon="pi pi-pencil"
-                    rounded 
-                    text
-                    severity="warn"
-                    (click)="goToEdit(item)"
-                    />
+        </div>
+    } @empty {
+        <div class="empty-state">Nenhum medicamento encontrado.</div>
+    }
+</div>
 
-                    <p-button
-                    icon="pi pi-trash"
-                    rounded 
-                    text
-                    severity="danger"
-                    (click)="deleteItem(item)"
-                    />
-                </div>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+<p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 36]"
+    (onPageChange)="onPageChange($event)"
+/>

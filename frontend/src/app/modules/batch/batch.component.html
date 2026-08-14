@@ -20,201 +20,119 @@
 </aside>
 
     <aside class="px-5 pt-3">
-        <p-table 
-        [value]="listLote()"
-        [paginator]="true"
-        [rows]="5"
-        [rowsPerPageOptions]="[5, 10, 15]"
-        dataKey="id"
-        [globalFilterFields]="[
-            'numero_lote',
-            'fabricante',
-            'validade',
-            'quantidade_inicial',
-            'quantidade_atual'
-        ]"
-        #dt
-        >
 
-            <ng-template #caption>
-                <div class="grid align-items-end w-full">
-                    <div class="col-4 md:col-3">
-                        <p-iconfield iconPosition="left" class="w-full">
-                            <p-inputicon>
-                                <i class="pi pi-search"></i>
-                            </p-inputicon>
+        <div class="list-toolbar grid align-items-end w-full m-0">
+            <div class="col-12 md:col-3">
+                <p-iconfield iconPosition="left" class="w-full">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
 
-                            <input 
-                                pInputText 
-                                fluid
-                                type="text"
-                                class="w-full"
-                                (input)="dt.filterGlobal($event.target.value, 'contains')" 
-                                placeholder="Buscar lote" 
-                            />
-                        </p-iconfield>
-                    </div>
-    
-                    <div class="col-4 md:col-3">
-                        <div class="flex flex-column gap-2">
-                            <p-select
-                                id="saldo"
-                                [options]="isSaldo"
-                                optionLabel="label"
-                                optionValue="value"
-                                fluid
-                                (onChange)="onChangeSaldo($event.value)"
-                                [(ngModel)]="checked"
-                                showClear
-                                placeholder="Saldo"
-                            />
+                    <input
+                        pInputText
+                        fluid
+                        type="text"
+                        class="w-full"
+                        (input)="onSearch($event.target.value)"
+                        placeholder="Buscar lote"
+                    />
+                </p-iconfield>
+            </div>
+
+            <div class="col-6 md:col-3">
+                <p-select
+                    id="saldo"
+                    [options]="isSaldo"
+                    optionLabel="label"
+                    optionValue="value"
+                    fluid
+                    (onChange)="onChangeSaldo($event.value)"
+                    [(ngModel)]="checked"
+                    showClear
+                    placeholder="Saldo"
+                />
+            </div>
+
+            <div class="col-6 md:col-3">
+                <p-select
+                    id="medicine"
+                    [options]="medicamentos()"
+                    optionLabel="nome_generico"
+                    optionValue="id"
+                    fluid
+                    placeholder="Medicamentos"
+                    filter
+                    (onChange)="onChangeMedicamento($event.value)"
+                    [(ngModel)]="medicamentoId"
+                    showClear
+                >
+                    <ng-template let-item #item>
+                        {{ item.nome_generico }} - {{ item.concentracao }}
+                    </ng-template>
+
+                    <ng-template let-item #selectedItem>
+                        {{ item.nome_generico }} - {{ item.concentracao }}
+                    </ng-template>
+                </p-select>
+            </div>
+
+            <div class="col-12 md:col-3">
+                <p-button
+                    label="Adicionar lote"
+                    icon="pi pi-plus"
+                    (click)="goToCreate()"
+                    fluid
+                />
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            @for (item of pagedList(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="entity-avatar">
+                            <i class="pi pi-box"></i>
+                        </div>
+
+                        <div class="entity-info">
+                            <div class="entity-title">{{ item.numero_lote }}</div>
+                            <small class="entity-subtitle">{{ item.fabricante }}</small>
+                        </div>
+
+                        <div class="entity-actions">
+                            <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
                         </div>
                     </div>
 
-                    <div class="col-4 md:col-3">
-                        <div class="flex flex-column gap-2">
-                            <p-select
-                                id="medicine"
-                                [options]="medicamentos()"
-                                optionLabel="nome_generico"
-                                optionValue="id"
-                                fluid
-                                placeholder="Medicamentos"
-                                filter
-                                (onChange)="onChangeMedicamento($event.value)"
-                                [(ngModel)]="medicamentoId"
-                                showClear
-                            >
-                                <ng-template let-item #item>
-                                    {{ item.nome_generico }} - {{ item.concentracao }}
-                                </ng-template>
-
-                                <ng-template let-item #selectedItem>
-                                    {{ item.nome_generico }} - {{ item.concentracao }}
-                                </ng-template>
-                            </p-select>
-                        </div>
-                    </div>
-
-                    <div class="col-12 md:col-3">
-                        <p-button 
-                            label="Adicionar lote" 
-                            icon="pi pi-plus"
-                            (click)="goToCreate()"
-                            fluid
+                    <div class="entity-tags">
+                        <p-tag
+                            [value]="item.quantidade_atual > 0 ? 'Com saldo' : 'Sem saldo'"
+                            [severity]="item.quantidade_atual > 0 ? 'success' : 'danger'"
                         />
                     </div>
-    
+
+                    <div class="entity-meta">
+                        <small>Validade: {{ item.validade | date:'dd/MM/yyyy' }}</small>
+                        <small>Qtd atual: {{ item.quantidade_atual }} @if (!isMobile()) { / inicial: {{ item.quantidade_inicial }} }</small>
+                        @if (!isMobile()) {
+                            <small>Entrada em {{ item.entrada_em | date:'dd/MM/yyyy' }}</small>
+                        }
+                    </div>
 
                 </div>
-            </ng-template>
+            } @empty {
+                <div class="empty-state">Nenhum lote encontrado.</div>
+            }
+        </div>
 
-            <ng-template #header>
-                <tr>
-
-                    <th pSortableColumn="numero_lote">
-                        <div class="flex items-center gap-2">
-                            Nº Lote
-                            <p-sortIcon field="numero_lote" />
-                        </div>
-                    </th>
-
-                    <th pSortableColumn="fabricante">
-                        <div class="flex items-center gap-2">
-                            Fabricante
-                            <p-sortIcon field="fabricante" />
-                        </div>
-                    </th>
-
-                    <th pSortableColumn="validade">
-                        <div class="flex items-center gap-2">
-                            Validade
-                            <p-sortIcon field="validade" />
-                        </div>
-                    </th>
-
-                    @if(!isMobile()) {
-                        <th pSortableColumn="quantidade_inicial">
-                            <div class="flex items-center gap-2">
-                                Qtd Inicial
-                                <p-sortIcon field="quantidade_inicial" />
-                            </div>
-                        </th>
-                    }
-
-
-                    <th pSortableColumn="quantidade_atual">
-                        <div class="flex items-center gap-2">
-                            Qtd Atual
-                            <p-sortIcon field="quantidade_atual" />
-                        </div>
-                    </th>
-
-                    @if(!isMobile()) {
-                        <th pSortableColumn="entrada_em">
-                            <div class="flex items-center gap-2">
-                                Entrada em
-                                <p-sortIcon field="entrada_em" />
-                            </div>
-                        </th>
-                    }
-
-                    <th>
-                        <div class="flex items-center gap-2">
-                            Ação
-                        </div>
-                    </th>
-
-                </tr>
-            </ng-template>
-
-            <ng-template #body let-item>
-                <tr>
-
-                    <td>
-                        {{ item.numero_lote }}
-                    </td>
-
-                    <td>
-                        {{ item.fabricante }}
-                    </td>
-
-                    <td>
-                        {{ item.validade | date:'dd/MM/yyyy' }}
-                    </td>
-
-                    @if(!isMobile()) {
-                        <td>
-                            {{ item.quantidade_inicial }}
-                        </td>
-                    }
-
-                    <td>
-                        {{ item.quantidade_atual }}
-                    </td>
-
-                    @if(!isMobile()) {
-                        <td>
-                            {{ item.entrada_em | date:'dd/MM/yyyy' }}
-                        </td>
-                    }
-
-                    <td>
-                    <div class="flex gap-1">
-                        <p-button
-                        icon="pi pi-pencil"
-                        rounded 
-                        text
-                        severity="warn"
-                        (click)="goToEdit(item)"
-                        />
-                    </div>
-                    </td>
-
-                </tr>
-            </ng-template>
-
-        </p-table>
+        <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="filteredList().length"
+            [rowsPerPageOptions]="[8, 16, 32]"
+            (onPageChange)="onPageChange($event)"
+        />
 
     </aside>
 </section>

@@ -15,180 +15,98 @@
     </aside>
 
     <aside class="px-4 pt-3">
-   <p-table 
-        [value]="movimentacoesComUsuario()"
-        [paginator]="true"
-        [rows]="5"
-        [rowsPerPageOptions]="[5, 10, 15]"
-        dataKey="id"
-        [globalFilterFields]="[
-            'tipo',
-            'quantidade',
-            'justificativa',
-            'usuario_id',
-            'lote_id',
-            'lote.numero_lote'
-        ]"
-        #dt
-    >
 
-        <ng-template #caption>
-            <div class="grid align-items-end w-full justify-content-between">
+        <div class="list-toolbar grid align-items-end w-full m-0 justify-content-between">
 
-                <div class="col-12 md:col-3">
-                    <p-iconfield iconPosition="left" class="w-full">
-                        <p-inputicon>
-                            <i class="pi pi-search"></i>
-                        </p-inputicon>
+            <div class="col-12 md:col-3">
+                <p-iconfield iconPosition="left" class="w-full">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
 
-                        <input 
-                            pInputText 
-                            fluid
-                            type="text"
-                            class="w-full"
-                            (input)="dt.filterGlobal($event.target.value, 'contains')" 
-                            placeholder="Buscar movimentação" 
-                        />
-                    </p-iconfield>
-                </div>
-
-                <div class="col-12 md:col-3">
-                    <p-select
-                        [options]="lotes()"
-                        optionLabel="numero_lote"
-                        optionValue="id"
+                    <input
+                        pInputText
                         fluid
-                        filter
-                        placeholder="Filtrar por lote"
-                        [(ngModel)]="loteId"
-                        (onChange)="onChangeLote($event.value)"
-                        showClear
-                    >
-                    </p-select>
-                </div>
-
-                <div class="col-12 md:col-3">
-                    <p-button 
-                        label="Adicionar movimentação" 
-                        icon="pi pi-plus"
-                        (click)="goToCreate()"
-                        fluid
+                        type="text"
+                        class="w-full"
+                        (input)="onSearch($event.target.value)"
+                        placeholder="Buscar movimentação"
                     />
-                </div>
-
+                </p-iconfield>
             </div>
-        </ng-template>
-        
-        <ng-template #header>
-            <tr>
 
-                <th pSortableColumn="numero_lote">
-                    <div class="flex items-center gap-2">
-                        Lote
-                        <p-sortIcon field="numero_lote" />
-                    </div>
-                </th>
+            <div class="col-12 md:col-3">
+                <p-select
+                    [options]="lotes()"
+                    optionLabel="numero_lote"
+                    optionValue="id"
+                    fluid
+                    filter
+                    placeholder="Filtrar por lote"
+                    [(ngModel)]="loteId"
+                    (onChange)="onChangeLote($event.value)"
+                    showClear
+                >
+                </p-select>
+            </div>
 
-                <th pSortableColumn="ocorrido_em">
-                    <div class="flex items-center gap-2">
-                        Ocorrido em
-                        <p-sortIcon field="ocorrido_em" />
-                    </div>
-                </th>
+            <div class="col-12 md:col-3">
+                <p-button
+                    label="Adicionar movimentação"
+                    icon="pi pi-plus"
+                    (click)="goToCreate()"
+                    fluid
+                />
+            </div>
 
-                <th pSortableColumn="tipo">
-                    <div class="flex items-center gap-2">
-                        Tipo
-                        <p-sortIcon field="tipo" />
-                    </div>
-                </th>
+        </div>
 
-                @if(!isMobile()) {
-                    <th pSortableColumn="quantidade">
-                        <div class="flex items-center gap-2">
-                            Quantidade
-                            <p-sortIcon field="quantidade" />
+        <div class="cards-grid">
+            @for (item of pagedList(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="entity-avatar">
+                            <i class="pi pi-arrow-right-arrow-left"></i>
                         </div>
-                    </th>
-    
-                    <th pSortableColumn="usuario_id">
-                        <div class="flex items-center gap-2">
-                            Usuário
-                            <p-sortIcon field="usuario_id" />
+
+                        <div class="entity-info">
+                            <div class="entity-title">Lote {{ item.lote?.numero_lote ?? '-' }}</div>
+                            <small class="entity-subtitle">{{ item.ocorrido_em | date:'dd/MM/yyyy' }}</small>
                         </div>
-                    </th>
-    
-                    <th pSortableColumn="justificativa">
-                        <div class="flex items-center gap-2">
-                            Justificativa
-                            <p-sortIcon field="justificativa" />
+
+                        <div class="entity-actions">
+                            <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item.id)" />
                         </div>
-                    </th>
-                }
-
-
-                <th>
-                    <div class="flex items-center gap-2">
-                        Ação
                     </div>
-                </th>
 
-            </tr>
-        </ng-template>
-
-        <ng-template #body let-item>
-            <tr>
-                <td>
-                    {{item.lote.numero_lote}}
-                </td>
-                <td>
-                    {{ item.ocorrido_em | date:'dd/MM/yyyy' }}
-                </td>
-
-                <td>
-                    <span
-                        class="px-2 py-1 border-round text-sm font-semibold"
-                            [ngClass]="{
-                                'bg-green-100 text-green-700': item.tipo === 'entrada',
-                                'bg-red-100 text-red-700': item.tipo === 'saida',
-                                'bg-yellow-100 text-yellow-700': item.tipo === 'perda',
-                                'bg-blue-100 text-blue-700': item.tipo === 'ajuste'
-                            }"
-                            >
-                        {{ item.tipo }}
-                    </span>
-                </td>
-                
-                @if(!isMobile()) {
-                    
-                    <td>
-                        {{ item.quantidade }}
-                    </td>
-
-                    <td>
-                        {{ item.usuario.nome }}
-                    </td>
-    
-                    <td>
-                        {{ item.justificativa }}
-                    </td>
-                }
-
-                <td>
-                    <div class="flex gap-1">
-                        <p-button
-                            icon="pi pi-pencil"
-                            rounded 
-                            text
-                            severity="warn"
-                            (click)="goToEdit(item.id)"
-                        />
+                    <div class="entity-tags">
+                        <p-tag [value]="item.tipo" [severity]="getTipoSeverity(item.tipo)" />
                     </div>
-                </td>
 
-            </tr>
-        </ng-template>
+                    <div class="entity-meta">
+                        <small>Quantidade: {{ item.quantidade }}</small>
+                        @if (!isMobile()) {
+                            <small>Usuário: {{ item.usuario?.nome ?? '-' }}</small>
+                            @if (item.justificativa) {
+                                <small>Justificativa: {{ item.justificativa }}</small>
+                            }
+                        }
+                    </div>
 
-    </p-table>
+                </div>
+            } @empty {
+                <div class="empty-state">Nenhuma movimentação encontrada.</div>
+            }
+        </div>
+
+        <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="filteredList().length"
+            [rowsPerPageOptions]="[8, 16, 32]"
+            (onPageChange)="onPageChange($event)"
+        />
+
     </aside>
 </section>
