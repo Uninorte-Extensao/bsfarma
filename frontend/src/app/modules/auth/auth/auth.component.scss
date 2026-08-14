@@ -1,48 +1,67 @@
-.container {
-    min-height: 100dvh;
+.auth-layout {
+    display: flex;
+    height: 100dvh;
+}
+
+.brand-panel {
+    position: relative;
+    flex: 3;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 3rem;
+    background: var(--bg-page);
+    // color: #fff;
+    text-align: center;
+
+    .brand-logo {
+        width: 450px;
+        height: 450px;
+        object-fit: contain;
+        // filter: brightness(0) invert(1);
+    }
+
+    .brand-desc {
+        max-width: 320px;
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        opacity: 0.9;
+    }
+
+    .brand-version {
+        position: absolute;
+        bottom: 1.5rem;
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+}
+
+.form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-green);
+    padding: 2rem;
 }
 
 .content {
-    box-shadow: 6px 0px 42px -15px #4C8EA9;
-    width: 450px;
-    height: auto;
-    border-radius: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 1.5rem;
-    background: var(--bg-sidebar);
-    margin: auto;
-}
-
-.footer-auth {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    border-top: 1px solid #4C8EA9;
-
     width: 100%;
-    padding: 1rem 2rem;
+    max-width: 400px;
+    padding: 2.5rem 2rem;
+    color: var(--text-terciary);
 }
 
-.container-img {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1rem;
-    .logo {
-        width: 130px;
-        height: 130px;
-        object-fit: contain;
-
+@media screen and (max-width: 768px) {
+    .brand-panel {
+        display: none;
     }
 
-    .logo-tipo {
-        font-weight: 800;
-        color: #112D55;
-        font-size: 1.2rem;
+    .form-panel {
+        flex: none;
+        width: 100%;
     }
 }

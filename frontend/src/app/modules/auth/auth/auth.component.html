@@ -1,17 +1,17 @@
-<div class="container">
-    <div class="col-12 md:col-6 content">
-        <div class="container-img">
-            <img class="logo" src="assets/logo_bsfarma.svg">
-            <!-- <span class="logo-tipo">BS <span class="font-semibold">farma</span></span> -->
-        </div>
-        <app-login (onChangeLogin)="submit($event)"/>
+<div class="auth-layout">
+    <div class="brand-panel">
+        <img class="brand-logo" src="assets/logo_bsfarma.svg" alt="BS Farma">
+
+        <p class="brand-desc">
+            Sistema de gestão de insumos farmacêuticos.
+        </p>
+
+        <span class="brand-version">v1.0</span>
     </div>
 
-    <footer class="footer-auth">
-        <span class="flex gap-2 align-items-center">
-            <span class="material-symbols-outlined">corporate_fare</span>
-            Sistema de gestão de insumos farmacêuticos.
-        </span>
-        <span class="bold">v1.0</span>
-    </footer>
+    <div class="form-panel">
+        <div class="content">
+            <app-login (onChangeLogin)="submit($event)" />
+        </div>
+    </div>
 </div>
