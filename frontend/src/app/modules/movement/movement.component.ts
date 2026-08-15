@@ -71,7 +71,7 @@ export class MovementComponent implements OnInit {
     return [
       {
         title: 'TOTAL ENTRADAS',
-        value: `${totalEntradas} un.`,
+        value: `${totalEntradas}`,
         subtitle: `${entradas.length} movimentações`,
         icon: 'pi pi-arrow-down-left',
         variant: 'success'
@@ -79,7 +79,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'TOTAL SAÍDAS',
-        value: `${totalSaidas} un.`,
+        value: `${totalSaidas}`,
         subtitle: `${saidas.length} movimentações`,
         icon: 'pi pi-arrow-up-right',
         variant: 'danger'
@@ -87,7 +87,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'PERDAS',
-        value: `${totalPerdas} un.`,
+        value: `${totalPerdas}`,
         subtitle: `${perdas.length} registros`,
         icon: 'pi pi-exclamation-triangle',
         variant: 'warning'
@@ -95,7 +95,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'AJUSTES',
-        value: `${totalAjustes} un.`,
+        value: `${totalAjustes}`,
         subtitle: `${ajustes.length} ajustes realizados`,
         icon: 'pi pi-sync',
         variant: 'primary'

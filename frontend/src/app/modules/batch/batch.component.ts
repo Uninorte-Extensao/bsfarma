@@ -39,7 +39,7 @@ export class BatchComponent implements OnInit {
 
   protected searchTerm = signal('');
   protected first = signal(0);
-  protected rows = signal(8);
+  protected rows = signal(12);
 
   protected filteredList = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -64,7 +64,7 @@ export class BatchComponent implements OnInit {
 
   protected onPageChange(event: PaginatorState) {
     this.first.set(event.first ?? 0);
-    this.rows.set(event.rows ?? 8);
+    this.rows.set(event.rows ?? 12);
   }
 
   private router = inject(Router)

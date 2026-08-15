@@ -1,7 +1,7 @@
 <section>
-    <aside class="grid px-5 pt-3">
+    <aside class="grid">
 
-    @for(card of cards(); track card.title) {
+    <!-- @for(card of cards(); track card.title) {
 
         <div class="col-12 md:col-6 lg:col-4 xl:col-3">
 
@@ -15,7 +15,7 @@
 
         </div>
 
-    }
+    } -->
 
 </aside>
 
@@ -130,7 +130,7 @@
             [first]="first()"
             [rows]="rows()"
             [totalRecords]="filteredList().length"
-            [rowsPerPageOptions]="[8, 16, 32]"
+            [rowsPerPageOptions]="[12, 24, 36]"
             (onPageChange)="onPageChange($event)"
         />
 
