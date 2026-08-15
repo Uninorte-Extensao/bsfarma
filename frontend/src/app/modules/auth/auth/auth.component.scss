@@ -1,6 +1,6 @@
 .auth-layout {
     display: flex;
-    height: 100dvh;
+    min-height: 100dvh;
 }
 
 .brand-panel {
@@ -13,14 +13,12 @@
     gap: 1.5rem;
     padding: 3rem;
     background: var(--bg-page);
-    // color: #fff;
     text-align: center;
 
     .brand-logo {
         width: 450px;
         height: 450px;
         object-fit: contain;
-        // filter: brightness(0) invert(1);
     }
 
     .brand-desc {
@@ -42,17 +40,37 @@
 .form-panel {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     background: var(--primary-green);
-    padding: 2rem;
+    padding: 3rem 2rem 2rem 2rem;
 }
 
 .content {
     width: 100%;
     max-width: 400px;
-    padding: 2.5rem 2rem;
     color: var(--text-terciary);
+}
+
+.content-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.content-title {
+    margin: 0;
+    font-size: 4rem;
+    font-weight: 100;
+}
+
+.content-subtitle {
+    margin: 0;
+    font-weight: 200;
+    opacity: 0.9;
 }
 
 @media screen and (max-width: 768px) {
