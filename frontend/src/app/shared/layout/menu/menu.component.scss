@@ -34,11 +34,15 @@
         }
 
         .container-logo {
-            padding: 12px 0 0 12px;
-
             span {
                 display: none;
             }
+
+            img {
+                width: 50px;
+                height: 50px;
+            }   
+    
         }
 
         .power {
@@ -70,8 +74,8 @@
     }
 
     img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 
     .logo-tipo {
@@ -83,6 +87,7 @@
             color: var(--primary-green);
         }
     }
+
 }
 
 .section-label {

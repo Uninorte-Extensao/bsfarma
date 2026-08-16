@@ -8,10 +8,9 @@ import { Button } from "primeng/button";
 import { Tag } from 'primeng/tag';
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
-import { Paginator, PaginatorState } from 'primeng/paginator';
 import { IS_MOBILE } from '../../../shared/services/is-mobile.service';
 import { AuthService } from '../../../shared/services/auth.service';
-
+import { TableModule, TablePageEvent } from 'primeng/table'
 @Component({
   selector: 'app-table-medicines',
   imports: [
@@ -22,7 +21,7 @@ import { AuthService } from '../../../shared/services/auth.service';
     Tag,
     Select,
     FormsModule,
-    Paginator
+    TableModule
   ],
   templateUrl: './table-medicines.component.html',
   styleUrl: './table-medicines.component.scss',
@@ -79,7 +78,7 @@ export class TableMedicinesComponent {
     this.first.set(0);
   }
 
-  protected onPageChange(event: PaginatorState) {
+  protected onPageChange(event: TablePageEvent) {
     this.first.set(event.first ?? 0);
     this.rows.set(event.rows ?? 12);
   }
