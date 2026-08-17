@@ -436,16 +436,16 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#0f172a",
         },
         primary: {
-          color: "#015C4D",
-          contrastColor: "#FDFCF8",
-          hoverColor: "#013E34",
-          activeColor: "#001F1A"
+          color: "var(--pn-primary)",
+          contrastColor: "var(--pn-primary-contrast)",
+          hoverColor: "var(--pn-primary-hover)",
+          activeColor: "var(--pn-primary-active)"
         },
         highlight: {
-          background: "#DFF6F3",
-          focusBackground: "#CBF1EB",
-          color: "#162235",
-          focusColor: "#0B1628"
+          background: "var(--pn-highlight-bg)",
+          focusBackground: "var(--pn-highlight-focus-bg)",
+          color: "var(--pn-highlight-color)",
+          focusColor: "var(--pn-highlight-focus-color)"
         },
         mask: {
           background: "rgba(0,0,0,0.4)",
@@ -561,16 +561,16 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#09090b"
         },
         primary: {
-          color: "#013E34",
-          contrastColor: "#FDFCF8",
-          hoverColor: "#015C4D",
-          activeColor: "#59CFBB"
+          color: "var(--pn-primary)",
+          contrastColor: "var(--pn-primary-contrast)",
+          hoverColor: "var(--pn-primary-hover)",
+          activeColor: "var(--pn-primary-active)"
         },
         highlight: {
-          background: "#016F5D",
-          focusBackground: "#018872",
-          color: "#EFEEEB",
-          focusColor: "#FDFCF8"
+          background: "var(--pn-highlight-bg)",
+          focusBackground: "var(--pn-highlight-focus-bg)",
+          color: "var(--pn-highlight-color)",
+          focusColor: "var(--pn-highlight-focus-color)"
         },
         mask: {
           background: "rgba(0,0,0,0.6)",

@@ -8,54 +8,6 @@
     align-items: start;
 }
 
-.box-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    i {
-        font-size: 22px;
-    }
-
-    &.small {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-
-        i {
-            font-size: 18px;
-        }
-    }
-}
-
-.box-red {
-    background: var(--bg-card-red);
-
-    i {
-        color: var(--text-color-red);
-    }
-}
-
-.box-orange {
-    background: var(--bg-card-orange);
-
-    i {
-        color: var(--text-color-orange);
-    }
-}
-
-.box-purple {
-    background: var(--bg-card-purple);
-
-    i {
-        color: var(--text-color-purple);
-    }
-}
-
 .group-card {
     padding: 20px;
 }

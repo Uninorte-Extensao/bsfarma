@@ -128,11 +128,12 @@ export class ManagementComponent implements OnInit {
   }
 
   protected getProfileClass(perfil: string) {
-    return {
-      gestor: perfil === 'gestor',
-      farmaceutico: perfil === 'farmaceutico',
-      atendente: perfil === 'atendente'
-    };
+    let style = ''
+    if (perfil === 'gestor') style = 'box-yellow' 
+    if(perfil === 'farmaceutico') style = 'box-red'
+    if(perfil === 'atendente') style = 'box-blue'
+
+    return style
   }
 
   protected inititalName(name: string): string {

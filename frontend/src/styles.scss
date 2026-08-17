@@ -68,6 +68,116 @@
     .p-datatable .p-datatable-header {
         padding: 0 !important;
     }
+
+
+
+    // box icon
+
+    .box-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 22px;
+        }
+
+        &.small {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .box-red {
+        background: var(--red-100);
+        color: var(--red-700);
+    }
+
+    .box-yellow {
+        background: var(--yellow-100);
+        color: var(--yellow-700);
+    }
+
+    .box-green {
+        background: var(--green-100);
+        color: var(--green-700);
+    }
+
+    .box-blue {
+        background: var(--blue-100);
+        color: var(--blue-700);
+    }
+
+    .box-orange {
+        background: var(--orange-100);
+        color: var(--orange-700);
+    }
+
+    .box-purple {
+        background: var(--purple-100);
+        color: var(--purple-700);
+    }
+
+    .box-teal {
+        background: var(--teal-100);
+        color: var(--teal-700);
+    }
+
+    .box-pink {
+        background: var(--pink-100);
+        color: var(--pink-700);
+    }
+}
+
+:root.dark {
+    .box-red {
+        background: color-mix(in srgb, var(--red-500) 20%, transparent);
+        color: var(--red-300);
+    }
+
+    .box-yellow {
+        background: color-mix(in srgb, var(--yellow-500) 20%, transparent);
+        color: var(--yellow-300);
+    }
+
+    .box-green {
+        background: color-mix(in srgb, var(--green-500) 20%, transparent);
+        color: var(--green-300);
+    }
+
+    .box-blue {
+        background: color-mix(in srgb, var(--blue-500) 20%, transparent);
+        color: var(--blue-300);
+    }
+
+    .box-orange {
+        background: color-mix(in srgb, var(--orange-500) 20%, transparent);
+        color: var(--orange-300);
+    }
+
+    .box-purple {
+        background: color-mix(in srgb, var(--purple-500) 20%, transparent);
+        color: var(--purple-300);
+    }
+
+    .box-teal {
+        background: color-mix(in srgb, var(--teal-500) 20%, transparent);
+        color: var(--teal-300);
+    }
+
+    .box-pink {
+        background: color-mix(in srgb, var(--pink-500) 20%, transparent);
+        color: var(--pink-300);
+    }
 }
 
 
