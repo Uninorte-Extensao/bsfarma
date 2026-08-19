@@ -44,6 +44,10 @@
         background: none !important;
     }
 
+    .p-datatable-tbody>tr {
+        height: 40px !important;
+    }
+
     .box-card {
         background: var(--bg-surface);
         box-shadow: var(--shadow-card);

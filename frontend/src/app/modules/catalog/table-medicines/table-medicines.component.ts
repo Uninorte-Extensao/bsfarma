@@ -45,6 +45,16 @@ export class TableMedicinesComponent {
     { label: 'Inativos', value: false }
   ];
 
+  protected isCreate = signal<boolean>(false);
+  protected isEdit = signal<boolean>(false);
+  protected isDelete = signal<boolean>(false);
+  
+  constructor() {
+    this.isCreate.set(this.authService.hasPermission('catalog.create'))
+    this.isEdit.set(this.authService.hasPermission('catalog.update'))
+    this.isDelete.set(this.authService.hasPermission('catalog.delete'))
+  }
+
   protected onStatusChange(value: boolean | undefined) {
     this.statusFilter.set(value);
     this.first.set(0);
