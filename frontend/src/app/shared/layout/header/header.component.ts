@@ -48,11 +48,12 @@ export class HeaderComponent implements OnInit {
     return getInitials(name);
   }
 
-  protected getProfileClass(profile: string | undefined) {
-    return {
-      gestor: profile === 'gestor',
-      farmaceutico: profile === 'farmaceutico',
-      atendente: profile === 'atendente'
-    };
+  protected getProfileClass(perfil: string | undefined) {
+    let style = ''
+    if (perfil === 'gestor') style = 'box-yellow' 
+    if(perfil === 'farmaceutico') style = 'box-red'
+    if(perfil === 'atendente') style = 'box-blue'
+
+    return style
   }
 }

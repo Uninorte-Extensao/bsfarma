@@ -3,10 +3,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4rem;
+    gap: 6rem;
     min-height: 100dvh;
-    padding-inline: 6rem;
+    padding-inline: 10rem; 
     overflow: hidden;
+}
+
+.theme-toggle-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--text-primary) 15%, transparent);
+    background: color-mix(in oklab, var(--bg-surface) 70%, transparent);
+    color: var(--text-primary);
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background .2s ease, border-color .2s ease;
+
+    i {
+        font-size: 1.05rem;
+    }
+
+    &:hover {
+        background: color-mix(in oklab, var(--bg-surface) 90%, transparent);
+    }
 }
 
 .auth-bg {
@@ -85,6 +112,7 @@
         width: 450px;
         height: 450px;
         object-fit: contain;
+        transition: filter .3s ease;
     }
 
     .brand-desc {
@@ -92,7 +120,7 @@
         margin: 0;
         font-size: 1.05rem;
         line-height: 1.5;
-        opacity: 0.9;
+        opacity: 0.7;
     }
 
     .brand-version {
@@ -103,14 +131,18 @@
     }
 }
 
+:host-context(.dark) .brand-logo {
+    filter: brightness(1.2) saturate(1.15);
+}
+
 .form-panel {
     z-index: 1;
-    flex: 0 0 420px;
+    flex: 0 0 400px;
     display: flex;
     align-items: start;
     justify-content: center;
     padding: 3rem 2rem 2rem 2rem;
-    background: var(--bg-form);
+    // background: var(--bg-form);
     width: 380px;
     height: 420px;
     border-radius: 10px;
@@ -119,7 +151,7 @@
 .content {
     width: 100%;
     max-width: 400px;
-    color: var(--text-terciary);
+    // color: var(--text-terciary);
 }
 
 .content-header {
@@ -134,7 +166,7 @@
 .content-title {
     margin: 0;
     font-size: 2rem;
-    font-weight: 100;
+    font-weight: 400;
 }
 
 .content-subtitle {
@@ -152,4 +184,8 @@
         flex: none;
         width: 100%;
     }
+}
+
+:host .card {
+    box-shadow: 0px 0px 15px -3px rgb(30 33 31 / 20%);
 }

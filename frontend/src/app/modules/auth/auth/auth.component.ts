@@ -5,6 +5,7 @@ import { IResponseLogin, IUserLogin } from '../../../shared/models/IUser';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LoadingService } from '../../../shared/services/loading.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { ThemeService } from '../../../shared/services/theme.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,6 +25,11 @@ export class AuthComponent {
   private loadingService = inject(LoadingService)
   private toastService = inject(ToastService)
   private router = inject(Router)
+  protected themeService = inject(ThemeService)
+
+  toggleTheme() {
+    this.themeService.toggle();
+  }
 
   submit(event: IUserLogin) {
     this.loadingService.show()

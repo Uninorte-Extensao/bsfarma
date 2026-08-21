@@ -671,5 +671,142 @@ export const BsFarmaTheme = definePreset(Aura, {
         }
       }
     }
+  },
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          root: {
+            info: {
+              background: "{blue.500}",
+              hoverBackground: "{blue.600}",
+              activeBackground: "{blue.700}",
+              borderColor: "{blue.500}",
+              hoverBorderColor: "{blue.600}",
+              activeBorderColor: "{blue.700}",
+              color: "#ffffff",
+              hoverColor: "#ffffff",
+              activeColor: "#ffffff",
+              focusRing: { color: "{blue.500}", shadow: "none" }
+            },
+            warn: {
+              background: "{amber.500}",
+              hoverBackground: "{amber.600}",
+              activeBackground: "{amber.700}",
+              borderColor: "{amber.500}",
+              hoverBorderColor: "{amber.600}",
+              activeBorderColor: "{amber.700}",
+              color: "#ffffff",
+              hoverColor: "#ffffff",
+              activeColor: "#ffffff",
+              focusRing: { color: "{amber.500}", shadow: "none" }
+            }
+          },
+          outlined: {
+            info: {
+              hoverBackground: "{blue.50}",
+              activeBackground: "{blue.100}",
+              borderColor: "{blue.200}",
+              color: "{blue.500}"
+            },
+            warn: {
+              hoverBackground: "{amber.50}",
+              activeBackground: "{amber.100}",
+              borderColor: "{amber.200}",
+              color: "{amber.500}"
+            }
+          },
+          text: {
+            info: {
+              hoverBackground: "{blue.50}",
+              activeBackground: "{blue.100}",
+              color: "{blue.500}"
+            },
+            warn: {
+              hoverBackground: "{amber.50}",
+              activeBackground: "{amber.100}",
+              color: "{amber.500}"
+            }
+          }
+        },
+        dark: {
+          root: {
+            info: {
+              background: "{blue.400}",
+              hoverBackground: "{blue.300}",
+              activeBackground: "{blue.200}",
+              borderColor: "{blue.400}",
+              hoverBorderColor: "{blue.300}",
+              activeBorderColor: "{blue.200}",
+              color: "{blue.950}",
+              hoverColor: "{blue.950}",
+              activeColor: "{blue.950}",
+              focusRing: { color: "{blue.400}", shadow: "none" }
+            },
+            warn: {
+              background: "{amber.400}",
+              hoverBackground: "{amber.300}",
+              activeBackground: "{amber.200}",
+              borderColor: "{amber.400}",
+              hoverBorderColor: "{amber.300}",
+              activeBorderColor: "{amber.200}",
+              color: "{amber.950}",
+              hoverColor: "{amber.950}",
+              activeColor: "{amber.950}",
+              focusRing: { color: "{amber.400}", shadow: "none" }
+            },
+            danger: {
+              background: "{red.500}",
+              hoverBackground: "{red.400}",
+              activeBackground: "{red.300}",
+              borderColor: "{red.500}",
+              hoverBorderColor: "{red.400}",
+              activeBorderColor: "{red.300}",
+              color: "{red.950}",
+              hoverColor: "{red.950}",
+              activeColor: "{red.950}",
+              focusRing: { color: "{red.500}", shadow: "none" }
+            }
+          },
+          outlined: {
+            info: {
+              hoverBackground: "color-mix(in srgb, {blue.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {blue.400}, transparent 84%)",
+              borderColor: "{blue.700}",
+              color: "{blue.400}"
+            },
+            warn: {
+              hoverBackground: "color-mix(in srgb, {amber.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {amber.400}, transparent 84%)",
+              borderColor: "{amber.700}",
+              color: "{amber.400}"
+            },
+            danger: {
+              hoverBackground: "color-mix(in srgb, {red.500}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {red.500}, transparent 84%)",
+              borderColor: "{red.800}",
+              color: "{red.500}"
+            }
+          },
+          text: {
+            info: {
+              hoverBackground: "color-mix(in srgb, {blue.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {blue.400}, transparent 84%)",
+              color: "{blue.400}"
+            },
+            warn: {
+              hoverBackground: "color-mix(in srgb, {amber.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {amber.400}, transparent 84%)",
+              color: "{amber.400}"
+            },
+            danger: {
+              hoverBackground: "color-mix(in srgb, {red.500}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {red.500}, transparent 84%)",
+              color: "{red.500}"
+            }
+          }
+        }
+      }
+    }
   }
 });

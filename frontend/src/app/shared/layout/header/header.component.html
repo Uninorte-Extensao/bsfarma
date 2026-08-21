@@ -20,7 +20,7 @@
         <div class="divider"></div>
 
         <div class="profile cursor-pointer" (click)="menu.toggle($event)">
-            <div class="circle-name" [ngClass]="getProfileClass(user()?.perfil)">
+            <div class="box-icon" [ngClass]="getProfileClass(user()?.perfil)">
                 @if(user()?.nome) {
                     <span>{{ inititalName(user()!.nome) | uppercase }}</span>
                 }

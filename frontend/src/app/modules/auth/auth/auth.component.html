@@ -1,4 +1,12 @@
 <div class="auth-layout">
+    <button
+        type="button"
+        class="theme-toggle-btn"
+        [title]="themeService.isDark() ? 'Modo claro' : 'Modo escuro'"
+        (click)="toggleTheme()">
+        <i class="pi" [class.pi-sun]="themeService.isDark()" [class.pi-moon]="!themeService.isDark()"></i>
+    </button>
+
     <div class="auth-bg" aria-hidden="true">
         <span class="blob blob-blue"></span>
         <span class="blob blob-yellow"></span>
@@ -15,7 +23,7 @@
         <span class="brand-version">v1.0</span>
     </div>
 
-    <div class="form-panel">
+    <div class="form-panel card">
         <div class="content">
             <div class="content-header">
                 <h3 class="content-title">Bem-vindo de volta!</h3>
