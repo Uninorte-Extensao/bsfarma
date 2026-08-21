@@ -1,232 +1,139 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { TabsModule } from 'primeng/tabs';
-import { TableAlertsComponent } from "./table-alerts/table-alerts.component";
-import { CardViewComponent } from "../../shared/components/card-view/card-view.component";
-import { IAlertaValidade } from '../../shared/models/IAlert';
+import { DatePipe } from '@angular/common';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { Tag } from 'primeng/tag';
+import { IAlertaValidade, IUpdateStatusAlerta } from '../../shared/models/IAlert';
 import { AlertService } from '../../shared/services/alert.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { LoadingService } from '../../shared/services/loading.service';
 
+type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast';
+
 @Component({
   selector: 'app-alerts',
-  imports: [TabsModule, TableAlertsComponent, CardViewComponent],
+  imports: [DatePipe, MenuModule, Tag],
   templateUrl: './alerts.component.html',
   styleUrl: './alerts.component.scss',
 })
 export class AlertsComponent implements OnInit {
-  cards = signal<any[]>([
-    {
-      title: 'VENCIMENTO PRÓXIMO',
-      value: '0 alertas',
-      subtitle: 'Lotes próximos do vencimento',
-      icon: 'pi pi-calendar',
-      variant: 'danger'
-    },
+  private alertService = inject(AlertService);
+  private toastService = inject(ToastService);
+  private loadingService = inject(LoadingService);
 
-    {
-      title: 'ESTOQUE MÍNIMO',
-      value: '0 itens',
-      subtitle: 'Necessitam reposição',
-      icon: 'pi pi-exclamation-triangle',
-      variant: 'warning'
-    },
+  private listAlertas = signal<IAlertaValidade[]>([]);
 
-    {
-      title: 'RESOLVIDOS HOJE',
-      value: '0 alertas',
-      subtitle: 'Nenhuma pendência resolvida',
-      icon: 'pi pi-check-circle',
-      variant: 'success'
-    }
-  ]);
+  criticos = computed(() =>
+    this.listAlertas().filter(item =>
+      item.tipo_alerta === 'Estoque Crítico' &&
+      this.severidadeEstoque(item) === 'critico'
+    )
+  );
 
-  listAlerts = signal<IAlertaValidade[]>([])
-  listAlertsAbertos = signal<IAlertaValidade[]>([])
-  listAlertsResolvidos = signal<IAlertaValidade[]>([])
+  estoqueBaixo = computed(() =>
+    this.listAlertas().filter(item =>
+      item.tipo_alerta === 'Estoque Crítico' &&
+      this.severidadeEstoque(item) === 'baixo'
+    )
+  );
 
-  private alertService = inject(AlertService)
-  private toastService = inject(ToastService)
-  private loadingService = inject(LoadingService)
-
-  selectedTab = signal<string | number | undefined>('0');
-
-  constructor() {
-  }
+  validade = computed(() =>
+    this.listAlertas().filter(item => item.tipo_alerta !== 'Estoque Crítico')
+  );
 
   ngOnInit() {
-    this.loadAbertos()
-    this.loadCards()
+    this.load();
   }
 
-  changeTab(tab: string | number | undefined) {
-    this.selectedTab.set(tab);
-
-    switch (tab) {
-
-      case '0':
-        this.loadAbertos();
-        break;
-
-      case '1':
-        this.loadResolvidos();
-        break;
-
-      case '2':
-        this.loadTodos();
-        break;
-    }
-  }
-
-  loadAbertos() {
-    this.loadingService.show()
-
-    this.alertService
-      .getAlertas(
-        undefined,
-        undefined,
-        undefined,
-        true
-      )
-    this.alertService.getAlertas()
-      .then((res: IAlertaValidade[]) => {
-        this.listAlerts.set(res)
-      })
-      .catch(() => {
-        this.toastService.showToastError('Erro ao buscar alertas')
-      })
-      .finally(() => {
-        this.loadingService.hide()
-      })
-  }
-
-  loadResolvidos() {
+  private load() {
     this.loadingService.show();
 
     this.alertService
-      .getAlertas(
-        'Resolvido',
-        undefined,
-        undefined,
-        false
-      )
-      .then(res => {
-        this.listAlerts.set(res);
-      })
-      .finally(() => {
-        this.loadingService.hide();
-      });
+      .getAlertas(undefined, undefined, undefined, false)
+      .then(res => this.listAlertas.set(res))
+      .catch(() => this.toastService.showToastError('Erro ao buscar alertas'))
+      .finally(() => this.loadingService.hide());
   }
 
-  loadTodos() {
+  protected severidadeEstoque(item: IAlertaValidade): 'critico' | 'baixo' {
+    const { estoque_minimo } = item.medicamento;
+
+    if (!estoque_minimo) return 'critico';
+
+    const ratio = item.lote.quantidade_atual / estoque_minimo;
+    return ratio <= 0.5 ? 'critico' : 'baixo';
+  }
+
+  protected diasParaVencer(validade: Date): number {
+    return Math.ceil(
+      (new Date(validade).getTime() - Date.now()) /
+      (1000 * 60 * 60 * 24)
+    );
+  }
+
+  protected isVencido(item: IAlertaValidade): boolean {
+    return this.diasParaVencer(item.lote.validade) < 0;
+  }
+
+  protected isResolvido(item: IAlertaValidade): boolean {
+    return item.status_alerta === 'Resolvido';
+  }
+
+  protected getStatusSeverity(status: string): TagSeverity {
+    switch (status) {
+      case 'Pendente':
+        return 'secondary';
+      case 'Em andamento':
+        return 'info';
+      case 'Resolvido':
+        return 'success';
+      case 'Expirado':
+        return 'danger';
+      default:
+        return 'secondary';
+    }
+  }
+
+  protected getStatusMenuItems(item: IAlertaValidade): MenuItem[] {
+    const status = item.status_alerta;
+    const items: MenuItem[] = [];
+
+    if (status === 'Pendente') {
+      items.push({
+        label: 'Em andamento',
+        icon: 'pi pi-clock',
+        command: () => this.alterarStatus(item, 'Em andamento')
+      });
+
+      items.push({
+        label: 'Resolver',
+        icon: 'pi pi-check',
+        command: () => this.alterarStatus(item, 'Resolvido')
+      });
+    }
+
+    if (status === 'Em andamento') {
+      items.push({
+        label: 'Resolver',
+        icon: 'pi pi-check',
+        command: () => this.alterarStatus(item, 'Resolvido')
+      });
+    }
+
+    return items;
+  }
+
+  protected alterarStatus(item: IAlertaValidade, status: IUpdateStatusAlerta['status_alerta']) {
     this.loadingService.show();
 
     this.alertService
-      .getAlertas(
-        undefined,
-        undefined,
-        undefined,
-        false
-      )
-      .then(res => {
-        this.listAlerts.set(res);
+      .updateStatusAlerta(item.id, { status_alerta: status })
+      .then(() => {
+        this.toastService.showToastSuccess(`Status alterado para ${status}`);
+        this.alertService.atualizarQuantidadeAlertas();
+        this.load();
       })
-      .finally(() => {
-        this.loadingService.hide();
-      });
+      .catch(() => this.toastService.showToastError('Erro ao atualizar status'))
+      .finally(() => this.loadingService.hide());
   }
-
-  private loadCards() {
-
-    this.alertService
-      .getAlertas(
-        undefined,
-        undefined,
-        undefined,
-        true
-      )
-      .then((res) => {
-
-        const vencimento30 = res.filter(
-          item => item.tipo_alerta === '30 dias para vencimento'
-        ).length;
-
-        const vencimento15 = res.filter(
-          item => item.tipo_alerta === '15 dias para vencimento'
-        ).length;
-
-        const vencimento7 = res.filter(
-          item => item.tipo_alerta === '7 dias para vencimento'
-        ).length;
-
-        const estoqueCritico = res.filter(
-          item => item.tipo_alerta === 'Estoque Crítico'
-        ).length;
-
-        const resolvidos = res.filter(
-          item => item.status_alerta === 'Resolvido'
-        ).length;
-
-        this.cards.set([
-          {
-            title: 'VENCIMENTOS',
-            value: `${vencimento30 + vencimento15 + vencimento7} alertas`,
-            subtitle: `${vencimento7} críticos, ${vencimento15} médios e ${vencimento30} leves`,
-            icon: 'pi pi-calendar',
-            variant: 'primary'
-          },
-
-          {
-            title: 'ESTOQUE CRÍTICO',
-            value: `${estoqueCritico} itens`,
-            subtitle: 'Necessitam reposição',
-            icon: 'pi pi-exclamation-triangle',
-            variant: 'warning'
-          },
-
-          {
-            title: 'RESOLVIDOS',
-            value: `${resolvidos} alertas`,
-            subtitle: 'Alertas finalizados',
-            icon: 'pi pi-check-circle',
-            variant: 'success'
-          }
-        ]);
-      });
-  }
-
-  reloadCurrentTab() {
-
-    switch (this.selectedTab()) {
-
-      case '0':
-        this.loadAbertos();
-        break;
-
-      case '1':
-        this.loadResolvidos();
-        break;
-
-      case '2':
-        this.loadTodos();
-        break;
-    }
-
-    this.loadCards();
-  }
-
-  // verificarAgora() {
-  //   this.alertService.verificarAlertas()
-  //     .then((resultado: any) => {
-  //       // aqui você usa o resultado pra mostrar pro usuário
-  //       console.log(`Criados: ${resultado.alertas_criados}`);
-  //       console.log(`Escalados: ${resultado.alertas_escalados}`);
-  //       console.log(`Expirados: ${resultado.alertas_expirados}`);
-
-  //       // depois recarrega a lista pra refletir os novos alertas
-  //       // this.carregar();
-  //     })
-  //     .catch((err) => {
-  //       console.error('Erro ao verificar alertas', err);
-  //     })
-  // }
 }

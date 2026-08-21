@@ -4,31 +4,21 @@ import { AuthService } from '../../services/auth.service';
 export function buildMenuItems(authService: AuthService, quantidadeAlertas: number): MenuItem[] {
     return [
         {
-            label: 'Catálogo',
-            items: [
-                {
-                    label: 'Medicamentos',
-                    icon: 'pi pi-inbox',
-                    routerLink: '/catalog',
-                    visible: authService.hasPermission('catalog.view')
-                },
-            ]
-        },
-        {
-            label: 'Relatórios',
+            // label: 'Menu',
             items: [
                 {
                     label: 'Painel de Controle',
                     icon: 'pi pi-chart-bar',
                     routerLink: '/report',
                     visible: authService.hasPermission('report.view')
-                }
-            ]
-        },
+                },
+                {
+                    label: 'Medicamentos',
+                    icon: 'pi pi-inbox',
+                    routerLink: '/catalog',
+                    visible: authService.hasPermission('catalog.view')
+                },
 
-        {
-            label: 'Estoque',
-            items: [
                 {
                     label: 'Lote',
                     icon: 'pi pi-box',
@@ -40,26 +30,19 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
                     icon: 'pi pi-arrow-right-arrow-left',
                     routerLink: '/movement',
                     visible: authService.hasPermission('movement.view')
-                }
-            ],
-        },
+                },
 
-        {
-            label: 'Dispersação',
-            items: [
+
                 {
                     label: 'Atendimento',
                     icon: 'pi pi-receipt',
                     routerLink: '/dispersation',
                     visible: authService.hasPermission('dispersation.view')
+
                 },
-            ],
-        },
 
 
-        {
-            label: 'Alertas',
-            items: [
+
                 {
                     label: 'Notificações',
                     icon: 'pi pi-bell',
@@ -68,14 +51,11 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
                     badge: quantidadeAlertas > 0
                         ? String(quantidadeAlertas)
                         : undefined
-                }
-            ]
-        },
 
-        {
-            label: 'Gestão',
-            items: [
+                },
+
                 {
+
                     label: 'Usuários',
                     icon: 'pi pi-users',
                     routerLink: '/management',

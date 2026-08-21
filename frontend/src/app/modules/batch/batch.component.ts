@@ -1,10 +1,11 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import { TableModule } from 'primeng/table';
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { InputText } from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
 import { Button } from 'primeng/button';
+import { Tag } from 'primeng/tag';
+import { Paginator, PaginatorState } from 'primeng/paginator';
 import { IBatch } from '../../shared/models/IBatch';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,12 +20,13 @@ import { CardViewComponent } from "../../shared/components/card-view/card-view.c
 @Component({
   selector: 'app-batch',
   imports: [
-    TableModule,
     IconField,
     InputIcon,
     InputText,
     DatePipe,
     Button,
+    Tag,
+    Paginator,
     FormsModule,
     Select,
     CardViewComponent
@@ -34,6 +36,36 @@ import { CardViewComponent } from "../../shared/components/card-view/card-view.c
 })
 export class BatchComponent implements OnInit {
   listLote = signal<IBatch[]>([]);
+
+  protected searchTerm = signal('');
+  protected first = signal(0);
+  protected rows = signal(12);
+
+  protected filteredList = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const list = this.listLote();
+
+    if (!term) return list;
+
+    return list.filter(item =>
+      item.numero_lote.toLowerCase().includes(term) ||
+      item.fabricante.toLowerCase().includes(term)
+    );
+  });
+
+  protected pagedList = computed(() =>
+    this.filteredList().slice(this.first(), this.first() + this.rows())
+  );
+
+  protected onSearch(value: string) {
+    this.searchTerm.set(value);
+    this.first.set(0);
+  }
+
+  protected onPageChange(event: PaginatorState) {
+    this.first.set(event.first ?? 0);
+    this.rows.set(event.rows ?? 12);
+  }
 
   private router = inject(Router)
   private loteService = inject(LoteService)
@@ -153,6 +185,7 @@ export class BatchComponent implements OnInit {
 
   onChangeMedicamento(medicamento: string | null) {
     this.medicamentoId = medicamento
+    this.first.set(0)
 
     this.getAllLotes(
       this.medicamentoId || undefined,
@@ -162,6 +195,7 @@ export class BatchComponent implements OnInit {
 
   onChangeSaldo(saldo: boolean | null) {
     this.checked = saldo
+    this.first.set(0)
 
     this.getAllLotes(
       this.medicamentoId || undefined,

@@ -1,25 +1,97 @@
-.item-active {
-    background: var(--color-green);
-    border-radius: 16px;
-    padding: 4px 8px;
-    color: var(--text-color-green)
-}
-
-.item-inactive {
-    background: var(--color-red);
-    border-radius: 16px;
-    padding: 5px 10px;
-    color: var(--text-color-red);
-}
-
-:host ::ng-deep .p-datatable .p-datatable-header {
-    padding: 0 !important;
+.list-toolbar {
     display: flex;
-    justify-content: start;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 }
 
-.btn-add {
-    position: absolute;
-    top: 0;
-    right: 2%;
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.entity-card {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.entity-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.entity-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    &.atendente {
+        background: var(--color-blue);
+        color: var(--text-color-blue);
+    }
+
+    &.gestor {
+        background: var(--color-yellow);
+        color: var(--text-color-yellow);
+    }
+
+    &.farmaceutico {
+        background: var(--color-red);
+        color: var(--text-color-red);
+    }
+}
+
+.entity-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.entity-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.entity-subtitle {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.entity-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.entity-meta {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.box-icon {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
 }

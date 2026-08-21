@@ -3,9 +3,10 @@ import { ChartModule } from 'primeng/chart';
 import { isPlatformBrowser } from '@angular/common';
 import { IMovimentacaoRelatorio } from '../../../shared/models/IReport';
 import { Button } from "primeng/button";
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-dashboard-movement',
-  imports: [ChartModule, Button],
+  imports: [ChartModule, Button, RouterLink],
   templateUrl: './dashboard-movement.component.html',
   styleUrl: './dashboard-movement.component.scss',
 })

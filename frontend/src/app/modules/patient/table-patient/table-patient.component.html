@@ -1,142 +1,63 @@
-<p-table
-    [value]="listPacientes()"
-    [paginator]="true"
-    [rows]="8"
-    [rowsPerPageOptions]="[8, 16, 32]"
-    dataKey="codigo"
-    [globalFilterFields]="[
-        'codigo',
-        'condicao_clinica',
-        'ativo'
-    ]"
-    #dt
->
+<p-confirmpopup />
 
-    <ng-template #caption>
-        <div class="flex">
-            <p-iconfield iconPosition="left" >
+<div class="list-toolbar">
+    <p-iconfield iconPosition="left">
+        <p-inputicon>
+            <i class="pi pi-search"></i>
+        </p-inputicon>
+        <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
+    </p-iconfield>
 
-                <p-inputicon>
-                    <i class="pi pi-search"></i>
-                </p-inputicon>
+    <p-select
+        class="status-filter"
+        [options]="filterOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="statusFilter()"
+        (ngModelChange)="onStatusChange($event)"
+        placeholder="Status"
+    />
+</div>
 
-                <input
-                    pInputText
-                    type="text"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')"
-                    placeholder="Buscar"
-                />
+<div class="cards-grid">
+    @for (item of pagedList(); track item.codigo) {
+        <div class="card entity-card">
 
-            </p-iconfield>
+            <div class="entity-card-header">
+                <div class="entity-avatar">
+                    <i class="pi pi-user"></i>
+                </div>
+
+                <div class="entity-info">
+                    <div class="entity-title" [pTooltip]="item.codigo">{{ item.codigo }}</div>
+                    <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+                </div>
+
+                <div class="entity-actions">
+                    <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
+                    <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item, $event)" />
+                </div>
+            </div>
+
+            <p class="entity-desc">{{ item.condicao_clinica }}</p>
+
+            @if (!isMobile()) {
+                <div class="entity-meta">
+                    <small>Criado em {{ item.criado_em | date:'dd/MM/yyyy' }}</small>
+                    <small>Atualizado em {{ item.atualizado_em | date:'dd/MM/yyyy' }}</small>
+                </div>
+            }
+
         </div>
-    </ng-template>
+    } @empty {
+        <div class="empty-state">Nenhum paciente encontrado.</div>
+    }
+</div>
 
-    <ng-template #header>
-        <tr>
-
-            <th pSortableColumn="codigo">
-                <div class="flex items-center gap-2">
-                    Código
-                    <p-sortIcon field="codigo" />
-                </div>
-            </th>
-
-            <th pSortableColumn="condicao_clinica">
-                <div class="flex items-center gap-2">
-                    Condição clínica
-                    <p-sortIcon field="condicao_clinica" />
-                </div>
-            </th>
-
-            @if(!isMobile()) {
-
-                <th pSortableColumn="criado_em">
-                    <div class="flex items-center gap-2">
-                        Criado em
-                        <p-sortIcon field="criado_em" />
-                    </div>
-                </th>
-
-                <th pSortableColumn="atualizado_em">
-                    <div class="flex items-center gap-2">
-                        Atualizado em
-                        <p-sortIcon field="atualizado_em" />
-                    </div>
-                </th>
-
-            }
-
-            <th pSortableColumn="ativo">
-                <div class="flex items-center gap-2">
-                    Status
-                    <p-sortIcon field="ativo" />
-                </div>
-            </th>
-
-            <th>
-                <div class="flex items-center gap-2">
-                    Ação
-                </div>
-            </th>
-
-        </tr>
-    </ng-template>
-
-    <ng-template #body let-item>
-        <tr>
-
-            <td>{{ item.codigo }}</td>
-
-            <td>{{ item.condicao_clinica }}</td>
-
-            @if(!isMobile()) {
-
-                <td>
-                    {{ item.criado_em | date:'dd/MM/yyyy' }}
-                </td>
-
-                <td>
-                    {{ item.atualizado_em | date:'dd/MM/yyyy' }}
-                </td>
-
-            }
-
-            <td>
-                <span
-                    class="px-2 py-1 border-round text-sm font-semibold"
-                    [class]="item.ativo
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-red-100 text-red-700'"
-                >
-                    {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                </span>
-            </td>
-
-            <td>
-
-                <div class="flex gap-1">
-
-                    <p-button
-                        icon="pi pi-pencil"
-                        rounded
-                        text
-                        severity="warn"
-                        (click)="goToEdit(item)"
-                    />
-
-                    <p-button
-                        icon="pi pi-trash"
-                        rounded
-                        text
-                        severity="danger"
-                        (click)="deleteItem(item)"
-                    />
-
-                </div>
-
-            </td>
-
-        </tr>
-    </ng-template>
-
-</p-table>
+<p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 36]"
+    (onPageChange)="onPageChange($event)"
+/>

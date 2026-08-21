@@ -135,8 +135,7 @@ export const BsFarmaTheme = definePreset(Aura, {
       200: "#a5f3fc",
       300: "#67e8f9",
       400: "#22d3ee",
-    // 500: "#06b6d4",
-      500: "#4C8EA9",
+      500: "#06b6d4",
       600: "#0891b2",
       700: "#0e7490",
       800: "#155e75",
@@ -437,40 +436,40 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#0f172a",
         },
         primary: {
-          color: "{cyan.500}",
-          contrastColor: "#ffffff",
-          hoverColor: "{cyan.600}",
-          activeColor: "{cyan.700}"
+         color: "#015C4D",
+          contrastColor: "#FDFCF8",
+          hoverColor: "#013E34",
+          activeColor: "#001F1A"
         },
         highlight: {
-          background: "{cyan.50}",
-          focusBackground: "{cyan.100}",
-          color: "{cyan.700}",
-          focusColor: "{cyan.800}"
+           background: "#DFF6F3",
+          focusBackground: "#CBF1EB",
+          color: "#162235",
+          focusColor: "#0B1628"
         },
         mask: {
           background: "rgba(0,0,0,0.4)",
           color: "{surface.200}"
         },
         formField: {
-          background: "{surface.0}",
-          disabledBackground: "{surface.200}",
-          filledBackground: "{surface.50}",
-          filledHoverBackground: "{surface.50}",
-          filledFocusBackground: "{surface.50}",
-          borderColor: "{surface.400}",
-          hoverBorderColor: "{surface.500}",
+          background: "none",
+          disabledBackground: "var(--slate-3)",
+          filledBackground: "var(--slate-3)",
+          filledHoverBackground: "var(--slate-3)",
+          filledFocusBackground: "var(--slate-3)",
+          borderColor: "var(--border-color)",
+          hoverBorderColor: "var(--text-muted)",
           focusBorderColor: "{primary.color}",
-          invalidBorderColor: "{red.400}",
-          color: "{surface.700}",
-          disabledColor: "{surface.500}",
-          placeholderColor: "{surface.500}",
-          invalidPlaceholderColor: "{red.600}",
-          floatLabelColor: "{surface.500}",
-          floatLabelFocusColor: "{surface.950}",
-          floatLabelActiveColor: "{surface.500}",
+          invalidBorderColor: "var(--primary-red)",
+          color: "var(--text-primary)",
+          disabledColor: "var(--text-muted)",
+          placeholderColor: "var(--text-muted)",
+          invalidPlaceholderColor: "var(--primary-red)",
+          floatLabelColor: "var(--text-muted)",
+          floatLabelFocusColor: "{primary.color}",
+          floatLabelActiveColor: "var(--text-muted)",
           floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
-          iconColor: "{surface.400}",
+          iconColor: "var(--text-muted)",
           shadow: "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)"
         },
         text: {
@@ -562,40 +561,40 @@ export const BsFarmaTheme = definePreset(Aura, {
           950: "#09090b"
         },
         primary: {
-          color: "{primary.400}",
-          contrastColor: "{surface.0}",
-          hoverColor: "{primary.300}",
-          activeColor: "{primary.200}"
+         color: "#013E34",
+          contrastColor: "#FDFCF8",
+          hoverColor: "#015C4D",
+          activeColor: "#59CFBB"
         },
         highlight: {
-          background: "color-mix(in srgb, {primary.400}, transparent 84%)",
-          focusBackground: "color-mix(in srgb, {primary.400}, transparent 76%)",
-          color: "rgba(255,255,255,.87)",
-          focusColor: "rgba(255,255,255,.87)"
+         background: "#016F5D",
+          focusBackground: "#018872",
+          color: "#EFEEEB",
+          focusColor: "#FDFCF8"
         },
         mask: {
           background: "rgba(0,0,0,0.6)",
           color: "{surface.200}"
         },
         formField: {
-          background: "{surface.800}",
-          disabledBackground: "{surface.700}",
-          filledBackground: "{surface.800}",
-          filledHoverBackground: "{surface.800}",
-          filledFocusBackground: "{surface.800}",
-          borderColor: "{surface.500}",
-          hoverBorderColor: "{surface.400}",
+          background: "none",
+          disabledBackground: "var(--slate-3)",
+          filledBackground: "var(--slate-3)",
+          filledHoverBackground: "var(--slate-3)",
+          filledFocusBackground: "var(--slate-3)",
+          borderColor: "var(--border-color)",
+          hoverBorderColor: "var(--text-muted)",
           focusBorderColor: "{primary.color}",
-          invalidBorderColor: "{red.300}",
-          color: "{surface.0}",
-          disabledColor: "{surface.400}",
-          placeholderColor: "{surface.400}",
-          invalidPlaceholderColor: "{red.400}",
-          floatLabelColor: "{surface.400}",
+          invalidBorderColor: "var(--primary-red)",
+          color: "var(--text-primary)",
+          disabledColor: "var(--text-muted)",
+          placeholderColor: "var(--text-muted)",
+          invalidPlaceholderColor: "var(--primary-red)",
+          floatLabelColor: "var(--text-muted)",
           floatLabelFocusColor: "{primary.color}",
-          floatLabelActiveColor: "{surface.400}",
+          floatLabelActiveColor: "var(--text-muted)",
           floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
-          iconColor: "{surface.400}",
+          iconColor: "var(--text-muted)",
           shadow: "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)"
         },
         text: {
@@ -668,6 +667,143 @@ export const BsFarmaTheme = definePreset(Aura, {
             color: "{surface.500}",
             focusColor: "{surface.400}",
             activeColor: "{surface.400}"
+          }
+        }
+      }
+    }
+  },
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          root: {
+            info: {
+              background: "{blue.500}",
+              hoverBackground: "{blue.600}",
+              activeBackground: "{blue.700}",
+              borderColor: "{blue.500}",
+              hoverBorderColor: "{blue.600}",
+              activeBorderColor: "{blue.700}",
+              color: "#ffffff",
+              hoverColor: "#ffffff",
+              activeColor: "#ffffff",
+              focusRing: { color: "{blue.500}", shadow: "none" }
+            },
+            warn: {
+              background: "{amber.500}",
+              hoverBackground: "{amber.600}",
+              activeBackground: "{amber.700}",
+              borderColor: "{amber.500}",
+              hoverBorderColor: "{amber.600}",
+              activeBorderColor: "{amber.700}",
+              color: "#ffffff",
+              hoverColor: "#ffffff",
+              activeColor: "#ffffff",
+              focusRing: { color: "{amber.500}", shadow: "none" }
+            }
+          },
+          outlined: {
+            info: {
+              hoverBackground: "{blue.50}",
+              activeBackground: "{blue.100}",
+              borderColor: "{blue.200}",
+              color: "{blue.500}"
+            },
+            warn: {
+              hoverBackground: "{amber.50}",
+              activeBackground: "{amber.100}",
+              borderColor: "{amber.200}",
+              color: "{amber.500}"
+            }
+          },
+          text: {
+            info: {
+              hoverBackground: "{blue.50}",
+              activeBackground: "{blue.100}",
+              color: "{blue.500}"
+            },
+            warn: {
+              hoverBackground: "{amber.50}",
+              activeBackground: "{amber.100}",
+              color: "{amber.500}"
+            }
+          }
+        },
+        dark: {
+          root: {
+            info: {
+              background: "{blue.400}",
+              hoverBackground: "{blue.300}",
+              activeBackground: "{blue.200}",
+              borderColor: "{blue.400}",
+              hoverBorderColor: "{blue.300}",
+              activeBorderColor: "{blue.200}",
+              color: "{blue.950}",
+              hoverColor: "{blue.950}",
+              activeColor: "{blue.950}",
+              focusRing: { color: "{blue.400}", shadow: "none" }
+            },
+            warn: {
+              background: "{amber.400}",
+              hoverBackground: "{amber.300}",
+              activeBackground: "{amber.200}",
+              borderColor: "{amber.400}",
+              hoverBorderColor: "{amber.300}",
+              activeBorderColor: "{amber.200}",
+              color: "{amber.950}",
+              hoverColor: "{amber.950}",
+              activeColor: "{amber.950}",
+              focusRing: { color: "{amber.400}", shadow: "none" }
+            },
+            danger: {
+              background: "{red.500}",
+              hoverBackground: "{red.400}",
+              activeBackground: "{red.300}",
+              borderColor: "{red.500}",
+              hoverBorderColor: "{red.400}",
+              activeBorderColor: "{red.300}",
+              color: "{red.950}",
+              hoverColor: "{red.950}",
+              activeColor: "{red.950}",
+              focusRing: { color: "{red.500}", shadow: "none" }
+            }
+          },
+          outlined: {
+            info: {
+              hoverBackground: "color-mix(in srgb, {blue.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {blue.400}, transparent 84%)",
+              borderColor: "{blue.700}",
+              color: "{blue.400}"
+            },
+            warn: {
+              hoverBackground: "color-mix(in srgb, {amber.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {amber.400}, transparent 84%)",
+              borderColor: "{amber.700}",
+              color: "{amber.400}"
+            },
+            danger: {
+              hoverBackground: "color-mix(in srgb, {red.500}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {red.500}, transparent 84%)",
+              borderColor: "{red.800}",
+              color: "{red.500}"
+            }
+          },
+          text: {
+            info: {
+              hoverBackground: "color-mix(in srgb, {blue.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {blue.400}, transparent 84%)",
+              color: "{blue.400}"
+            },
+            warn: {
+              hoverBackground: "color-mix(in srgb, {amber.400}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {amber.400}, transparent 84%)",
+              color: "{amber.400}"
+            },
+            danger: {
+              hoverBackground: "color-mix(in srgb, {red.500}, transparent 96%)",
+              activeBackground: "color-mix(in srgb, {red.500}, transparent 84%)",
+              color: "{red.500}"
+            }
           }
         }
       }

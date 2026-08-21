@@ -13,49 +13,53 @@ import { filter } from 'rxjs';
 export class BreadcrumbComponent implements OnInit {
   private router = inject(Router);
   protected items: MenuItem[] = [];
+  protected subLabel: string | null = null;
 
   ngOnInit() {
-    this.items = this.buildBreadcrumb();
+    this.build();
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.items = this.buildBreadcrumb();
+        this.build();
       });
   }
 
-  private buildBreadcrumb(): MenuItem[] {
+  private build() {
     const url = this.router.url.split('?')[0];
     const segments = url.split('/').filter(Boolean);
     const breadcrumbs: MenuItem[] = [];
     let currentPath = '';
+    let subLabel: string | null = null;
 
     segments.forEach(segment => {
       currentPath += `/${segment}`;
 
-      const label = this.findBreadcrumbLabel(
+      const data = this.findRouteData(
         this.router.config,
-        currentPath.replace(/^\//, '') 
+        currentPath.replace(/^\//, '')
       );
 
-      if (label) {
-        breadcrumbs.push({ label, routerLink: currentPath });
+      if (data?.['breadcrumb']) {
+        breadcrumbs.push({ label: data['breadcrumb'], routerLink: currentPath });
+        subLabel = data['subLabel'] ?? null;
       }
     });
 
-    return breadcrumbs;
+    this.items = breadcrumbs;
+    this.subLabel = subLabel;
   }
 
-  private findBreadcrumbLabel(routes: Route[], fullPath: string): string | null {
+  private findRouteData(routes: Route[], fullPath: string): { [key: string]: any } | null {
     for (const route of routes) {
       const routePath = route.path ?? '';
 
       if (this.matchPath(routePath, fullPath) && route.data?.['breadcrumb']) {
-        return route.data['breadcrumb'];
+        return route.data;
       }
 
       if (route.children) {
-        const found = this.findBreadcrumbLabel(route.children, fullPath);
+        const found = this.findRouteData(route.children, fullPath);
         if (found) return found;
       }
     }

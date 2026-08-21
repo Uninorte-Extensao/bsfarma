@@ -1,76 +1,94 @@
-<p-table 
-[value]="listMedicine()"
-[paginator]="true"
-[rows]="5"
-[rowsPerPageOptions]="[5,10,15]"
-dataKey="id"
-[globalFilterFields]="['nome_generico', 'nome_comercial', 'forma_farmaceutica', 'concentracao', 'via_administracao', 'ativo']"
-#dt
->
+<div class="list-toolbar">
+    <div class="list-toolbar-filters">
+        <p-iconfield iconPosition="left">
+            <p-inputicon>
+                <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pSize="small" pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
+        </p-iconfield>
 
-    <ng-template #caption>
-        <div class="flex">
-            <p-iconfield iconPosition="left" class="ml-auto">
-                <p-inputicon>
-                    <i class="pi pi-search"></i>
-                </p-inputicon>
-                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar" />
-            </p-iconfield>
-        </div>
-    </ng-template>
+        <p-select
+            class="status-filter"
+            [options]="filterOptions"
+            optionLabel="label"
+            size="small"
+            optionValue="value"
+            [ngModel]="statusFilter()"
+            (ngModelChange)="onStatusChange($event)"
+            placeholder="Status"
+        />
+    </div>
+
+    @if (isCreate()) {
+        <p-button
+            size="small"
+            [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'"
+            icon="pi pi-plus"
+            (click)="goToCreate()"
+        />
+    }
+</div>
+
+<div class="table-card">
+<p-table
+    [value]="pagedList()"
+    dataKey="id"
+    [lazy]="true"
+    [paginator]="true"
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 32]"
+    (onPage)="onPageChange($event)"
+>
 
     <ng-template #header>
         <tr>
-            <th pSortableColumn="nomeGenerico">
+            <th>
                 <div class="flex items-center gap-2">
                     Nome genérico
-                    <p-sortIcon field="nomeGenerico" />
                 </div>
             </th>
 
             @if(!isMobile()) {
-                <th pSortableColumn="nomeComercial">
+                <th >
                     <div class="flex items-center gap-2">
                         Nome comercial
-                        <p-sortIcon field="nomeComercial" />
                     </div>
                 </th>
-                <th pSortableColumn="formaFarmaceutica">
+                <th >
                     <div class="flex items-center gap-2">
                         Forma farm.
-                        <p-sortIcon field="formaFarmaceutica" />
                     </div>
                 </th>
-                <th pSortableColumn="concentracao">
+                <th>
                     <div class="flex items-center gap-2">
                         Concentração
-                        <p-sortIcon field="concentracao" />
+              
                     </div>
                 </th>
 
-                <th pSortableColumn="viaAdministracao">
+                <th >
                     <div class="flex items-center gap-2">
                         Via
-                        <p-sortIcon field="viaAdministracao" />
                     </div>
                 </th>
-                }
+            }
 
-            <th pSortableColumn="ativo">
+            <th>
                 <div class="flex items-center gap-2">
                     Status
-                    <p-sortIcon field="ativo" />
                 </div>
             </th>
 
-            <th pSortableColumn="acao">
+            <th>
                 <div class="flex items-center gap-2">
                     Ação
-                    <p-sortIcon field="acao" />
                 </div>
             </th>
         </tr>
     </ng-template>
+
     <ng-template #body let-item>
         <tr>
             <td>{{ item.nome_generico }}</td>
@@ -81,37 +99,46 @@ dataKey="id"
                 <td>{{ item.via_administracao }}</td>
             }
             <td>
-                <span class="px-2 py-1 border-round text-sm font-semibold"
-                        [class]="item.ativo
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'">
-                    {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                </span>
+                <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
             </td>
             <td>
-                <!-- <span class="flex gap-1 cursor-pointer" (click)="goToEdit(item)">
-                    <small>Editar</small>
-                    <i class="pi pi-angle-double-right"></i>
-                </span> -->
-
                 <div class="flex gap-1">
+                    @if(isEdit()) {
                     <p-button
-                    icon="pi pi-pencil"
-                    rounded 
-                    text
-                    severity="warn"
-                    (click)="goToEdit(item)"
+                        icon="pi pi-pencil"
+                        rounded
+                        text
+                        severity="warn"
+                        (click)="goToEdit(item)"
                     />
+                    }
 
+                    @if(isDelete()) {
                     <p-button
-                    icon="pi pi-trash"
-                    rounded 
-                    text
-                    severity="danger"
-                    (click)="deleteItem(item)"
+                        icon="pi pi-trash"
+                        rounded
+                        text
+                        severity="danger"
+                        (click)="deleteItem(item)"
                     />
+                    }
                 </div>
             </td>
         </tr>
     </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td [attr.colspan]="isMobile() ? 3 : 7" class="empty-state">Nenhum medicamento encontrado.</td>
+        </tr>
+    </ng-template>
 </p-table>
+</div>
+
+<!-- <p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    (onPageChange)="onPageChange($event)"
+/> -->

@@ -1,48 +1,191 @@
-.container {
+.auth-layout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6rem;
     min-height: 100dvh;
+    padding-inline: 10rem; 
+    overflow: hidden;
+}
+
+.theme-toggle-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--text-primary) 15%, transparent);
+    background: color-mix(in oklab, var(--bg-surface) 70%, transparent);
+    color: var(--text-primary);
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background .2s ease, border-color .2s ease;
+
+    i {
+        font-size: 1.05rem;
+    }
+
+    &:hover {
+        background: color-mix(in oklab, var(--bg-surface) 90%, transparent);
+    }
+}
+
+.auth-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(110px);
+        opacity: 0.4;
+        will-change: transform;
+    }
+
+    .blob-blue {
+        width: 300px;
+        height: 300px;
+        top: -12%;
+        left: -10%;
+        background: var(--primary-blue);
+        animation: blob-float-a 22s ease-in-out infinite;
+    }
+
+    .blob-yellow {
+        width: 300px;
+        height: 300px;
+        bottom: -14%;
+        left: 28%;
+        background: var(--primary-yellow);
+        animation: blob-float-b 26s ease-in-out infinite;
+    }
+
+    .blob-red {
+        width: 300px;
+        height: 300px;
+        top: 18%;
+        right: -14%;
+        background: var(--purple-600);
+        animation: blob-float-c 24s ease-in-out infinite;
+    }
+}
+
+@keyframes blob-float-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(6%, 30%) scale(1.1); }
+    66% { transform: translate(-4%, 10%) scale(0.95); }
+}
+
+@keyframes blob-float-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-8%, -12%) scale(1.15); }
+}
+
+@keyframes blob-float-c {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    40% { transform: translate(-6%, 6%) scale(1.05); }
+    70% { transform: translate(5%, -8%) scale(0.9); }
+}
+
+.brand-panel {
+    position: relative;
+    z-index: 1;
+    flex: 3;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 3rem;
+    text-align: center;
+
+    .brand-logo {
+        width: 450px;
+        height: 450px;
+        object-fit: contain;
+        transition: filter .3s ease;
+    }
+
+    .brand-desc {
+        max-width: 320px;
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        opacity: 0.7;
+    }
+
+    .brand-version {
+        position: absolute;
+        bottom: 1.5rem;
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+}
+
+:host-context(.dark) .brand-logo {
+    filter: brightness(1.2) saturate(1.15);
+}
+
+.form-panel {
+    z-index: 1;
+    flex: 0 0 400px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    padding: 3rem 2rem 2rem 2rem;
+    // background: var(--bg-form);
+    width: 380px;
+    height: 420px;
+    border-radius: 10px;
 }
 
 .content {
-    box-shadow: 6px 0px 42px -15px #4C8EA9;
-    width: 450px;
-    height: auto;
-    border-radius: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 1.5rem;
-
-    margin: auto;
-}
-
-.footer-auth {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    border-top: 1px solid #4C8EA9;
-
     width: 100%;
-    padding: 1rem 2rem;
+    max-width: 400px;
+    // color: var(--text-terciary);
 }
 
-.container-img {
+.content-header {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
-    .logo {
-        width: 70px;
-        height: 70px;
-        object-fit: contain;
+    text-align: center;
+    gap: 0.25rem;
+    // margin-bottom: 1.5rem;
+}
 
+.content-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.content-subtitle {
+    margin: 0;
+    font-weight: 200;
+    opacity: 0.9;
+}
+
+@media screen and (max-width: 768px) {
+    .brand-panel {
+        display: none;
     }
 
-    .logo-tipo {
-        font-weight: 800;
-        color: #112D55;
-        font-size: 1.2rem;
+    .form-panel {
+        flex: none;
+        width: 100%;
     }
+}
+
+:host .card {
+    box-shadow: 0px 0px 15px -3px rgb(30 33 31 / 20%);
 }

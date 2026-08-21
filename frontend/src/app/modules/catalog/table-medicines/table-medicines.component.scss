@@ -1,28 +1,40 @@
-.item-active {
-    background: var(--color-green);
-    border-radius: 16px;
-    padding: 4px 8px;
-    color: var(--text-color-green)
-}
-
-.item-inactive {
-    background: var(--color-red);
-    border-radius: 16px;
-    padding: 5px 10px;
-    color: var(--text-color-red);
-}
-
-//:host ::ng-deep .p-datatable .p-datatable-header {
-//    padding: 0 !important;
-//    border: none !important;
-//    position: absolute;
-//    left: 40%;
-//    top: -13%;
-//    z-index: 10;
-//}
-
-:host ::ng-deep .p-datatable .p-datatable-header {
-    padding: 0 !important;
+.list-toolbar {
     display: flex;
-    justify-content: start;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.list-toolbar-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-filter {
+    width: 160px;
+}
+
+.table-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+:host ::ng-deep .table-card .p-paginator {
+    border-top: 1px solid var(--border-color);
+    border-radius: 0;
+    background: var(--bg-surface);
+    padding: 0.5rem 1rem;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.card {
+    height: none;
 }

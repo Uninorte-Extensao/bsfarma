@@ -3,23 +3,14 @@ import {
   inject,
   model,
   signal,
-  WritableSignal,
   OnInit
 } from '@angular/core';
 
-import { TabsModule } from 'primeng/tabs';
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
-import { Textarea } from 'primeng/textarea';
-import { InputMask } from 'primeng/inputmask';
-
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
 
 import { TablePatientComponent } from './table-patient/table-patient.component';
+import { FormPatientComponent } from './form-patient/form-patient.component';
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 import { PatientService } from '../../shared/services/patient.service';
 import { ToastService } from '../../shared/services/toast.service';
@@ -31,19 +22,16 @@ import {
   IRecuperarPaciente,
   IUpdatePaciente
 } from '../../shared/models/IPatient';
-import { DatePipe } from '@angular/common';
+
+type ITypeDialog = 'criar' | 'recuperar' | 'editar';
 
 @Component({
   selector: 'app-patient',
   imports: [
-    TabsModule,
     Button,
     TablePatientComponent,
-    Dialog,
-    Textarea,
-    InputMask,
-    ReactiveFormsModule,
-    DatePipe
+    FormPatientComponent,
+    Dialog
   ],
   templateUrl: './patient.component.html',
   styleUrl: './patient.component.scss',
@@ -55,44 +43,34 @@ export class PatientComponent implements OnInit {
   private patientService = inject(PatientService);
   private toast = inject(ToastService);
   private loading = inject(LoadingService);
-  private fb = inject(FormBuilder);
 
   public pacientes = signal<IPaciente[]>([]);
-  public pacientesAtivos = signal<IPaciente[]>([]);
-  public pacientesInativos = signal<IPaciente[]>([]);
+
+  private currentFilter: boolean | undefined = undefined;
 
   public isVisible = model<boolean>(false);
-  public typeDialog = signal<string>('criar');
+  public typeDialog = signal<ITypeDialog>('criar');
 
   public codigo = model<string>('');
-
-  public form = this.fb.group({
-    cpf: ['', Validators.required],
-    condicaoClinica: ['', Validators.required]
-  });
-
-  public dadosRecuperados = signal<IPaciente | null>(null)
+  public pacienteSelecionado = signal<IPaciente | null>(null);
+  public dadosRecuperados = signal<IPaciente | null>(null);
 
   ngOnInit() {
     this.loadPacientes();
   }
 
-  private loadPacientes(): void {
-    this.fetchPacientes(this.pacientes);
-    this.fetchPacientes(this.pacientesAtivos, true);
-    this.fetchPacientes(this.pacientesInativos, false);
+  public onFilter(filter: boolean | undefined) {
+    this.currentFilter = filter;
+    this.loadPacientes();
   }
 
-  private fetchPacientes(
-    state: WritableSignal<IPaciente[]>,
-    ativo?: boolean
-  ): void {
+  private loadPacientes(): void {
 
     this.loading.show();
 
-    this.patientService.getPacientes(ativo)
+    this.patientService.getPacientes(this.currentFilter)
       .then((res: IPaciente[]) => {
-        state.set(res);
+        this.pacientes.set(res);
       })
       .catch(() => {
         this.toast.showToastError(
@@ -111,33 +89,11 @@ export class PatientComponent implements OnInit {
     this.patientService.deletePaciente(item.codigo)
       .then(() => {
 
-        this.pacientes.update(
-          pacientes =>
-            pacientes.filter(
-              p => p.codigo !== item.codigo
-            )
-        );
-
-        this.pacientesAtivos.update(
-          pacientes =>
-            pacientes.filter(
-              p => p.codigo !== item.codigo
-            )
-        );
-
-        this.pacientesInativos.update(
-          pacientes => [
-            ...pacientes,
-            {
-              ...item,
-              ativo: false
-            }
-          ]
-        );
-
         this.toast.showToastSuccess(
           'Paciente inativado com sucesso.'
         );
+
+        this.loadPacientes();
       })
       .catch(() => {
         this.toast.showToastError(
@@ -149,76 +105,36 @@ export class PatientComponent implements OnInit {
       });
   }
 
-  showModal(type: string) {
+  showModal(type: ITypeDialog) {
     this.typeDialog.set(type);
-
-    this.form.reset();
-
-    if (type === 'recuperar') {
-      this.form.get('condicaoClinica')?.clearValidators();
-      this.form.get('condicaoClinica')?.updateValueAndValidity();
-    } else {
-      this.form.get('condicaoClinica')?.setValidators(Validators.required);
-      this.form.get('condicaoClinica')?.updateValueAndValidity();
-    }
-
-    if (type === 'editar') {
-      this.form.get('cpf')?.clearValidators();
-      this.form.get('cpf')?.updateValueAndValidity();
-    } else {
-      this.form.get('cpf')?.setValidators(Validators.required);
-      this.form.get('cpf')?.updateValueAndValidity();
-    }
-
+    this.pacienteSelecionado.set(null);
+    this.dadosRecuperados.set(null);
     this.isVisible.set(true);
   }
 
   closeModal() {
     this.isVisible.set(false);
-    this.form.reset();
-    this.dadosRecuperados.set(null)
+    this.dadosRecuperados.set(null);
   }
 
-  submit() {
+  onInvalidForm() {
+    this.toast.showToastWarn(
+      'Por favor, preencha todos os campos.'
+    );
+  }
 
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      this.toast.showToastWarn(
-        'Por favor, preencha todos os campos.'
-      );
-      return;
-    }
+  criarPaciente(form: ICreatePaciente) {
 
     this.loading.show();
 
-    if (this.typeDialog() === 'criar') {
-      this.criarPaciente();
-    } else if (this.typeDialog() === 'recuperar') {
-      this.recuperarPaciente();
-    } else {
-      this.editarPaciente();
-    }
-  }
-
-  private criarPaciente() {
-
-    const formValue = this.form.getRawValue();
-
-    const form: ICreatePaciente = {
-      cpf: formValue.cpf!.replace(/\D/g, ''),
-      condicao_clinica: formValue.condicaoClinica!
-    };
-
     this.patientService.createPaciente(form)
-      .then((res: IPaciente) => {
+      .then(() => {
 
-        this.pacientes.update(
-          pacientes => [...pacientes, res]
+        this.toast.showToastSuccess(
+          'Paciente cadastrado com sucesso.'
         );
 
-        this.pacientesAtivos.update(
-          pacientes => [...pacientes, res]
-        );
+        this.loadPacientes();
 
         this.closeModal();
       })
@@ -232,57 +148,14 @@ export class PatientComponent implements OnInit {
       });
   }
 
-  private recuperarPaciente() {
-
-    const formValue = this.form.getRawValue();
-
-    const form: IRecuperarPaciente = {
-      cpf: formValue.cpf!
-    };
+  recuperarPaciente(form: IRecuperarPaciente) {
 
     this.loading.show();
 
     this.patientService.recuperarPaciente(form)
       .then((res: IPaciente) => {
 
-        // LISTA GERAL
-        this.pacientes.update((pacientes) => {
-
-          const exists = pacientes.some(
-            p => p.codigo === res.codigo
-          );
-
-          if (exists) {
-            return pacientes.map(
-              p => p.codigo === res.codigo ? res : p
-            );
-          }
-
-          return [...pacientes, res];
-        });
-
-        // LISTA ATIVOS
-        this.pacientesAtivos.update((pacientes) => {
-
-          const exists = pacientes.some(
-            p => p.codigo === res.codigo
-          );
-
-          if (exists) {
-            return pacientes.map(
-              p => p.codigo === res.codigo ? res : p
-            );
-          }
-
-          return [...pacientes, res];
-        });
-
-        // REMOVE DOS INATIVOS
-        this.pacientesInativos.update((pacientes) =>
-          pacientes.filter(
-            p => p.codigo !== res.codigo
-          )
-        );
+        this.loadPacientes();
 
         this.toast.showToastSuccess(
           'Paciente recuperado com sucesso.'
@@ -300,13 +173,7 @@ export class PatientComponent implements OnInit {
       });
   }
 
-  private editarPaciente() {
-
-    const formValue = this.form.getRawValue();
-
-    const form: IUpdatePaciente = {
-      condicao_clinica: formValue.condicaoClinica!
-    };
+  editarPaciente(form: IUpdatePaciente) {
 
     this.loading.show();
 
@@ -314,25 +181,13 @@ export class PatientComponent implements OnInit {
       this.codigo(),
       form
     )
-      .then((res: IPaciente) => {
-
-        this.pacientes.update(
-          pacientes =>
-            pacientes.map(p =>
-              p.codigo === res.codigo ? res : p
-            )
-        );
-
-        this.pacientesAtivos.update(
-          pacientes =>
-            pacientes.map(p =>
-              p.codigo === res.codigo ? res : p
-            )
-        );
+      .then(() => {
 
         this.toast.showToastSuccess(
           'Paciente atualizado com sucesso.'
         );
+
+        this.loadPacientes();
 
         this.closeModal();
       })
@@ -352,18 +207,9 @@ export class PatientComponent implements OnInit {
 
     this.codigo.set(item.codigo);
 
-    this.form.patchValue({
-      condicaoClinica: item.condicao_clinica
-    });
+    this.pacienteSelecionado.set(item);
 
-    this.form.get('cpf')?.clearValidators();
-    this.form.get('cpf')?.updateValueAndValidity();
-
-    this.form.get('condicaoClinica')?.setValidators(
-      Validators.required
-    );
-
-    this.form.get('condicaoClinica')?.updateValueAndValidity();
+    this.dadosRecuperados.set(null);
 
     this.isVisible.set(true);
   }

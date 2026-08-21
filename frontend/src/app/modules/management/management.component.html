@@ -1,98 +1,54 @@
 <div>
-    <header>
-        <small class="px-5 text-obs">Lista de usuários.</small>
-    </header>
+    <div class="">
+        <div class="list-toolbar">
+            <p-iconfield iconPosition="left">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="searchTerm.set($event.target.value)" placeholder="Buscar" />
+            </p-iconfield>
 
-    <div class="px-5 pt-3 relative">
-        <p-table [value]="listUsers()" [paginator]="true" [rows]="8" [rowsPerPageOptions]="[8, 16, 32]" dataKey="id"
-            [globalFilterFields]="['nome', 'login', 'perfil']" #dt>
-            <ng-template #caption>
-                <div class="flex align-items-center justify-content-between w-full mb-3">
-                    <div>
-                        <p-iconfield iconPosition="left" class="ml-auto">
-                            <p-inputicon>
-                                <i class="pi pi-search"></i>
-                            </p-inputicon>
-                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Buscar" />
-                        </p-iconfield>
+            <p-button
+            label="Adicionar Usuário"
+            icon="pi pi-plus"
+            (click)="showDialog('create')"
+            />
+        </div>
+
+        <div class="cards-grid">
+            @for (item of filteredUsers(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="box-icon" [ngClass]="getProfileClass(item.perfil)">
+                            {{ inititalName(item.nome) | uppercase }}
+                        </div>
+
+                        <div class="entity-info">
+                            <div class="entity-title">{{ item.nome }}</div>
+                            <small class="entity-subtitle">{{ item.login }}</small>
+                        </div>
+
+                        <p-button icon="pi pi-pencil" severity="warn" text rounded (click)="showDialog('update', item)" />
                     </div>
 
-                    <p-button 
-                    label="Adicionar Usuário" 
-                    icon="pi pi-plus"
-                    (click)="showDialog('create')"
-                    />
+                    <div class="entity-tags">
+                        <p-tag [value]="item.perfil | titlecase" severity="secondary" />
+                        <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+                    </div>
+
+                    @if (!isMobile()) {
+                        <small class="entity-meta">
+                            Último acesso: {{ item.ultimo_acesso | date: "dd/MM/yyyy" }}
+                        </small>
+                    }
+
                 </div>
-            </ng-template>
-    
-            <ng-template #header>
-                <tr>
-                    <th pSortableColumn="nome">
-                        <div class="flex items-center gap-2">
-                            Nome
-                            <p-sortIcon field="nome" />
-                        </div>
-                    </th>
-    
-                    @if(!isMobile()) {
-                        <th pSortableColumn="login">
-                            <div class="flex items-center gap-2">
-                                Login
-                                <p-sortIcon field="login" />
-                            </div>
-                        </th>
-                    }
-    
-                    <th pSortableColumn="perfil">
-                        <div class="flex items-center gap-2">
-                            Perfil
-                            <p-sortIcon field="perfil" />
-                        </div>
-                    </th>
-    
-                    @if(!isMobile()) {
+            } @empty {
+                <div class="empty-state">Nenhum usuário encontrado.</div>
+            }
+        </div>
 
-                        <th pSortableColumn="acesso">
-                            <div class="flex items-center gap-2">
-                                Último acesso
-                                <p-sortIcon field="acesso" />
-                            </div>
-                        </th>
-        
-                        <th>
-                            Status
-                        </th>
-        
-                    }
-                    <th>
-                        Ação
-                    </th>
-                </tr>
-            </ng-template>
-    
-            <ng-template #body let-item>
-                <tr>
-                    <td>{{ item.nome }}</td>
-                    @if(!isMobile()) {
-                        <td>{{ item.login }}</td>
-                    }
-                    <td>{{ item.perfil }}</td>
-
-                    @if(!isMobile()) {
-                        <td>{{ item.ultimo_acesso | date: "dd/MM/yyyy" }}</td>
-                        <td>
-                            <span [class]="item.ativo ? 'item-active' : 'item-inactive'">
-                                {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                            </span>
-                        </td>
-                    }
-                    <td>
-                       <p-button icon="pi pi-pencil" severity="warn" text rounded (click)="showDialog('update', item)"/>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
     </div>
 </div>
 
@@ -107,7 +63,7 @@
 [header]="typeDialog() === 'create' ? 'Cadastro de Usuário' : 'Editar Usuário'"
 >
 @if(isVisible()) {
-    <app-form-user 
+    <app-form-user
     [(isVisible)]="isVisible"
     (onChangeCreate)="submit($event)"
     (onChangeUpdate)="update($event)"

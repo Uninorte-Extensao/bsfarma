@@ -96,7 +96,7 @@ export class FormMovementComponent implements OnInit {
     }
 
 
-    this.user.set(this.auth.getUser())
+    this.user.set(this.auth.user())
   }
 
   async ngOnInit() {

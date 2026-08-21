@@ -1,9 +1,13 @@
-<div class="card flex justify-center relative">
-<p-breadcrumb [model]="items">
-  <ng-template pTemplate="item" let-item let-last="last">
-    <span [class.active]="last" [class.inactive]="!last">
-      {{ item.label }}
-    </span>
-  </ng-template>
-</p-breadcrumb>
+<div class="breadcrumb-block">
+  <p-breadcrumb [model]="items">
+    <ng-template pTemplate="item" let-item let-last="last">
+      <span [class.active]="last" [class.inactive]="!last">
+        {{ item.label }}
+      </span>
+    </ng-template>
+  </p-breadcrumb>
+
+  @if (subLabel) {
+    <small class="sub-label">{{ subLabel }}</small>
+  }
 </div>

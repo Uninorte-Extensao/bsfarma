@@ -1,16 +1,17 @@
-import { Component, output, OutputEmitterRef } from '@angular/core';
+import { Component, inject, output, OutputEmitterRef } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password'
 import { Button } from "primeng/button";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUserLogin } from '../../../shared/models/IUser';
+import { ToastService } from '../../../shared/services/toast.service';
 @Component({
   selector: 'app-login',
   imports: [
     InputText,
     Password,
     Button,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -18,6 +19,7 @@ import { IUserLogin } from '../../../shared/models/IUser';
 export class LoginComponent {
   protected form: FormGroup;
   public onChangeLogin: OutputEmitterRef<IUserLogin> = output()
+  private toast = inject(ToastService);
 
   constructor() {
     const fb = new FormBuilder
@@ -28,6 +30,12 @@ export class LoginComponent {
   }
 
   protected saveData() {
+
+    if(this.form.invalid) {
+      this.toast.showToastWarn("Por favor, preencha todos os campos.")
+      return
+    }
+
     this.onChangeLogin.emit(this.form.value)
   }
 }

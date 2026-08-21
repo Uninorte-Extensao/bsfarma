@@ -1,30 +1,34 @@
-import { Component, inject, model, signal, OnInit } from '@angular/core';
+import { Component, computed, inject, model, signal, OnInit } from '@angular/core';
 import { Button } from "primeng/button";
 import { UserService } from '../../shared/services/user.service';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { ICreateUser, IResponseUser, IUpdateUser, IUser } from '../../shared/models/IUser';
-import { TableModule } from 'primeng/table';
+import { ICreateUser, IResponseUser, IUpdateUser } from '../../shared/models/IUser';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { InputText } from 'primeng/inputtext';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass, TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { Dialog } from 'primeng/dialog'
+import { Tag } from 'primeng/tag';
 import { FormUserComponent } from "./form-user/form-user.component";
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
+import { getInitials } from '../../shared/utils/initialsName';
 
 type ITypeDialog = 'create' | 'update'
 @Component({
   selector: 'app-management',
   imports: [
     Button,
-    TableModule,
     InputIcon,
     IconField,
     InputText,
     DatePipe,
     Dialog,
-    FormUserComponent
+    Tag,
+    FormUserComponent,
+    NgClass,
+    TitleCasePipe,
+    UpperCasePipe
   ],
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss',
@@ -39,6 +43,21 @@ export class ManagementComponent implements OnInit {
   public viewUser = model<IResponseUser | null>(null);
   private userId = signal<string | null>(null)
   protected isMobile = inject(IS_MOBILE)
+
+  protected searchTerm = signal('');
+
+  protected filteredUsers = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const list = this.listUsers();
+
+    if (!term) return list;
+
+    return list.filter(user =>
+      user.nome.toLowerCase().includes(term) ||
+      user.login.toLowerCase().includes(term) ||
+      user.perfil.toLowerCase().includes(term)
+    );
+  });
 
   ngOnInit() {
     this.getUsers()
@@ -106,5 +125,18 @@ export class ManagementComponent implements OnInit {
       .finally(() => {
         this.loadingService.hide()
       })
+  }
+
+  protected getProfileClass(perfil: string) {
+    let style = ''
+    if (perfil === 'gestor') style = 'box-yellow' 
+    if(perfil === 'farmaceutico') style = 'box-red'
+    if(perfil === 'atendente') style = 'box-blue'
+
+    return style
+  }
+
+  protected inititalName(name: string): string {
+    return getInitials(name);
   }
 }

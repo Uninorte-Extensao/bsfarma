@@ -1,12 +1,13 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { CardViewComponent } from "../../shared/components/card-view/card-view.component";
-import { TableModule } from "primeng/table";
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { Select } from "primeng/select";
 import { Button } from "primeng/button";
+import { Tag } from 'primeng/tag';
+import { Paginator, PaginatorState } from 'primeng/paginator';
 import { FormsModule } from '@angular/forms';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { IBatch } from '../../shared/models/IBatch';
 import { IMovimentacao } from '../../shared/models/IMovement';
@@ -19,9 +20,11 @@ import { ToastService } from '../../shared/services/toast.service';
 import { UserService } from '../../shared/services/user.service';
 import { IUser } from '../../shared/models/IUser';
 
+type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast';
+
 @Component({
   selector: 'app-movement',
-  imports: [CardViewComponent, TableModule, IconField, InputIcon, Select, Button, FormsModule, DatePipe, InputText, NgClass],
+  imports: [CardViewComponent, IconField, InputIcon, Select, Button, Tag, Paginator, FormsModule, DatePipe, InputText],
   templateUrl: './movement.component.html',
   styleUrl: './movement.component.scss',
 })
@@ -68,7 +71,7 @@ export class MovementComponent implements OnInit {
     return [
       {
         title: 'TOTAL ENTRADAS',
-        value: `${totalEntradas} un.`,
+        value: `${totalEntradas}`,
         subtitle: `${entradas.length} movimentações`,
         icon: 'pi pi-arrow-down-left',
         variant: 'success'
@@ -76,7 +79,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'TOTAL SAÍDAS',
-        value: `${totalSaidas} un.`,
+        value: `${totalSaidas}`,
         subtitle: `${saidas.length} movimentações`,
         icon: 'pi pi-arrow-up-right',
         variant: 'danger'
@@ -84,7 +87,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'PERDAS',
-        value: `${totalPerdas} un.`,
+        value: `${totalPerdas}`,
         subtitle: `${perdas.length} registros`,
         icon: 'pi pi-exclamation-triangle',
         variant: 'warning'
@@ -92,7 +95,7 @@ export class MovementComponent implements OnInit {
 
       {
         title: 'AJUSTES',
-        value: `${totalAjustes} un.`,
+        value: `${totalAjustes}`,
         subtitle: `${ajustes.length} ajustes realizados`,
         icon: 'pi pi-sync',
         variant: 'primary'
@@ -121,6 +124,53 @@ export class MovementComponent implements OnInit {
     }));
   });
 
+  protected searchTerm = signal('');
+  protected first = signal(0);
+  protected rows = signal(8);
+
+  protected filteredList = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const list = this.movimentacoesComUsuario();
+
+    if (!term) return list;
+
+    return list.filter(item =>
+      (item.lote?.numero_lote ?? '').toLowerCase().includes(term) ||
+      item.tipo.toLowerCase().includes(term) ||
+      (item.usuario?.nome ?? '').toLowerCase().includes(term) ||
+      (item.justificativa ?? '').toLowerCase().includes(term)
+    );
+  });
+
+  protected pagedList = computed(() =>
+    this.filteredList().slice(this.first(), this.first() + this.rows())
+  );
+
+  protected onSearch(value: string) {
+    this.searchTerm.set(value);
+    this.first.set(0);
+  }
+
+  protected onPageChange(event: PaginatorState) {
+    this.first.set(event.first ?? 0);
+    this.rows.set(event.rows ?? 8);
+  }
+
+  protected getTipoSeverity(tipo: string): TagSeverity {
+    switch (tipo) {
+      case 'entrada':
+        return 'success';
+      case 'saida':
+        return 'danger';
+      case 'perda':
+        return 'warn';
+      case 'ajuste':
+        return 'info';
+      default:
+        return 'secondary';
+    }
+  }
+
   ngOnInit() {
     this.getMovimentacoes()
     this.getLotes()
@@ -137,6 +187,7 @@ export class MovementComponent implements OnInit {
 
   onChangeLote(loteId: string | null) {
     this.loteId = loteId
+    this.first.set(0)
 
     this.getMovimentacoes(this.loteId ?? undefined)
   }

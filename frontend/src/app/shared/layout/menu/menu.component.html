@@ -2,34 +2,9 @@
     <section class="container-menu" [class.collapsed]="isCollapsed">
 
     <header>
-        <div class="container-logo">
-            <img src="assets/icon-logo.png">
-            <span class="logo-tipo">BS <span>farma</span></span>
-        </div>
-
-        <div class="container-perfil">
-          @if(isCollapsed) {
-            <div class="circle-name cursor-pointer"
-            [ngClass]="getProfileClass(user()?.perfil)"
-              (click)="isCollapsed && toggleProfileMenu($event, menu)"
-            >
-            @if(user()?.nome) {
-              <div>
-                {{inititalName(user()!.nome) | uppercase}}
-              </div>
-            }
-            </div>
-          }
-
-            <div class="flex flex-column">
-            <span>{{user()?.nome}}</span>
-            <small [ngClass]="getTextClass(user()?.perfil)">{{user()?.perfil | titlecase}}</small>
-            </div>
-
-            <div class="card flex justify-center">
-              <p-menu #menu [model]="itemsProfile" [popup]="true" appendTo="body" />
-              <i text (click)="menu.toggle($event)" class="pi pi-ellipsis-v cursor-pointer"></i>
-            </div>
+        <div class="container-logo cursor-pointer" (click)="toggleMenu()">
+            <img src="assets/logo_bsfarma.svg">
+            <!-- <span class="logo-tipo">BS <span>farma</span></span> -->
         </div>
     </header>
 
@@ -52,7 +27,7 @@
         </ng-template>
 
         <ng-template pTemplate="submenuheader" let-item>
-          <span class="group-label">{{ item.label }}</span>
+          <!-- <span class="group-label">{{ item.label }}</span> -->
         </ng-template>
       </p-menu>
     </aside>
@@ -64,8 +39,8 @@
     </section>
 
 
-  <button class="collapse-btn" (click)="toggleMenu()" [title]="isCollapsed ? 'Expandir menu' : 'Colapsar menu'">
+  <!-- <button class="collapse-btn" (click)="toggleMenu()" [title]="isCollapsed ? 'Expandir menu' : 'Colapsar menu'">
     <i class="pi" [class]="isCollapsed ? 'pi-angle-right' : 'pi-angle-left'"></i>
-  </button>
+  </button> -->
 
 </div>
