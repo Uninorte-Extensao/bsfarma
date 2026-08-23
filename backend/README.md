@@ -1,5 +1,9 @@
 # BSFarma  — API
 
+> ⚠️ **Repositório legado.** Este repositório não recebe mais atualizações.
+> O desenvolvimento ativo do backend e do frontend foi unificado em:
+> **https://github.com/Uninorte-Extensao/bsfarma**
+
 Sistema de controle de estoque farmacêutico da UBS Saúde Sempre.
 
 ---
@@ -190,6 +194,17 @@ poetry run alembic upgrade head
 | `gestor` | Acesso total, incluindo usuários e relatórios |
 
 Use `Depends(require_perfil("gestor"))` nas rotas para protegê-las.
+
+---
+
+## Docker
+
+Este diretório tem seu próprio `Dockerfile` e um `docker-compose.yml` para rodar a API isoladamente (útil se você só mexe no backend). Para subir o projeto fullstack (API + frontend) junto, veja o [README na raiz do projeto](../README.md#rodando-em-desenvolvimento).
+
+```bash
+cp .env.example .env   # preencha DATABASE_URL e SECRET_KEY
+docker compose up --build
+```
 
 ---
 
