@@ -1,5 +1,9 @@
 # BsFarma - Frontend
 
+> ⚠️ **Repositório legado.** Este repositório não recebe mais atualizações.
+> O desenvolvimento ativo do backend e do frontend foi unificado em:
+> **https://github.com/Uninorte-Extensao/bsfarma**
+
 Sistema de controle de estoque farmacêutico da UBS Saúde Sempre.
 
 ---
@@ -121,6 +125,22 @@ ng lint          # lint
 
 ---
 
+# Docker
+
+Este diretório tem um `Dockerfile` multi-estágio: alvo `dev` (roda `ng serve` com hot-reload) e alvo `production` (build estático servido via Nginx, com proxy para a API em `/api`, configurado em `nginx.conf`). Para subir o projeto fullstack (API + frontend) junto, veja o [README na raiz do projeto](../README.md#rodando-em-desenvolvimento).
+
+```bash
+# build da imagem de dev
+docker build --target dev -t bsfarma-frontend:dev .
+docker run -p 4200:4200 -v $(pwd):/app -v /app/node_modules bsfarma-frontend:dev
+
+# build da imagem de produção
+docker build --target production -t bsfarma-frontend:prod .
+docker run -p 80:80 bsfarma-frontend:prod
+```
+
+---
+
 # Estrutura do Projeto
 
 ```bash
@@ -178,4 +198,4 @@ Aplicação web desenvolvida em Angular.
 - **Backend**  
 API responsável por autenticação, regras de negócio e persistência de dados.
 
-Repositório da API: [bsfarma](https://github.com/julysantos/bsfarma)
+Repositório unificado (backend + frontend): [bsfarma](https://github.com/Uninorte-Extensao/bsfarma)
