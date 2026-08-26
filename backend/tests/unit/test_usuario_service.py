@@ -53,7 +53,7 @@ async def test_criar_usuario_login_duplicado_levanta_409(session: AsyncSession):
     dados = UsuarioCreate(
         nome="Usuário Original",
         login="login.duplicado",
-        senha="senha",
+        senha="senha-segura-123",
         perfil=PerfilUsuario.ATENDENTE,
     )
     await service.criar(dados)
@@ -147,4 +147,4 @@ async def test_atualizar_usuario_inexistente_levanta_nao_encontrado(session: Asy
     service = UsuarioService(session)
 
     with pytest.raises(RecursoNaoEncontrado):
-        await service.atualizar("id-que-nao-existe", UsuarioUpdate(nome="X"))
+        await service.atualizar("id-que-nao-existe", UsuarioUpdate(nome="Nome Qualquer"))

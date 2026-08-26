@@ -174,7 +174,7 @@ async def test_atualizar_usuario_inexistente_retorna_404(
 ):
     response = await client.patch(
         "/usuarios/id-que-nao-existe",
-        json={"nome": "X"},
+        json={"nome": "Nome Qualquer"},
         headers={"Authorization": f"Bearer {token_gestor}"},
     )
 
