@@ -266,6 +266,56 @@ Os testes usam **SQLite em memória** — não precisam de conexão com o Supaba
 
 ---
 
+## Pendências conhecidas
+
+Levantadas durante a preparação deste repositório para deploy. Nenhuma delas
+bloqueia o deploy — o que existe hoje builda, sobe e passa nos testes — mas
+valem uma decisão de quem for tocar essas áreas.
+
+### Scheduler de verificação diária de alertas está desligado
+
+[`app/alertas/scheduler.py`](backend/app/alertas/scheduler.py) implementa a
+verificação diária via APScheduler, mas [`app/main.py`](backend/app/main.py)
+cria o `FastAPI()` sem `lifespan=` e nunca importa o módulo — o scheduler
+simplesmente não roda. O `pytz`, que o módulo importa diretamente, também não
+está declarado no `pyproject.toml` (só existe hoje como dependência transitiva
+do pandas), então ligar o scheduler sem declarar `pytz` também quebra.
+
+Para ativar: registrar o `lifespan` do scheduler em `main.py` e adicionar
+`pytz` às dependências principais.
+
+### CORS fixo em `localhost:4200`
+
+Em [`app/main.py`](backend/app/main.py), `CORSMiddleware` tem
+`allow_origins=["http://localhost:4200"]` hardcoded. Isso não afeta o setup
+atual de produção — o Nginx faz proxy de `/api/` na mesma origem do frontend,
+então o navegador nunca dispara uma requisição cross-origin de verdade — mas
+trava qualquer cenário onde API e frontend sirvam de origens diferentes (outro
+domínio, outro ambiente de deploy, chamadas diretas à API). Se isso vier a
+acontecer, mover para uma variável de ambiente.
+
+### Autoria quebrada em parte do histórico importado
+
+37 dos 156 commits têm autor `=` ou `--local` — problema de configuração do
+Git na máquina de origem, anterior à unificação dos repositórios. Corrigível
+com um `.mailmap` na raiz, se alguém identificar a quem cada um pertence.
+
+### Volume local de desenvolvimento desatualizado em relação às migrations
+
+Se você já rodava o projeto localmente com Docker antes desta unificação, o
+volume `bsfarma_postgres_data` tem as tabelas criadas fora do Alembic (mesma
+situação do Supabase) e ainda não conhece a migration `dispensacao`. Coloque-o
+em dia antes de usar:
+
+```bash
+docker compose exec api alembic stamp c2cf2197c6b3
+docker compose exec api alembic upgrade head
+```
+
+Veja a seção [Migrations](#migrations) para mais contexto.
+
+---
+
 ## Contribuindo
 
 O padrão de arquitetura do backend (model → schema → repository → service →
