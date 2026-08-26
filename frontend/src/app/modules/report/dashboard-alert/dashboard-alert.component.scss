@@ -1,0 +1,35 @@
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.alert-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--surface-border);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin-top: .75rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color-secondary);
+}

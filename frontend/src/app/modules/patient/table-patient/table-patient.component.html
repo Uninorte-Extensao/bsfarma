@@ -1,0 +1,63 @@
+<p-confirmpopup />
+
+<div class="list-toolbar">
+    <p-iconfield iconPosition="left">
+        <p-inputicon>
+            <i class="pi pi-search"></i>
+        </p-inputicon>
+        <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
+    </p-iconfield>
+
+    <p-select
+        class="status-filter"
+        [options]="filterOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="statusFilter()"
+        (ngModelChange)="onStatusChange($event)"
+        placeholder="Status"
+    />
+</div>
+
+<div class="cards-grid">
+    @for (item of pagedList(); track item.codigo) {
+        <div class="card entity-card">
+
+            <div class="entity-card-header">
+                <div class="entity-avatar">
+                    <i class="pi pi-user"></i>
+                </div>
+
+                <div class="entity-info">
+                    <div class="entity-title" [pTooltip]="item.codigo">{{ item.codigo }}</div>
+                    <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+                </div>
+
+                <div class="entity-actions">
+                    <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
+                    <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item, $event)" />
+                </div>
+            </div>
+
+            <p class="entity-desc">{{ item.condicao_clinica }}</p>
+
+            @if (!isMobile()) {
+                <div class="entity-meta">
+                    <small>Criado em {{ item.criado_em | date:'dd/MM/yyyy' }}</small>
+                    <small>Atualizado em {{ item.atualizado_em | date:'dd/MM/yyyy' }}</small>
+                </div>
+            }
+
+        </div>
+    } @empty {
+        <div class="empty-state">Nenhum paciente encontrado.</div>
+    }
+</div>
+
+<p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 36]"
+    (onPageChange)="onPageChange($event)"
+/>

@@ -1,0 +1,56 @@
+<section>
+
+    <aside class="">
+
+        <div class="list-toolbar">
+            <p-iconfield iconPosition="left">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar dispensação" />
+            </p-iconfield>
+
+            <p-button
+                label="Novo Atendimento"
+                icon="pi pi-plus"
+                (click)="goToAdd()"
+            />
+        </div>
+
+        <div class="cards-grid">
+            @for (item of pagedList(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="entity-avatar">
+                            <i class="pi pi-user"></i>
+                        </div>
+
+                        <div class="entity-info">
+                            <div class="entity-title" [pTooltip]="item.paciente_id">{{ item.paciente_id }}</div>
+                            <small class="entity-subtitle">Lote {{ item.numero_lote || '-' }}</small>
+                        </div>
+                    </div>
+
+                    <div class="entity-meta">
+                        <span>Quantidade: {{ item.quantidade ?? '-' }}</span>
+                        <span>Dispensado em {{ item.dispensado_em | date:'dd/MM/yyyy' }}</span>
+                    </div>
+
+                </div>
+            } @empty {
+                <div class="empty-state">Nenhuma dispensação encontrada.</div>
+            }
+        </div>
+
+        <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="filteredList().length"
+            [rowsPerPageOptions]="[8, 16, 32]"
+            (onPageChange)="onPageChange($event)"
+        />
+
+    </aside>
+
+</section>

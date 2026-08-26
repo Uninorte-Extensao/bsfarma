@@ -1,0 +1,216 @@
+.card-dashboard {
+    width: 100%;
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    padding: .75rem 1rem;
+
+    border-radius: 12px;
+
+    background: var(--bg-surface);
+
+    transition: .2s ease-in-out, background .3s ease, border-color .3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+
+    &.primary {
+        border: var(--border-card-blue);
+
+        .icon-container {
+            background: var(--bg-card-blue);
+            color: var(--text-color-blue);
+        }
+
+        .subtitle {
+            color: var(--text-color-blue);
+        }
+    }
+
+    &.success {
+        border: var(--border-card-green);
+
+        .icon-container {
+            background: var(--bg-card-green);
+            color: var(--text-color-green);
+        }
+
+        .subtitle {
+            color: var(--text-color-green);
+        }
+    }
+
+    &.warning {
+        border: var(--border-card-yellow);
+
+        .icon-container {
+            background: var(--bg-card-yellow);
+            color: var(--text-color-yellow);
+        }
+
+        .subtitle {
+            color: var(--text-color-yellow);
+        }
+    }
+
+    &.danger {
+        border: var(--border-card-red);
+        box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary-red) 18%, transparent),
+            0 12px 28px -12px color-mix(in oklab, var(--primary-red) 25%, transparent);
+
+        .icon-container {
+            background: var(--bg-card-red);
+            color: var(--text-color-red);
+        }
+
+        .subtitle {
+            color: var(--text-color-red);
+        }
+    }
+
+    &.info {
+        border: var(--border-card-cyan);
+
+        .icon-container {
+            background: var(--bg-card-cyan);
+            color: var(--text-color-cyan);
+        }
+
+        .subtitle {
+            color: var(--text-color-cyan);
+        }
+    }
+
+    &.purple {
+        border: var(--border-card-purple);
+
+        .icon-container {
+            background: var(--bg-card-purple);
+            color: var(--text-color-purple);
+        }
+
+        .subtitle {
+            color: var(--text-color-purple);
+        }
+    }
+
+    &.orange {
+        border: var(--border-card-orange);
+
+        .icon-container {
+            background: var(--bg-card-orange);
+            color: var(--text-color-orange);
+        }
+
+        .subtitle {
+            color: var(--text-color-orange);
+        }
+    }
+
+    &.pink {
+        border: var(--border-card-pink);
+
+        .icon-container {
+            background: var(--bg-card-pink);
+            color: var(--text-color-pink);
+        }
+
+        .subtitle {
+            color: var(--text-color-pink);
+        }
+    }
+
+    &.teal {
+        border: var(--border-card-teal);
+
+        .icon-container {
+            background: var(--bg-card-teal);
+            color: var(--text-color-teal);
+        }
+
+        .subtitle {
+            color: var(--text-color-teal);
+        }
+    }
+
+    .icon-container {
+        min-width: 44px;
+        min-height: 44px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 1.2rem;
+
+        transition: .2s ease-in-out;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+
+        small {
+            font-size: .78rem;
+            font-weight: 500;
+
+            color: var(--text-secondary);
+
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        h2 {
+            margin: 0;
+
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.1;
+
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: .78rem;
+            font-weight: 600;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card-dashboard {
+        min-height: 80px;
+
+        padding: .75rem;
+        gap: .8rem;
+
+        .icon-container {
+            min-width: 40px;
+            min-height: 40px;
+
+            font-size: 1rem;
+        }
+
+        .content {
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            small {
+                font-size: .72rem;
+            }
+
+            .subtitle {
+                font-size: .72rem;
+            }
+        }
+    }
+
+}

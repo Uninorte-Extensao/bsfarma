@@ -1,0 +1,138 @@
+<section>
+    <!-- <aside class="grid">
+
+    @for(card of cards(); track card.title) {
+
+        <div class="col-12 md:col-6 lg:col-4 xl:col-3">
+
+            <app-card-view
+                [title]="card.title"
+                [value]="card.value"
+                [subtitle]="card.subtitle || ''"
+                [icon]="card.icon || 'pi pi-chart-line'"
+                [variant]="card.variant || 'primary'"
+            />
+
+        </div>
+
+    }
+
+</aside> -->
+
+    <aside class="">
+
+        <div class="list-toolbar grid align-items-end w-full m-0">
+            <div class="col-12 md:col-3">
+                <p-iconfield iconPosition="left" class="w-full">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+
+                    <input
+                        pInputText
+                        fluid
+                        type="text"
+                        class="w-full"
+                        (input)="onSearch($event.target.value)"
+                        placeholder="Buscar lote"
+                    />
+                </p-iconfield>
+            </div>
+
+            <div class="col-6 md:col-3">
+                <p-select
+                    id="saldo"
+                    [options]="isSaldo"
+                    optionLabel="label"
+                    optionValue="value"
+                    fluid
+                    (onChange)="onChangeSaldo($event.value)"
+                    [(ngModel)]="checked"
+                    showClear
+                    placeholder="Saldo"
+                />
+            </div>
+
+            <div class="col-6 md:col-3">
+                <p-select
+                    id="medicine"
+                    [options]="medicamentos()"
+                    optionLabel="nome_generico"
+                    optionValue="id"
+                    fluid
+                    placeholder="Medicamentos"
+                    filter
+                    (onChange)="onChangeMedicamento($event.value)"
+                    [(ngModel)]="medicamentoId"
+                    showClear
+                >
+                    <ng-template let-item #item>
+                        {{ item.nome_generico }} - {{ item.concentracao }}
+                    </ng-template>
+
+                    <ng-template let-item #selectedItem>
+                        {{ item.nome_generico }} - {{ item.concentracao }}
+                    </ng-template>
+                </p-select>
+            </div>
+
+            <div class="col-12 md:col-3">
+                <p-button
+                    label="Adicionar lote"
+                    icon="pi pi-plus"
+                    (click)="goToCreate()"
+                    fluid
+                />
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            @for (item of pagedList(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="entity-avatar">
+                            <i class="pi pi-box"></i>
+                        </div>
+
+                        <div class="entity-info">
+                            <div class="entity-title">{{ item.numero_lote }}</div>
+                            <small class="entity-subtitle">{{ item.fabricante }}</small>
+                        </div>
+
+                        <div class="entity-actions">
+                            <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
+                        </div>
+                    </div>
+
+                    <div class="entity-tags">
+                        <p-tag
+                            [value]="item.quantidade_atual > 0 ? 'Com saldo' : 'Sem saldo'"
+                            [severity]="item.quantidade_atual > 0 ? 'success' : 'danger'"
+                        />
+                    </div>
+
+                    <div class="entity-meta">
+                        <small>Validade: {{ item.validade | date:'dd/MM/yyyy' }}</small>
+                        <small>Qtd atual: {{ item.quantidade_atual }} @if (!isMobile()) { / inicial: {{ item.quantidade_inicial }} }</small>
+                        @if (!isMobile()) {
+                            <small>Entrada em {{ item.entrada_em | date:'dd/MM/yyyy' }}</small>
+                        }
+                    </div>
+
+                </div>
+            } @empty {
+                <div class="empty-state">Nenhum lote encontrado.</div>
+            }
+        </div>
+
+        <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="filteredList().length"
+            [rowsPerPageOptions]="[12, 24, 36]"
+            (onPageChange)="onPageChange($event)"
+        />
+
+    </aside>
+</section>

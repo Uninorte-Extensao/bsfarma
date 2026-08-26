@@ -1,0 +1,133 @@
+.container {
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid transparent;
+    align-items: center;
+    background: var(--bg-surface);
+}
+
+.container.border-red {
+    border-color: var(--primary-red);
+}
+
+.container.border-yellow {
+    border: var(--border-yellow);
+}
+
+.container.border-green {
+    border-color: var(--primary-green);
+}
+
+.container.border-blue {
+    border: var(--border-blue);
+}
+
+.container.border-orange {
+    border-color: var(--text-color-orange);
+}
+
+.container.border-gray {
+    border-color: var(--text-color-gray);
+}
+
+
+.box-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+        font-size: 1.2rem;
+    }
+}
+
+.box-icon.box-red {
+    background: var(--bg-card-red);
+
+    i {
+        color: var(--text-color-red);
+    }
+}
+
+.box-icon.box-yellow {
+    background: var(--bg-card-yellow);
+
+    i {
+        color: var(--text-color-yellow);
+    }
+}
+
+.box-icon.box-green {
+    background: var(--bg-card-green);
+
+    i {
+        color: var(--text-color-green);
+    }
+}
+
+.box-icon.box-blue {
+    background: var(--color-blue);
+
+    i {
+        color: var(--text-color-blue);
+    }
+}
+
+.box-icon.box-orange {
+    background: var(--bg-card-orange);
+
+    i {
+        color: var(--text-color-orange);
+    }
+}
+
+.box-icon.box-gray {
+    background: var(--bg-card-gray);
+
+    i {
+        color: var(--text-color-gray);
+    }
+}
+
+
+.tag {
+    border-radius: 15px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.tag-red {
+    background: var(--bg-card-red);
+    color: var(--text-color-red);
+}
+
+.tag-yellow {
+    background: var(--bg-card-yellow);
+    color: var(--text-color-yellow);
+}
+
+.tag-green {
+    background: var(--bg-card-green);
+    color: var(--text-color-green);
+}
+
+.tag-blue {
+    background: var(--color-blue);
+    color: var(--text-color-blue);
+}
+
+.tag-orange {
+    background: var(--bg-card-orange);
+    color: var(--text-color-orange);
+}
+
+.tag-gray {
+    background: var(--bg-card-gray);
+    color: var(--text-color-gray);
+}

@@ -1,0 +1,18 @@
+.box-icon {
+    width: 45px;
+    height: 45px;
+    background: #9acfe773;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+.custom-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100dvh - 410px);
+    overflow-y: auto;
+}

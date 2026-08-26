@@ -1,0 +1,14 @@
+::ng-deep .bar canvas {
+    width: 100%;
+    height: 100%;
+}
+
+
+:host {
+    display: block;
+    height: 100%;
+}
+
+.bar {
+    height: 201px;
+}

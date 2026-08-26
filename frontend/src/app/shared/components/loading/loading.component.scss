@@ -1,0 +1,14 @@
+.custom-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1101;
+}
+
+::ng-deep .p-blockui {
+  background: rgba(0, 4, 6, 0.25) !important;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

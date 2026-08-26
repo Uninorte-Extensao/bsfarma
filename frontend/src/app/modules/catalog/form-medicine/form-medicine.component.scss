@@ -1,0 +1,8 @@
+.switch {
+    border-radius: var(--p-inputtext-border-radius);
+    border: 1px solid var(--p-inputtext-border-color);
+    padding-block: var(--p-inputtext-padding-y);
+    padding-inline: var(--p-inputtext-padding-x);
+    width: 100%;
+    justify-content: space-between;
+}

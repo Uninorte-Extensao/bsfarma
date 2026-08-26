@@ -1,0 +1,46 @@
+<div class="flex align-items-center flex-column">
+    <h3 class="m-0">Criar conta</h3>
+    <small>Preencha os dados</small>
+</div>
+
+<div class="my-4 flex flex flex-column gap-2">
+
+    <div class="flex gap-2">
+        <div class="flex flex-column gap-2 w-6">
+            <label for="nome">Nome Completo*</label>
+            <input pInputText id="nome" fluid />
+        </div>
+
+        <div class="flex flex-column gap-2 w-6">
+            <label for="email">Login desejado*</label>
+            <input pInputText id="email" fluid />
+        </div>
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="email">Perfil solicitado*</label>
+        <p-select 
+        placeholder="Selecione" 
+        [options]="listProfile()"
+        optionLabel="label"
+        optionValue="id"
+        fluid
+        />
+    </div>
+
+    <div class="flex gap-2">
+        <div class="flex flex-column gap-2 w-6">
+            <label for="password">Senha *</label>
+            <p-password [toggleMask]="true" fluid id="password" />
+        </div>
+
+        <div class="flex flex-column gap-2 w-6">
+            <label for="password">Confirmar senha*</label>
+            <p-password [toggleMask]="true" fluid id="password" />
+        </div>
+    </div>
+
+</div>
+<div class="flex justify-content-center">
+    <p-button label="Solicitar acesso" severity="secondary" />
+</div>

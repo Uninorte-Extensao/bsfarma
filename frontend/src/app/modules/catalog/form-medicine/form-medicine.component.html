@@ -1,0 +1,124 @@
+<section>
+    <aside class="card my-4">
+        <form class="m-0 grid" [formGroup]="form">
+            <div class="col-12 md:col-6">
+                <div class="flex flex-column gap-2">
+                    <label for="nomeG">Nome Genérico</label>
+                    <input 
+                    pInputText 
+                    id="nomeG" 
+                    placeholder="Ex: Dipirona Sódica" 
+                    formControlName="nome_generico"
+                    />
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <div class="flex flex-column gap-2">
+                    <label for="nomeC">Nome Comercial</label>
+                    <input 
+                    formControlName="nome_comercial"
+                    pInputText 
+                    id="nomeC" 
+                    placeholder="Ex: Novalgina" />
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <div class="flex flex-column gap-2">
+                    <label for="forma">Forma Farmacêutica</label>
+                    <p-select 
+                    id="forma" 
+                    [options]="listFormaFarm()" 
+                    optionLabel="label" 
+                    optionValue="value" 
+                    placeholder="Ex: Comprimido"
+                    formControlName="forma_farmaceutica"
+                    filter
+                    />
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <div class="flex gap-2 align-items-end">
+                    <div class="flex flex-column gap-2 w-7">
+                        <label for="concentracao">Concentração</label>
+                        <p-inputnumber 
+                        inputId="concentracao" 
+                        placeholder="Ex: 500" 
+                        fluid
+                        formControlName="valor"
+                        locale="pt-BR"
+                        mode="decimal"
+                        [minFractionDigits]="1" 
+                        [maxFractionDigits]="5"
+                        />
+                    </div>
+
+
+                    <p-select
+                        id="concentracaoUnidade"
+                        [options]="listConcentracao()"
+                        optionLabel="label"
+                        optionValue="value"
+                        fluid
+                        appendTo="body"
+                        placeholder="Ex: mg"
+                        formControlName="unidade"
+                        filter
+                        class="w-5">
+                    </p-select>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+                <div class="flex flex-column gap-2">
+                    <label for="via">Via de administração</label>
+                    <p-select 
+                    id="via" 
+                    [options]="listViaAdm()" 
+                    optionLabel="label" 
+                    optionValue="value" 
+                    placeholder="Ex: Oral"
+                    appendTo="body"
+                    formControlName="via_administracao"
+                    filter
+                    />
+                </div>
+            </div>
+
+            <div class="col-6 md:col-4">
+                <div class="flex flex-column gap-2">
+                    <label for="estoqueMinimo">Estoque Mínimo</label>
+                    <p-inputnumber 
+                    inputId="estoqueMinimo" 
+                    placeholder="Ex: 100" 
+                    fluid 
+                    [min]="1"
+                    appendTo="body" 
+                    formControlName="estoque_minimo"
+                    />
+                </div>
+            </div>
+
+            <div class="col-6 md:col-4 flex align-items-end">
+                <div class="flex gap-2 align-items-center switch">
+                    <div class="flex flex-column">
+                        <label for="ativo">{{checked ? 'Ativo' : 'Inativo'}}</label>
+                    </div>
+                    <p-toggleswitch 
+                    id="ativo" 
+                    [(ngModel)]="checked" 
+                    [ngModelOptions]="{ standalone: true }"
+                    />
+                </div>
+            </div>
+
+            <div class="flex justify-content-end gap-4 w-full pt-4 pr-1">
+                <p-button label="Cancelar" severity="danger" (click)="close()"/>
+                <p-button label="Salvar" severity="success" (click)="submit()"/>
+            </div>
+
+        </form>
+    </aside>
+</section>

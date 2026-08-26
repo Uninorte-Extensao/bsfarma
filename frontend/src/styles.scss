@@ -1,0 +1,259 @@
+@use 'variables.scss';
+
+:root {
+    html body {
+        font-family: "Lexend Deca", sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .text-obs {
+        color: var(--text-secondary);
+    }
+
+    .card {
+        box-shadow: var(--card-shadow);
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: 100%;
+        background: var(--bg-card);
+        // background: var(--bg-surface);
+    }
+
+
+    // tabs
+    .p-tabs {
+        padding: 0 !important;
+    }
+
+    .p-tabpanels {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        background: none !important;
+    }
+
+    .p-tablist {
+        background: none !important;
+    }
+
+    // datatable
+    .p-paginator,
+    .p-datatable-thead>tr>th,
+    .p-datatable-tbody>tr,
+    .p-datatable-header {
+        background: none !important;
+    }
+
+    .p-datatable-tbody>tr {
+        height: 40px !important;
+    }
+
+    .box-card {
+        background: var(--bg-surface);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 26px;
+        margin: 1.5rem;
+        transition: background .3s ease, border-color .3s ease;
+    }
+
+
+
+    // datatable
+    .p-datatable-tbody>tr>td {
+        padding: 0 0.5rem;
+    }
+
+    .p-datatable-thead>tr>th {
+        padding: 0.3rem 0.5rem;
+    }
+
+    .p-datatable .p-datatable-header {
+        padding: 0 !important;
+    }
+
+
+
+    // box icon
+
+    .box-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 22px;
+        }
+
+        &.small {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .box-red {
+        background: var(--red-100);
+        color: var(--red-700);
+    }
+
+    .box-yellow {
+        background: var(--yellow-100);
+        color: var(--yellow-700);
+    }
+
+    .box-green {
+        background: var(--green-100);
+        color: var(--green-700);
+    }
+
+    .box-blue {
+        background: var(--blue-100);
+        color: var(--blue-700);
+    }
+
+    .box-orange {
+        background: var(--orange-100);
+        color: var(--orange-700);
+    }
+
+    .box-purple {
+        background: var(--purple-100);
+        color: var(--purple-700);
+    }
+
+    .box-teal {
+        background: var(--teal-100);
+        color: var(--teal-700);
+    }
+
+    .box-pink {
+        background: var(--pink-100);
+        color: var(--pink-700);
+    }
+}
+
+:root.dark {
+    .box-red {
+        background: color-mix(in srgb, var(--red-500) 20%, transparent);
+        color: var(--red-300);
+    }
+
+    .box-yellow {
+        background: color-mix(in srgb, var(--yellow-500) 20%, transparent);
+        color: var(--yellow-300);
+    }
+
+    .box-green {
+        background: color-mix(in srgb, var(--green-500) 20%, transparent);
+        color: var(--green-300);
+    }
+
+    .box-blue {
+        background: color-mix(in srgb, var(--blue-500) 20%, transparent);
+        color: var(--blue-300);
+    }
+
+    .box-orange {
+        background: color-mix(in srgb, var(--orange-500) 20%, transparent);
+        color: var(--orange-300);
+    }
+
+    .box-purple {
+        background: color-mix(in srgb, var(--purple-500) 20%, transparent);
+        color: var(--purple-300);
+    }
+
+    .box-teal {
+        background: color-mix(in srgb, var(--teal-500) 20%, transparent);
+        color: var(--teal-300);
+    }
+
+    .box-pink {
+        background: color-mix(in srgb, var(--pink-500) 20%, transparent);
+        color: var(--pink-300);
+    }
+}
+
+
+html,
+body {
+    height: 100%;
+    min-height: 100dvh;
+}
+
+body {
+    margin: 0;
+    font-family: "Lexend Deca", "Helvetica Neue", sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    transition: background .3s ease, color .3s ease;
+}
+
+/* Utilitários vindos do protótipo (glassmorphism, glow, prateleira) */
+.glass-card {
+    background: linear-gradient(135deg,
+            color-mix(in oklab, var(--bg-surface) 95%, var(--primary-green) 5%),
+            color-mix(in oklab, var(--bg-surface) 98%, var(--primary-green) 2%));
+    box-shadow: 0 4px 24px -8px color-mix(in oklab, var(--text-primary) 4%, transparent);
+}
+
+.dark .glass-card {
+    background: linear-gradient(135deg,
+            color-mix(in oklab, var(--bg-surface) 92%, var(--primary-green) 8%),
+            color-mix(in oklab, var(--bg-surface) 96%, var(--primary-green) 4%));
+    box-shadow: 0 8px 32px -12px color-mix(in oklab, var(--primary-green) 20%, transparent);
+}
+
+.glow-critical {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary-red) 18%, transparent),
+        0 12px 28px -12px color-mix(in oklab, var(--primary-red) 25%, transparent);
+}
+
+.bg-shelf {
+    background: linear-gradient(180deg,
+            color-mix(in oklab, var(--slate-3) 40%, transparent),
+            color-mix(in oklab, var(--bg-page) 60%, transparent));
+    box-shadow: inset 0 1px 0 color-mix(in oklab, var(--text-primary) 4%, transparent);
+}
+
+@keyframes shelf-breathe {
+
+    0%,
+    100% {
+        opacity: 0.85;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-shelf-breathe {
+    animation: shelf-breathe 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+}

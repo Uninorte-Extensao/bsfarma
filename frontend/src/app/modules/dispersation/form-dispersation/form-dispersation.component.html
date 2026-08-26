@@ -1,0 +1,122 @@
+<div>
+    <form class="" [formGroup]="form" (ngSubmit)="submit()">
+
+        <div class="card grid mb-4 m-0">
+            <div class="flex gap-4 align-items-center col-12 md:col-4">
+                <span class="pi pi-user box-icon"></span>
+                <div class="flex flex-column">
+                    <h3 class="m-0">Identificação do Paciente</h3>
+                    <small>Confirme os dados antes de prosseguir</small>
+                </div>
+            </div>
+            <div class="flex flex-column gap-2 col-12 md:col-8">
+                <label for="nome">ID interno do Paciente</label>
+                <p-autocomplete formControlName="codigo" [suggestions]="filteredPatient()"
+                    (completeMethod)="filterPatient($event)" optionLabel="codigo" optionValue="codigo" fluid
+                    placeholder="Ex: PAC-001" />
+            </div>
+        </div>
+
+
+      
+        <div class="grid card m-0">
+            <div class="flex gap-4 align-items-center col-12 md:col-4">
+                <span class="box-icon pi pi-plus"></span>
+                <h3 class="m-0">Seleção de Itens</h3>
+            </div>
+            <div class="flex flex-column gap-3 col-12 md:col-8">
+                <div class="flex w-full gap-3 align-items-end">
+                    <div class="flex flex-column gap-2 w-full">
+                        <label for="medicine">Medicamentos</label>
+                        <p-select id="medicine" [options]="availableLotes()" optionLabel="nome_generico" fluid
+                            placeholder="Ex: Dipirona" filter #select [(ngModel)]="selectedLote"
+                            [ngModelOptions]="{standalone : true}">
+                            <ng-template let-item #item>
+                                <div class="flex flex-column">
+                                    <span>{{ item.nome_generico }} - {{ item.concentracao }}</span>
+                                    <small class="text-obs">
+                                        Lote {{ item.numero_lote }} · Disponível: {{ item.quantidade_atual }}
+                                    </small>
+                                </div>
+                            </ng-template>
+
+                            <ng-template let-item #selectedItem>
+                                {{ item.nome_generico }} - {{ item.concentracao }} (Lote {{ item.numero_lote }} · Disponível: {{ item.quantidade_atual }})
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <p-button label="Adicionar" (click)="addLote(selectedLote)" />
+                </div>
+            </div>
+
+            <div class="custom-container">
+                @for (item of batchSelected(); track $index; let last = $last) {
+                <div class="border-round-lg flex flex-column md:flex-row
+                    justify-content-between
+                    align-items-start md:align-items-center
+                    gap-3 p-3 my-2">
+
+                    <div class="flex flex-column flex-1">
+                        <span class="font-semibold">
+                            {{ item.nome_generico }}
+                        </span>
+
+                        <small>
+                            {{ item.concentracao }}
+                            -
+                            {{ item.via_administracao }}
+                            -
+                            Lote {{ item.numero_lote }}
+                        </small>
+                    </div>
+
+                    <div class="flex align-items-start gap-2">
+                        <div class="flex flex-column gap-1">
+                            <div class="flex align-items-center gap-2">
+                                <p-inputnumber [(ngModel)]="item.quantidade" [showButtons]="true" fluid
+                                    buttonLayout="horizontal" spinnerMode="horizontal" inputId="horizontal"
+                                    [min]="1" [max]="item.quantidade_atual"
+                                    [ngModelOptions]="{ standalone: true }">
+    
+                                    <ng-template #incrementbuttonicon>
+                                        <span class="pi pi-plus"></span>
+                                    </ng-template>
+    
+                                    <ng-template #decrementbuttonicon>
+                                        <span class="pi pi-minus"></span>
+                                    </ng-template>
+    
+                                </p-inputnumber>
+                            </div>
+    
+                            <small class="text-obs">
+                                Máx. disponível: {{ item.quantidade_atual }}
+                            </small>
+                        </div>
+                        <p-button icon="pi pi-times" severity="danger" [outlined]="true" (click)="removeLote($index)" />
+                    </div>
+
+                </div>
+                } @empty {
+                    <div class="flex gap-2 align-items-center justify-content-center h-full border-round-lg">
+                        <i class="pi pi-exclamation-circle"></i>
+                        <span>Não há dados a serem exibidos.</span>
+                    </div>
+                }
+            </div>
+
+            <div class="flex justify-content-end gap-2 w-full pt-2">
+                <p-button 
+                label="Cancelar" 
+                severity="danger" 
+                routerLink="/dispersation" />
+
+                <p-button type="submit" label="Confirmar Atendimento" severity="success" type="submit" />
+            </div>
+        </div>
+     
+
+    </form>
+
+</div>

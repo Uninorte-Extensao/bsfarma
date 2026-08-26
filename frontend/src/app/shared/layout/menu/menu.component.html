@@ -1,0 +1,46 @@
+<div class="menu-wrapper" [class.collapsed]="isCollapsed">
+    <section class="container-menu" [class.collapsed]="isCollapsed">
+
+    <header>
+        <div class="container-logo cursor-pointer" (click)="toggleMenu()">
+            <img src="assets/logo_bsfarma.svg">
+            <!-- <span class="logo-tipo">BS <span>farma</span></span> -->
+        </div>
+    </header>
+
+    <aside class="container-items">
+      <p-menu [model]="items()">
+        <ng-template pTemplate="item" let-item>
+        <a
+          pRipple
+          class="menu-item relative"
+          [routerLink]="item.routerLink"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+            <i [class]="item.icon + ' item-icon'"></i>
+            <span class="item-label">{{ item.label }}</span>
+             @if(item.badge && qtd()) {
+              <p-badge class="ml-auto" [value]="item.badge" />
+            } 
+          </a>
+        </ng-template>
+
+        <ng-template pTemplate="submenuheader" let-item>
+          <!-- <span class="group-label">{{ item.label }}</span> -->
+        </ng-template>
+      </p-menu>
+    </aside>
+
+    <footer class="container-footer">
+        <small class="power">Powered by </small>
+        <small>ALPHA © 2026</small>
+    </footer>
+    </section>
+
+
+  <!-- <button class="collapse-btn" (click)="toggleMenu()" [title]="isCollapsed ? 'Expandir menu' : 'Colapsar menu'">
+    <i class="pi" [class]="isCollapsed ? 'pi-angle-right' : 'pi-angle-left'"></i>
+  </button> -->
+
+</div>

@@ -1,0 +1,74 @@
+<div>
+    <div class="">
+        <div class="list-toolbar">
+            <p-iconfield iconPosition="left">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText type="text" (input)="searchTerm.set($event.target.value)" placeholder="Buscar" />
+            </p-iconfield>
+
+            <p-button
+            label="Adicionar Usuário"
+            icon="pi pi-plus"
+            (click)="showDialog('create')"
+            />
+        </div>
+
+        <div class="cards-grid">
+            @for (item of filteredUsers(); track item.id) {
+                <div class="card entity-card">
+
+                    <div class="entity-card-header">
+                        <div class="box-icon" [ngClass]="getProfileClass(item.perfil)">
+                            {{ inititalName(item.nome) | uppercase }}
+                        </div>
+
+                        <div class="entity-info">
+                            <div class="entity-title">{{ item.nome }}</div>
+                            <small class="entity-subtitle">{{ item.login }}</small>
+                        </div>
+
+                        <p-button icon="pi pi-pencil" severity="warn" text rounded (click)="showDialog('update', item)" />
+                    </div>
+
+                    <div class="entity-tags">
+                        <p-tag [value]="item.perfil | titlecase" severity="secondary" />
+                        <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+                    </div>
+
+                    @if (!isMobile()) {
+                        <small class="entity-meta">
+                            Último acesso: {{ item.ultimo_acesso | date: "dd/MM/yyyy" }}
+                        </small>
+                    }
+
+                </div>
+            } @empty {
+                <div class="empty-state">Nenhum usuário encontrado.</div>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+<p-dialog
+[(visible)]="isVisible"
+[modal]="true"
+[draggable]="false"
+[resizable]="false"
+[style]="{width: '30rem'}"
+(onHide)="closeModal()"
+[header]="typeDialog() === 'create' ? 'Cadastro de Usuário' : 'Editar Usuário'"
+>
+@if(isVisible()) {
+    <app-form-user
+    [(isVisible)]="isVisible"
+    (onChangeCreate)="submit($event)"
+    (onChangeUpdate)="update($event)"
+    [(typeDialog)]="typeDialog"
+    [(user)]="viewUser"
+    />
+}
+</p-dialog>

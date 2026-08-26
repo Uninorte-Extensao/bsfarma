@@ -1,0 +1,144 @@
+<div class="list-toolbar">
+    <div class="list-toolbar-filters">
+        <p-iconfield iconPosition="left">
+            <p-inputicon>
+                <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pSize="small" pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
+        </p-iconfield>
+
+        <p-select
+            class="status-filter"
+            [options]="filterOptions"
+            optionLabel="label"
+            size="small"
+            optionValue="value"
+            [ngModel]="statusFilter()"
+            (ngModelChange)="onStatusChange($event)"
+            placeholder="Status"
+        />
+    </div>
+
+    @if (isCreate()) {
+        <p-button
+            size="small"
+            [label]="isMobile() ? 'Adicionar' : 'Adicionar Medicamento'"
+            icon="pi pi-plus"
+            (click)="goToCreate()"
+        />
+    }
+</div>
+
+<div class="table-card">
+<p-table
+    [value]="pagedList()"
+    dataKey="id"
+    [lazy]="true"
+    [paginator]="true"
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[12, 24, 32]"
+    (onPage)="onPageChange($event)"
+>
+
+    <ng-template #header>
+        <tr>
+            <th>
+                <div class="flex items-center gap-2">
+                    Nome genérico
+                </div>
+            </th>
+
+            @if(!isMobile()) {
+                <th >
+                    <div class="flex items-center gap-2">
+                        Nome comercial
+                    </div>
+                </th>
+                <th >
+                    <div class="flex items-center gap-2">
+                        Forma farm.
+                    </div>
+                </th>
+                <th>
+                    <div class="flex items-center gap-2">
+                        Concentração
+              
+                    </div>
+                </th>
+
+                <th >
+                    <div class="flex items-center gap-2">
+                        Via
+                    </div>
+                </th>
+            }
+
+            <th>
+                <div class="flex items-center gap-2">
+                    Status
+                </div>
+            </th>
+
+            <th>
+                <div class="flex items-center gap-2">
+                    Ação
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-item>
+        <tr>
+            <td>{{ item.nome_generico }}</td>
+            @if(!isMobile()) {
+                <td>{{ item.nome_comercial }}</td>
+                <td>{{ item.forma_farmaceutica }}</td>
+                <td>{{ item.concentracao }}</td>
+                <td>{{ item.via_administracao }}</td>
+            }
+            <td>
+                <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
+            </td>
+            <td>
+                <div class="flex gap-1">
+                    @if(isEdit()) {
+                    <p-button
+                        icon="pi pi-pencil"
+                        rounded
+                        text
+                        severity="warn"
+                        (click)="goToEdit(item)"
+                    />
+                    }
+
+                    @if(isDelete()) {
+                    <p-button
+                        icon="pi pi-trash"
+                        rounded
+                        text
+                        severity="danger"
+                        (click)="deleteItem(item)"
+                    />
+                    }
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td [attr.colspan]="isMobile() ? 3 : 7" class="empty-state">Nenhum medicamento encontrado.</td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+
+<!-- <p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="filteredList().length"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    (onPageChange)="onPageChange($event)"
+/> -->

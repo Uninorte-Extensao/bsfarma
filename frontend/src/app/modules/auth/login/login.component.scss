@@ -1,0 +1,21 @@
+/*
+ * O botão "Entrar" fica sobre o painel verde (mesma cor de --primary-green),
+ * então o outlined padrão (borda/texto na cor primária) ficaria "invisível".
+ * Aqui, só nesse contexto, ele vira um outlined claro pra contrastar com o fundo.
+ */
+:host ::ng-deep .p-button-outlined {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+
+    &:not(:disabled):hover {
+        background: color-mix(in srgb, var(--teal-900) 20%, transparent) !important;
+        border-color: var(--primary-color) !important;
+        color: var(--primary-color) !important;
+    }
+
+    &:not(:disabled):active {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-color: var(--primary-color) !important;
+        color: var(--primary-color) !important;
+    }
+}

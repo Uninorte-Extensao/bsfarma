@@ -1,0 +1,54 @@
+<div class="relative">
+    <app-table-patient
+        [listPacientes]="pacientes()"
+        (onItemDelete)="delete($event)"
+        (onItemEdit)="handleEdit($event)"
+        [(isVisible)]="isVisible"
+        (onFilter)="onFilter($event)"
+        [(codigo)]="codigo"/>
+
+        <div class="btn-add flex gap-2">
+            <p-button
+                [label]="isMobile() ? '':'Adicionar Paciente'"
+                icon="pi pi-plus"
+                (click)="showModal('criar')"
+            />
+
+            <p-button
+            [label]="isMobile()?'':'Recuperar Paciente'"
+            icon="pi pi-sync"
+            (click)="showModal('recuperar')"
+            />
+        </div>
+
+
+</div>
+
+<p-dialog
+    [(visible)]="isVisible"
+    [header]="
+        typeDialog() === 'criar' ? 'Adicionar Paciente' :
+        typeDialog() === 'recuperar' ? 'Recuperar Paciente' :
+        'Editar Paciente'
+    "
+    (onHide)="closeModal()"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '25rem' }"
+    [modal]="true"
+>
+
+@if(isVisible()) {
+    <app-form-patient
+        [(isVisible)]="isVisible"
+        [(typeDialog)]="typeDialog"
+        [paciente]="pacienteSelecionado()"
+        [dadosRecuperados]="dadosRecuperados()"
+        (onChangeCreate)="criarPaciente($event)"
+        (onChangeRecuperar)="recuperarPaciente($event)"
+        (onChangeEditar)="editarPaciente($event)"
+        (onInvalid)="onInvalidForm()"
+    />
+}
+
+</p-dialog>
