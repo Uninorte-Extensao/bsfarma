@@ -34,6 +34,11 @@ pandas = "^2.2.0"
 openpyxl = "^3.1.0"
 bcrypt = "<4.0.0"
 
+# --- configuração ---
+# Importado diretamente em app/db/base.py e alembic/env.py; antes vinha só
+# como dependência transitiva do pydantic-settings.
+python-dotenv = "^1.2.3"
+
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
 pytest-asyncio = "^0.23.0"
