@@ -1,9 +1,12 @@
 """incluindo dispensacoes
 
 Revision ID: a575246ce0ba
-Revises: 
+Revises: c2cf2197c6b3
 Create Date: 2026-05-20 17:56:21.169676
 
+Encadeada depois da migration de baseline. Quando foi escrita, as tabelas que
+ela pressupõe existirem tinham sido criadas manualmente no Supabase; o baseline
+c2cf2197c6b3 passou a criá-las, e esta migration continua a partir dali.
 """
 from typing import Sequence, Union
 
@@ -13,7 +16,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = 'a575246ce0ba'
-down_revision: Union[str, Sequence[str], None] = None
+down_revision: Union[str, Sequence[str], None] = 'c2cf2197c6b3'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

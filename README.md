@@ -179,6 +179,65 @@ O `.env` está no `.gitignore` e não deve ser versionado em hipótese alguma.
 
 ---
 
+## Migrations
+
+O schema é gerenciado pelo Alembic e a cadeia atual tem duas revisões:
+
+```
+<base> -> c2cf2197c6b3  (baseline: schema inicial completo)
+       -> a575246ce0ba  (incluindo dispensacoes)  [head]
+```
+
+Provisionar um banco novo é só rodar:
+
+```bash
+alembic upgrade head            # ou: docker compose exec api alembic upgrade head
+```
+
+**Por que existe uma migration de baseline.** As seis primeiras tabelas do
+sistema foram criadas manualmente no Supabase, sem passar pelo Alembic. Por
+causa disso a migration `a575246ce0ba` pressupunha essas tabelas já existentes e
+falhava em qualquer banco vazio, o que impedia provisionar um ambiente novo a
+partir do repositório. O baseline `c2cf2197c6b3` reconstrói o schema como ele
+era antes dela e fecha essa lacuna.
+
+Bancos que já existiam continuam gravados em `a575246ce0ba`, que segue sendo o
+head — para eles `alembic upgrade head` é um no-op e nada precisa ser feito.
+
+### Banco que já tem as tabelas mas não tem `alembic_version`
+
+É o caso de qualquer banco cujas tabelas foram criadas fora do Alembic. Rodar
+`alembic upgrade head` direto nele falha com
+`DuplicateTableError: relation "medicamento" already exists`, porque o Alembic o
+considera vazio e tenta aplicar o baseline.
+
+A saída é registrar a revisão correspondente ao estado atual, sem executar DDL:
+
+```bash
+# o banco NÃO tem a tabela dispensacao -> está no estado do baseline
+alembic stamp c2cf2197c6b3
+alembic upgrade head              # aplica a a575246ce0ba a partir daí
+
+# o banco JÁ tem a tabela dispensacao -> já está no head
+alembic stamp a575246ce0ba
+```
+
+Confira com `alembic check` depois: ele acusa qualquer divergência que sobrar.
+
+### Criando uma migration nova
+
+```bash
+alembic revision --autogenerate -m "descrição curta"
+alembic upgrade head
+alembic check                   # confirma que banco e models estão em sincronia
+```
+
+Revise sempre o arquivo gerado antes de aplicar: o autogenerate não detecta
+tudo (renomeações, por exemplo, viram drop + create) e não remove os tipos ENUM
+no downgrade.
+
+---
+
 ## Testes
 
 ```bash
