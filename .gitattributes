@@ -1,0 +1,31 @@
+# Normaliza os finais de linha no repositório (sempre LF no que é versionado).
+* text=auto eol=lf
+
+# Arquivos que são consumidos dentro de containers Linux PRECISAM de LF.
+# Com CRLF, o Nginx e o shell dos Dockerfiles quebram em runtime.
+Dockerfile      text eol=lf
+*.dockerfile    text eol=lf
+.dockerignore   text eol=lf
+*.conf          text eol=lf
+*.sh            text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+*.py            text eol=lf
+
+# Scripts do Windows continuam com CRLF.
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+*.ps1           text eol=crlf
+
+# Binários — nunca converter.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.xlsx binary

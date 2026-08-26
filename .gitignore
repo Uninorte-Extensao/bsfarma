@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# .gitignore da raiz do monorepo.
+# backend/ e frontend/ têm os seus próprios .gitignore com regras específicas;
+# aqui ficam apenas as regras que valem para o projeto inteiro.
+# ---------------------------------------------------------------------------
+
+# Segredos — nunca versionar. Só o .env.example entra no repositório.
+.env
+.env.*
+!.env.example
+
+# Dependências
+node_modules/
+.venv/
+venv/
+
+# Artefatos de build
+dist/
+build/
+*.egg-info/
+.angular/
+
+# Caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+# .vscode/ NÃO entra aqui: o frontend versiona de propósito alguns arquivos
+# desse diretório (extensions/launch/tasks.json), e uma regra na raiz impediria
+# o .gitignore do frontend de reincluí-los. Cada subprojeto cuida do seu.
+.idea/
+*.swp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
