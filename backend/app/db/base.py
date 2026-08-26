@@ -13,6 +13,11 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
+# Registra as funções de banco traduzidas por dialeto (gen_random_uuid).
+# Precisa acontecer antes de qualquer model ser definido — e todo model importa
+# este módulo para pegar a Base, então este é o ponto certo.
+import app.db.functions  # noqa: F401
+
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
