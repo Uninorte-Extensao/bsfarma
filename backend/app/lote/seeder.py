@@ -2,6 +2,12 @@ import asyncio
 
 from datetime import date
 from sqlalchemy import select
+# IMPORTAÇÃO VITAL: carrega todos os models antes de qualquer uso do ORM.
+# Sem isso, relationship() com strings (ex.: back_populates="Dispensacao")
+# falha com "expression 'X' failed to locate a name" quando este seeder
+# roda sozinho (python -m app.<modulo>.seeder), porque nem todo model do
+# projeto chega a ser importado — só os que este arquivo referencia direto.
+import app.db.models
 from app.db.base import SessionLocal
 from app.lote.model import Lote
 from app.movimentacao.model import Movimentacao
