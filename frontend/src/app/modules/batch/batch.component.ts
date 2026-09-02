@@ -49,7 +49,7 @@ export class BatchComponent implements OnInit {
 
     return list.filter(item =>
       item.numero_lote.toLowerCase().includes(term) ||
-      item.fabricante.toLowerCase().includes(term)
+      (item.fabricante ?? '').toLowerCase().includes(term)
     );
   });
 
