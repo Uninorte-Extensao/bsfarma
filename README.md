@@ -222,7 +222,41 @@ alembic upgrade head              # aplica a a575246ce0ba a partir daí
 alembic stamp a575246ce0ba
 ```
 
-Confira com `alembic check` depois: ele acusa qualquer divergência que sobrar.
+**`alembic check` depois do stamp não é opcional.** `stamp` só grava um rótulo
+na tabela `alembic_version` — ele não confere se as tabelas existentes batem
+coluna a coluna com o que os models descrevem. Um volume Docker local de
+desenvolvimento chegou a ter as tabelas certas mas sem 4 colunas que foram
+adicionadas aos models depois que ele foi criado (`usuario.perfil`,
+`alertas.tipo_alerta`, `alertas.status_alerta`, `movimentacao.tipo`) — sem essa
+verificação, o schema ficaria com uma divergência silenciosa e os seeders (ou a
+própria aplicação) quebrariam com `UndefinedColumnError`.
+
+```bash
+alembic check
+```
+
+Se ele responder `FAILED: New upgrade operations detected: [...]`, o banco tem
+colunas/tabelas faltando além do que o stamp assumiu. As saídas são: gerar uma
+migration para as diferenças (`alembic revision --autogenerate -m "..."` e
+revisar o resultado antes de aplicar) ou, se for um ambiente de
+desenvolvimento com dados só de seed, recriar do zero:
+
+```bash
+docker compose down -v          # remove o volume
+docker compose up -d
+docker compose exec api alembic upgrade head
+docker compose exec api python -m app.usuario.seeder
+docker compose exec api python -m app.medicamentos.seeder
+docker compose exec api python -m app.paciente.seeder
+docker compose exec api python -m app.lote.seeder
+docker compose exec api python -m app.movimentacao.seeder
+docker compose exec api python -m app.alertas.seeder
+```
+
+**No Supabase de produção, faça a mesma verificação antes de confiar no
+stamp.** O fato de já ter acontecido num ambiente local é sinal de que pode
+ter acontecido lá também — mesmo que hoje pareça funcionar, algum caminho pode
+não estar sendo exercitado.
 
 ### Criando uma migration nova
 
@@ -253,6 +287,31 @@ docker compose exec api pytest
 ```
 
 Os testes usam **SQLite em memória** — não precisam de conexão com o Supabase.
+
+---
+
+## Seeders
+
+Populam o banco com dados de exemplo — 3 usuários, medicamentos, pacientes,
+lotes, movimentações e alertas. Cada um só insere o que ainda não existe
+(idempotente: rodar de novo não duplica).
+
+Rode nesta ordem — cada seeder depende de dados que o(s) anterior(es) criam:
+
+```bash
+docker compose exec api python -m app.usuario.seeder
+docker compose exec api python -m app.medicamentos.seeder
+docker compose exec api python -m app.paciente.seeder
+docker compose exec api python -m app.lote.seeder
+docker compose exec api python -m app.movimentacao.seeder
+docker compose exec api python -m app.alertas.seeder
+```
+
+Usuários criados (login / senha): `gestor` / `gestor123`,
+`farmaceut` / `farmaceut123`, `atendente` / `atendente123`.
+
+**Pré-requisito:** o schema precisa estar em dia (`alembic upgrade head`) antes
+de rodar os seeders — veja [Migrations](#migrations).
 
 ---
 
@@ -300,19 +359,20 @@ acontecer, mover para uma variável de ambiente.
 Git na máquina de origem, anterior à unificação dos repositórios. Corrigível
 com um `.mailmap` na raiz, se alguém identificar a quem cada um pertence.
 
-### Volume local de desenvolvimento desatualizado em relação às migrations
+### Verifique se o Supabase de produção tem todas as colunas dos models
 
-Se você já rodava o projeto localmente com Docker antes desta unificação, o
-volume `bsfarma_postgres_data` tem as tabelas criadas fora do Alembic (mesma
-situação do Supabase) e ainda não conhece a migration `dispensacao`. Coloque-o
-em dia antes de usar:
+Um volume Docker local de desenvolvimento (anterior a esta unificação) tinha
+as tabelas certas, mas sem 4 colunas que os models já esperavam
+(`usuario.perfil`, `alertas.tipo_alerta`, `alertas.status_alerta`,
+`movimentacao.tipo`) — provavelmente criado antes de esses campos existirem no
+código e nunca atualizado desde então, porque nada nesse fluxo de
+desenvolvimento roda migrations automaticamente.
 
-```bash
-docker compose exec api alembic stamp c2cf2197c6b3
-docker compose exec api alembic upgrade head
-```
-
-Veja a seção [Migrations](#migrations) para mais contexto.
+O Supabase de produção pode ter o mesmo tipo de divergência, por criação manual
+de tabelas ao longo do tempo. Rode `alembic check` lá antes de assumir que o
+schema está em dia — veja a seção [Migrations](#migrations), "Banco que já tem as tabelas mas não tem
+`alembic_version`", para o procedimento completo (stamp + check + como corrigir uma divergência,
+se aparecer).
 
 ---
 
