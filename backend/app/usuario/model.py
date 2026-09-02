@@ -11,7 +11,6 @@ PADRÃO DO PROJETO — siga este modelo em todos os módulos:
 import enum
 from typing import List, TYPE_CHECKING
 from datetime import datetime
-import app.db.models
 from sqlalchemy import Boolean, DateTime, Enum, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
