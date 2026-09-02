@@ -39,9 +39,13 @@ class LoteResponse(BaseModel):
 
     id: str
     medicamento_id: str
-    registrado_por: str
+    # Nulos de verdade no banco: registrado_por vira NULL quando o usuário que
+    # registrou a entrada é apagado (ON DELETE SET NULL, ver lote/model.py), e
+    # fabricante é uma coluna opcional. LoteCreate continua exigindo os dois na
+    # criação — a obrigatoriedade é uma regra do formulário, não do dado em si.
+    registrado_por: str | None
     numero_lote: str
-    fabricante: str
+    fabricante: str | None
     validade: date
     quantidade_inicial: int
     quantidade_atual: int
