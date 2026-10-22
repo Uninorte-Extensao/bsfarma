@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { IBatch } from '../../shared/models/IBatch';
 import { IMovimentacao } from '../../shared/models/IMovement';
+import { ICard } from '../../shared/models/ICard';
 import { MovementService } from '../../shared/services/movement.service';
 import { LoteService } from '../../shared/services/batch.service';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -29,7 +30,7 @@ type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contr
   styleUrl: './movement.component.scss',
 })
 export class MovementComponent implements OnInit {
-  protected cardItems = computed<any[]>(() => {
+  protected cardItems = computed<ICard[]>(() => {
     const movimentacoes = this.movimentacoes();
 
     const entradas = movimentacoes.filter(

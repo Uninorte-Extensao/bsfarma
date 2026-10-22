@@ -2,8 +2,6 @@ import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { Button } from "primeng/button";
-import { IPaciente } from '../../shared/models/IPatient';
-import { PACIENTE } from '../../shared/mocks/pacientes.mock';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';

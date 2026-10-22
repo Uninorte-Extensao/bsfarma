@@ -23,7 +23,7 @@ type ITypeDialog = 'create' | 'update'
   styleUrl: './form-user.component.scss',
 })
 export class FormUserComponent {
-  checked: boolean = false;
+  checked = false;
   protected typeProfile = signal(PROFILE_OPTIONS);
 
   protected form: FormGroup;

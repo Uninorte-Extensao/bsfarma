@@ -1,7 +1,7 @@
-import { Component, inject, model, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AutoComplete, AutoCompleteCompleteEvent, AutoCompleteModule } from "primeng/autocomplete";
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from "primeng/autocomplete";
 import { Button } from "primeng/button";
 import { InputNumber } from "primeng/inputnumber";
 import { Select } from "primeng/select";

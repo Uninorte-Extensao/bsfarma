@@ -3,14 +3,11 @@ import { AutoCompleteCompleteEvent, AutoComplete } from 'primeng/autocomplete';
 import { IPaciente } from '../../../shared/models/IPatient';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IMedicine } from '../../../shared/models/IMedicine';
-import { MEDICAMENTOS } from '../../../shared/mocks/medicamentos.mock';
 import { IBatch } from '../../../shared/models/IBatch';
-import { LOTE } from '../../../shared/mocks/lote.mock';
-import { PACIENTE } from '../../../shared/mocks/pacientes.mock';
 import { Button } from "primeng/button";
 import { InputNumber } from "primeng/inputnumber";
 import { Select } from "primeng/select";
-import { inject } from '@angular/core';
+import { inject, OnInit } from '@angular/core';
 import { ToastService } from '../../../shared/services/toast.service';
 import { LoadingService } from '../../../shared/services/loading.service';
 import { DispersationService } from '../../../shared/services/dispersation.service';
@@ -26,13 +23,17 @@ interface ILoteMedicamento extends IBatch {
   concentracao: string
   via_administracao: string
 }
+
+interface ILoteSelecionado extends ILoteMedicamento {
+  quantidade: number
+}
 @Component({
   selector: 'app-form-dispersation',
   imports: [Button, InputNumber, Select, AutoComplete, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './form-dispersation.component.html',
   styleUrl: './form-dispersation.component.scss',
 })
-export class FormDispersationComponent {
+export class FormDispersationComponent implements OnInit {
   public listPatient = signal<IPaciente[]>([]);
   public filteredPatient = signal<IPaciente[]>([]);
   protected form: FormGroup;
@@ -40,7 +41,7 @@ export class FormDispersationComponent {
   public listLote = signal<IBatch[]>([]);
   public listMedicine = signal<IMedicine[]>([]);
 
-  protected batchSelected = signal<any[]>([]);
+  protected batchSelected = signal<ILoteSelecionado[]>([]);
   value = 0
 
   public loteComputed = computed<ILoteMedicamento[]>(() => {
@@ -103,11 +104,10 @@ export class FormDispersationComponent {
 
 
   filterPatient(event: AutoCompleteCompleteEvent) {
-    let filtered: IPaciente[] = [];
-    let query = event.query;
+    const filtered: IPaciente[] = [];
+    const query = event.query;
 
-    for (let i = 0; i < (this.listPatient() as IPaciente[]).length; i++) {
-      let patient = (this.listPatient() as IPaciente[])[i];
+    for (const patient of this.listPatient() as IPaciente[]) {
       if (patient.codigo.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(patient);
       }

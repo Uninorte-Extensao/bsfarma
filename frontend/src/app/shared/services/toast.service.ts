@@ -7,8 +7,6 @@ import { MessageService } from 'primeng/api';
 export class ToastService {
     private messageService = inject(MessageService);
 
-  constructor() { }
-
   showToastSuccess(msg: string) {
     this.messageService.add({ key: 'tc', severity: 'success', summary: 'Sucesso', detail: msg });
   }

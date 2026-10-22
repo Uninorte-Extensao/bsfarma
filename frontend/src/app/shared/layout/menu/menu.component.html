@@ -2,8 +2,8 @@
     <section class="container-menu" [class.collapsed]="isCollapsed">
 
     <header>
-        <div class="container-logo cursor-pointer" (click)="toggleMenu()">
-            <img src="assets/logo_bsfarma.svg">
+        <div class="container-logo cursor-pointer" role="button" tabindex="0" (click)="toggleMenu()" (keydown.enter)="toggleMenu()">
+            <img src="assets/logo_bsfarma.svg" alt="BSFarma">
             <!-- <span class="logo-tipo">BS <span>farma</span></span> -->
         </div>
     </header>

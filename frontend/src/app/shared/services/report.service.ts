@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { IEstoqueMedicamento, IGestaoDashboard, IItemCritico, IMovimentacaoRelatorio, IPaginacao, IRelatorioDispensacao } from '../models/IReport';
 import { environment } from '../../../environments/environment';
-import { IMovimentacao } from '../models/IMovement';
 
 @Injectable({
   providedIn: 'root',
@@ -62,8 +61,8 @@ export class ReportService {
   }
 
   getMovimentacoes(
-    page: number = 1,
-    pageSize: number = 50,
+    page = 1,
+    pageSize = 50,
     dataInicio?: string,
     dataFim?: string,
     tipo?: string,

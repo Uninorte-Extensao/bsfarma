@@ -1,4 +1,4 @@
-import { Component, effect, inject, model, output, OutputEmitterRef, signal, OnInit } from '@angular/core';
+import { Component, inject, model, signal, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { InputText } from 'primeng/inputtext';
@@ -6,7 +6,6 @@ import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete'
 import { InputNumber } from 'primeng/inputnumber';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IBatch, ICreateLote, IUpdateLote } from '../../../shared/models/IBatch';
-import { MEDICAMENTOS } from '../../../shared/mocks/medicamentos.mock';
 import { IMedicine } from '../../../shared/models/IMedicine';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../shared/services/loading.service';
@@ -17,7 +16,6 @@ import { IUser } from '../../../shared/models/IUser';
 import { MedicineService } from '../../../shared/services/medicine.service';
 import { AlertService } from '../../../shared/services/alert.service';
 
-type ITypeDialog = 'create' | 'update'
 
 @Component({
   selector: 'app-form-batch',
@@ -77,11 +75,10 @@ export class FormBatchComponent implements OnInit {
   }
 
   filterMedicine(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
-    let query = event.query;
+    const filtered: IMedicine[] = [];
+    const query = event.query;
 
-    for (let i = 0; i < (this.listMedicine() as IMedicine[]).length; i++) {
-      let country = (this.listMedicine() as IMedicine[])[i];
+    for (const country of this.listMedicine() as IMedicine[]) {
       if (country.nome_generico.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(country);
       }

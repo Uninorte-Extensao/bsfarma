@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
-  readonly stateOptions: any[] = [
+  readonly stateOptions = [
     { label: 'Entrar', value: 'login' }, 
     { label: 'Criar Conta', value: 'register' }];
 
-  protected value: string = 'login';
+  protected value = 'login';
 
   private authService = inject(AuthService)
   private loadingService = inject(LoadingService)

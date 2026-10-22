@@ -10,6 +10,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { UIChart } from 'primeng/chart';
+import { ChartData, ChartOptions, TooltipItem } from 'chart.js';
 import { IRelatorioDispensacao } from '../../../shared/models/IReport';
 
 @Component({
@@ -20,15 +21,15 @@ import { IRelatorioDispensacao } from '../../../shared/models/IReport';
 })
 export class DashboardMonthlyConsumptionComponent implements OnInit, OnChanges {
 
-  data: any;
+  data?: ChartData<'bar'>;
 
-  options: any;
+  options?: ChartOptions<'bar'>;
 
   consumoMensal = input<IRelatorioDispensacao[]>([]);
 
   platformId = inject(PLATFORM_ID);
 
-  constructor(private cd: ChangeDetectorRef) { }
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit() {
     this.initChart();
@@ -106,7 +107,7 @@ export class DashboardMonthlyConsumptionComponent implements OnInit, OnChanges {
           displayColors: false,
 
           callbacks: {
-            label: (context: any) =>
+            label: (context: TooltipItem<'bar'>) =>
               `${context.raw} unidades dispensadas`
           }
         }
@@ -125,8 +126,7 @@ export class DashboardMonthlyConsumptionComponent implements OnInit, OnChanges {
           },
 
           grid: {
-            color: `${surfaceBorder}40`,
-            drawBorder: false
+            color: `${surfaceBorder}40`
           },
 
           border: {

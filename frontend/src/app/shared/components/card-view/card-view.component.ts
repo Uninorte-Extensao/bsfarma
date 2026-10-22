@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, input } from '@angular/core';
+import { ICardVariant } from '../../models/ICard';
 @Component({
   selector: 'app-card-view',
   imports: [
@@ -14,5 +15,5 @@ export class CardViewComponent {
   subtitle = input<string>('');
   icon = input<string>('pi pi-chart-line');
 
-  variant = input<'primary' | 'success' | 'danger' | 'warning'>('primary');
+  variant = input<ICardVariant>('primary');
 }
