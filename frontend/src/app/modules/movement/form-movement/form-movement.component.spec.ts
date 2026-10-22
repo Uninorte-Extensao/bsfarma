@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormMovementComponent } from './form-movement.component';
+import { testProviders } from '../../../../testing/test-providers';
 
 describe('FormMovementComponent', () => {
   let component: FormMovementComponent;
@@ -8,7 +9,8 @@ describe('FormMovementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormMovementComponent]
+      imports: [FormMovementComponent],
+      providers: testProviders
     })
     .compileComponents();
 

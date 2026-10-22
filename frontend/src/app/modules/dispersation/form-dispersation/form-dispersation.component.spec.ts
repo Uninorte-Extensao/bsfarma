@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormDispersationComponent } from './form-dispersation.component';
+import { testProviders } from '../../../../testing/test-providers';
 
 describe('FormDispersationComponent', () => {
   let component: FormDispersationComponent;
@@ -8,7 +9,8 @@ describe('FormDispersationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormDispersationComponent]
+      imports: [FormDispersationComponent],
+      providers: testProviders
     })
     .compileComponents();
 
