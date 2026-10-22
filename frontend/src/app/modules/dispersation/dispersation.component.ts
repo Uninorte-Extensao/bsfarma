@@ -69,7 +69,7 @@ export class DispersationComponent implements OnInit {
 
   protected searchTerm = signal('');
   protected first = signal(0);
-  protected rows = signal(8);
+  protected rows = signal(12);
 
   protected filteredList = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();

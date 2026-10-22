@@ -46,7 +46,16 @@ export type FormaFarmaceutica =
   | 'Shampoo'
   | 'Sabonete medicinal'
   | 'Tintura'
-  | 'Extrato';
+  | 'Extrato'
+
+  | 'Comprimido de liberação prolongada'
+  | 'Cápsula dura'
+  | 'Aerossol para inalação'
+  | 'Solução injetável'
+  | 'Suspensão injetável'
+  | 'Solução oftálmica'
+  | 'Suspensão para inalação nasal'
+  | 'Solução para inalação';
 
 export type ViaAdministracao =
   | 'Oral'
@@ -78,7 +87,8 @@ export type ViaAdministracao =
   | 'Intracavernosa'
   | 'Intravitreal'
   | 'Uretral'
-  | 'Implantável';
+  | 'Implantável'
+  | 'Parenteral';
 
 export interface IMedicine {
   id: string;

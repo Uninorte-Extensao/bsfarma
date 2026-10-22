@@ -92,7 +92,10 @@ export class FormMedicineComponent implements OnInit {
   }
 
   private setValues(medicine: IMedicine) {
-    const [valor, unidade] = medicine.concentracao.split(' ')
+    const [valor, unidadeBanco] = medicine.concentracao.split(' ')
+    const unidade = UNIDADE_CONCENTRACAO.find(
+      u => u.value.toLowerCase() === unidadeBanco?.toLowerCase()
+    )?.value ?? unidadeBanco
 
     this.form.patchValue({
       nome_generico: medicine.nome_generico,
@@ -100,7 +103,7 @@ export class FormMedicineComponent implements OnInit {
       forma_farmaceutica: medicine.forma_farmaceutica,
       via_administracao: medicine.via_administracao,
       estoque_minimo: medicine.estoque_minimo,
-      valor: Number(valor),
+      valor: Number(valor.replace(',', '.')),
       unidade: unidade
     })
 
