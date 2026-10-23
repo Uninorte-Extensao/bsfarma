@@ -33,7 +33,8 @@ from app.alertas.service import AlertaService
 logger = logging.getLogger(__name__)
 
 # Instância única do scheduler — criada no módulo, gerenciada pelo lifespan
-scheduler = AsyncIOScheduler(timezone=timezone("America/Manaus"))
+FUSO_UBS = timezone("America/Manaus")
+scheduler = AsyncIOScheduler(timezone=FUSO_UBS)
 
 
 async def executar_verificacao() -> None:
@@ -64,7 +65,7 @@ def iniciar_scheduler() -> None:
     """Registra o job e inicia o scheduler. Chame no lifespan do FastAPI."""
     scheduler.add_job(
         executar_verificacao,
-        trigger=CronTrigger(hour=0, minute=30),   # 00:30 horário de Manaus
+        trigger=CronTrigger(hour=0, minute=30, timezone=FUSO_UBS),
         id="verificacao_diaria_alertas",
         replace_existing=True,
         misfire_grace_time=3600,    # se o servidor estava offline, executa com até 1h de atraso
