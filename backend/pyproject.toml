@@ -38,6 +38,7 @@ bcrypt = "<4.0.0"
 # Importado diretamente em app/db/base.py e alembic/env.py; antes vinha só
 # como dependência transitiva do pydantic-settings.
 python-dotenv = "^1.2.3"
+pytz = "^2026.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"

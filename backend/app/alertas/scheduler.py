@@ -56,8 +56,8 @@ async def executar_verificacao() -> None:
                 resultado["alertas_escalados"],
                 resultado["alertas_expirados"],
             )
-    except Exception as e:
-        logger.exception("[Scheduler] Erro durante verificação de alertas: ", e)
+    except Exception:
+        logger.exception("[Scheduler] Erro durante verificação de alertas")
 
 
 def iniciar_scheduler() -> None:
