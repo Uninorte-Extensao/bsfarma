@@ -40,6 +40,7 @@ continuam funcionando normalmente em todo o código.
 
 ```
 .
+├── .github/workflows/        ← CI no GitHub Actions (documentado em .github/workflows/README.md)
 ├── backend/                  ← API FastAPI  (README próprio em backend/README.md)
 │   ├── app/                  ← código da aplicação, um diretório por domínio
 │   ├── alembic/              ← migrations
@@ -287,6 +288,14 @@ docker compose exec api pytest
 ```
 
 Os testes usam **SQLite em memória** — não precisam de conexão com o Supabase.
+
+### Integração contínua
+
+Todo Pull Request contra a `main` e todo push de branch rodam automaticamente
+os testes do backend, as migrations num Postgres efêmero e o build de produção
+do frontend. O resultado aparece como checks no PR e no commit. Detalhes, o que
+ainda fica de fora (lint e testes do frontend) e como reproduzir localmente:
+[`.github/workflows/README.md`](.github/workflows/README.md).
 
 ---
 
