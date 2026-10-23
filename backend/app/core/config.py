@@ -26,9 +26,16 @@ class Settings(BaseSettings):
     # Ambiente
     environment: str = "development"
 
+    # CORS: origens separadas por vírgula
+    cors_origins: str = "http://localhost:4200"
+
     @property
     def is_production(self) -> bool:
         return self.environment == "production"
+
+    @property
+    def cors_origins_lista(self) -> list[str]:
+        return [origem.strip().rstrip("/") for origem in self.cors_origins.split(",") if origem.strip()]
 
 
 # IMPORTAR OBJETO settings, NÃO A CLASSE SETTINGS()
