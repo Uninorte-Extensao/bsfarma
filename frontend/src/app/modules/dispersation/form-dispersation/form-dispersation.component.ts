@@ -1,9 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
-import { AutoCompleteCompleteEvent, AutoComplete } from 'primeng/autocomplete';
 import { IPaciente } from '../../../shared/models/IPatient';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IMedicine } from '../../../shared/models/IMedicine';
-import { IBatch } from '../../../shared/models/IBatch';
+import { IBatch, IBatchDetalhado } from '../../../shared/models/IBatch';
 import { Button } from "primeng/button";
 import { InputNumber } from "primeng/inputnumber";
 import { Select } from "primeng/select";
@@ -12,16 +10,19 @@ import { ToastService } from '../../../shared/services/toast.service';
 import { LoadingService } from '../../../shared/services/loading.service';
 import { DispersationService } from '../../../shared/services/dispersation.service';
 import { PatientService } from '../../../shared/services/patient.service';
-import { MedicineService } from '../../../shared/services/medicine.service';
 import { LoteService } from '../../../shared/services/batch.service';
 import { RouterLink } from "@angular/router";
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Tag } from 'primeng/tag';
 
 
 interface ILoteMedicamento extends IBatch {
   nome_generico: string
   concentracao: string
   via_administracao: string
+  // Primeiro lote (por validade) de um medicamento que tem mais de um lote disponível
+  venceAntes?: boolean
 }
 
 interface ILoteSelecionado extends ILoteMedicamento {
@@ -29,34 +30,27 @@ interface ILoteSelecionado extends ILoteMedicamento {
 }
 @Component({
   selector: 'app-form-dispersation',
-  imports: [Button, InputNumber, Select, AutoComplete, ReactiveFormsModule, FormsModule, RouterLink],
+  imports: [Button, InputNumber, Select, ReactiveFormsModule, FormsModule, RouterLink, DatePipe, Tag],
   templateUrl: './form-dispersation.component.html',
   styleUrl: './form-dispersation.component.scss',
 })
 export class FormDispersationComponent implements OnInit {
   public listPatient = signal<IPaciente[]>([]);
-  public filteredPatient = signal<IPaciente[]>([]);
   protected form: FormGroup;
   public patientSelected = signal<IPaciente | null>(null);
-  public listLote = signal<IBatch[]>([]);
-  public listMedicine = signal<IMedicine[]>([]);
+  public listLote = signal<IBatchDetalhado[]>([]);
 
   protected batchSelected = signal<ILoteSelecionado[]>([]);
-  value = 0
 
   public loteComputed = computed<ILoteMedicamento[]>(() => {
 
     return this.listLote().map((lote) => {
 
-      const medicamento = this.listMedicine().find(
-        (item) => item.id === lote.medicamento_id
-      );
-
       return {
         ...lote,
-        nome_generico: medicamento?.nome_generico ?? '',
-        concentracao: medicamento?.concentracao ?? '',
-        via_administracao: medicamento?.via_administracao ?? '',
+        nome_generico: lote.medicamento.nome_generico,
+        concentracao: lote.medicamento.concentracao,
+        via_administracao: lote.medicamento.via_administracao,
       };
 
     });
@@ -66,12 +60,29 @@ export class FormDispersationComponent implements OnInit {
   public availableLotes = computed(() => {
 
     const selectedIds = this.batchSelected().map(item => item.id);
+    const hoje = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD no fuso local
 
-    return this.loteComputed().filter(
+    // A API envia a validade como "YYYY-MM-DD"; lote vencido não pode ser dispensado.
+    const disponiveis = this.loteComputed().filter(
       lote =>
         !selectedIds.includes(lote.id) &&
-        lote.quantidade_atual > 0
+        lote.quantidade_atual > 0 &&
+        String(lote.validade) >= hoje
     );
+
+    // O backend devolve os lotes ordenados por validade, então o primeiro
+    // de cada medicamento é o que vence antes.
+    const vistos = new Set<string>();
+
+    return disponiveis.map(lote => {
+      const temOutros = disponiveis.some(
+        outro => outro.medicamento_id === lote.medicamento_id && outro.id !== lote.id
+      );
+      const venceAntes = temOutros && !vistos.has(lote.medicamento_id);
+      vistos.add(lote.medicamento_id);
+
+      return { ...lote, venceAntes };
+    });
 
   });
 
@@ -81,9 +92,8 @@ export class FormDispersationComponent implements OnInit {
 
   private dispersationService = inject(DispersationService);
   private pacienteService = inject(PatientService)
-  private medicamentoService = inject(MedicineService)
   private loteService = inject(LoteService)
-  protected selectedLote!: ILoteMedicamento
+  protected selectedLote: ILoteMedicamento | null = null
   private router = inject(Router)
 
   constructor() {
@@ -99,22 +109,8 @@ export class FormDispersationComponent implements OnInit {
   ngOnInit() {
     this.getAllPacientes()
     this.getAllLotes()
-    this.getAllMedicamentos()
   }
 
-
-  filterPatient(event: AutoCompleteCompleteEvent) {
-    const filtered: IPaciente[] = [];
-    const query = event.query;
-
-    for (const patient of this.listPatient() as IPaciente[]) {
-      if (patient.codigo.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(patient);
-      }
-    }
-
-    this.filteredPatient.set(filtered);
-  }
 
   onChangeValue() {
 
@@ -130,6 +126,25 @@ export class FormDispersationComponent implements OnInit {
           patient ?? null
         );
       });
+  }
+
+  get totalUnidades(): number {
+    return this.batchSelected().reduce((total, item) => total + (item.quantidade ?? 0), 0);
+  }
+
+  get podeConfirmar(): boolean {
+    return !!this.patientSelected() && this.batchSelected().length > 0;
+  }
+
+  trocarPaciente() {
+    this.form.get('codigo')?.setValue(null);
+  }
+
+  onSelectLote(lote: ILoteMedicamento | null) {
+    if (!lote) return;
+
+    this.addLote(lote);
+    this.selectedLote = null;
   }
 
   addLote(item: ILoteMedicamento) {
@@ -224,20 +239,9 @@ export class FormDispersationComponent implements OnInit {
 
   getAllLotes() {
     this.loading.show()
-    this.loteService.getLotes()
-      .then((res: IBatch[]) => {
+    this.loteService.getLotes(undefined, true)
+      .then((res: IBatchDetalhado[]) => {
         this.listLote.set(res)
-      })
-      .finally(() => {
-        this.loading.hide()
-      })
-  }
-
-  getAllMedicamentos() {
-    this.loading.show()
-    this.medicamentoService.getMedicamentos()
-      .then((res: IMedicine[]) => {
-        this.listMedicine.set(res)
       })
       .finally(() => {
         this.loading.hide()
