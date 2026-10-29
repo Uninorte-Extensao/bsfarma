@@ -10,8 +10,20 @@ PADRÃO DO PROJETO — regras do repositório:
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.dispensacao.model import Dispensacao
+from app.lote.model import Lote
+from app.movimentacao.model import Movimentacao
+
+# Carrega paciente, movimentação, lote e medicamento junto com a dispensação,
+# evitando que o frontend precise buscar cada um em requisições separadas.
+_DETALHES = (
+    selectinload(Dispensacao.paciente),
+    selectinload(Dispensacao.movimentacao)
+    .selectinload(Movimentacao.lote)
+    .selectinload(Lote.medicamento),
+)
 
 
 class DispensacaoRepository:
@@ -21,7 +33,9 @@ class DispensacaoRepository:
     async def get_by_id(self, dispensacao_id: str) -> Dispensacao | None:
         """Busca uma dispensação pelo UUID. Retorna None se não existir."""
         result = await self.session.execute(
-            select(Dispensacao).where(Dispensacao.id == dispensacao_id)
+            select(Dispensacao)
+            .where(Dispensacao.id == dispensacao_id)
+            .options(*_DETALHES)
         )
         return result.scalar_one_or_none()
 
@@ -30,7 +44,11 @@ class DispensacaoRepository:
         Lista as dispensações ordenadas da mais recente para a mais antiga.
         Permite filtrar pelo histórico de um paciente específico.
         """
-        stmt = select(Dispensacao).order_by(Dispensacao.dispensado_em.desc())
+        stmt = (
+            select(Dispensacao)
+            .options(*_DETALHES)
+            .order_by(Dispensacao.dispensado_em.desc())
+        )
         
         if paciente_id:
             stmt = stmt.where(Dispensacao.paciente_id == paciente_id)

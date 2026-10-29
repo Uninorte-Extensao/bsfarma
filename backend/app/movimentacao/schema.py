@@ -44,3 +44,26 @@ class MovimentacaoResponse(BaseModel):
     quantidade: int
     justificativa: str | None
     ocorrido_em: datetime
+
+
+class LoteResumo(BaseModel):
+    """Dados mínimos do lote embutidos na resposta da movimentação."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    numero_lote: str
+
+
+class UsuarioResumo(BaseModel):
+    """Dados mínimos do usuário que registrou a movimentação."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    nome: str
+
+
+class MovimentacaoDetalhadaResponse(MovimentacaoResponse):
+    """
+    Movimentação com lote e usuário embutidos, para a listagem não precisar
+    buscar todos os lotes e todos os usuários à parte.
+    """
+    lote: LoteResumo
+    usuario: UsuarioResumo

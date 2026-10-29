@@ -9,6 +9,7 @@ PADRÃO DO PROJETO — regras do repositório:
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.lote.model import Lote
 
@@ -20,7 +21,9 @@ class LoteRepository:
     async def get_by_id(self, lote_id: str) -> Lote | None:
         """Busca um lote pelo UUID. Retorna None se não existir."""
         result = await self.session.execute(
-            select(Lote).where(Lote.id == lote_id)
+            select(Lote)
+            .where(Lote.id == lote_id)
+            .options(selectinload(Lote.medicamento))
         )
         return result.scalar_one_or_none()
 
@@ -44,7 +47,11 @@ class LoteRepository:
         """
         Lista os lotes, ordenando pela validade (os que vencem primeiro aparecem primeiro).
         """
-        stmt = select(Lote).order_by(Lote.validade.asc())
+        stmt = (
+            select(Lote)
+            .options(selectinload(Lote.medicamento))
+            .order_by(Lote.validade.asc())
+        )
         
         if medicamento_id:
             stmt = stmt.where(Lote.medicamento_id == medicamento_id)
