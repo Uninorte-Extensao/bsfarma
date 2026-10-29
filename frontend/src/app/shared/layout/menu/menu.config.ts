@@ -44,7 +44,7 @@ export function buildMenuItems(authService: AuthService, quantidadeAlertas: numb
 
 
                 {
-                    label: 'Notificações',
+                    label: 'Alertas',
                     icon: 'pi pi-bell',
                     routerLink: '/alerts',
                     visible: authService.hasPermission('alerts.view'),
