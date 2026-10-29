@@ -10,11 +10,13 @@
                 <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar dispensação" />
             </p-iconfield>
 
+            @if (isCreate()) {
             <p-button
                 label="Novo Atendimento"
                 icon="pi pi-plus"
                 (click)="goToAdd()"
             />
+            }
         </div>
 
         <div class="cards-grid">
@@ -27,13 +29,25 @@
                         </div>
 
                         <div class="entity-info">
-                            <div class="entity-title" [pTooltip]="item.paciente_id">{{ item.paciente_id }}</div>
-                            <small class="entity-subtitle">Lote {{ item.numero_lote || '-' }}</small>
+                            <div class="entity-title" [pTooltip]="item.paciente.codigo">{{ item.paciente.codigo }}</div>
+                            <small class="entity-subtitle">{{ item.medicamento.nome_generico }} {{ item.medicamento.concentracao }} · Lote {{ item.lote.numero_lote }}</small>
+                        </div>
+
+                        <div class="entity-actions">
+                            <p-button
+                                icon="pi pi-eye"
+                                rounded
+                                text
+                                severity="secondary"
+                                pTooltip="Ver resumo"
+                                tooltipPosition="top"
+                                [ariaLabel]="'Ver resumo da dispensação do paciente ' + item.paciente.codigo"
+                                (click)="abrirResumo(item)" />
                         </div>
                     </div>
 
                     <div class="entity-meta">
-                        <span>Quantidade: {{ item.quantidade ?? '-' }}</span>
+                        <span>Quantidade: {{ item.quantidade }}</span>
                         <span>Dispensado em {{ item.dispensado_em | date:'dd/MM/yyyy' }}</span>
                     </div>
 
@@ -47,10 +61,61 @@
             [first]="first()"
             [rows]="rows()"
             [totalRecords]="filteredList().length"
-            [rowsPerPageOptions]="[12, 24, 36]"
+            [templateLeft]="totalRegistros"
             (onPageChange)="onPageChange($event)"
         />
+
+        <ng-template #totalRegistros>
+            <span class="paginator-total">{{ filteredList().length }} {{ filteredList().length === 1 ? 'registro' : 'registros' }}</span>
+        </ng-template>
 
     </aside>
 
 </section>
+
+<p-dialog
+    [visible]="!!dispensacaoSelecionada()"
+    (visibleChange)="!$event && fecharResumo()"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [dismissableMask]="true"
+    [style]="{ width: '28rem' }"
+    [breakpoints]="{ '575px': '95vw' }"
+    header="Resumo da dispensação">
+
+    @if (dispensacaoSelecionada(); as d) {
+        <dl class="resumo">
+            <div class="resumo-item">
+                <dt>Paciente</dt>
+                <dd class="codigo">{{ d.paciente.codigo }}</dd>
+            </div>
+
+            <div class="resumo-item">
+                <dt>Medicamento</dt>
+                <dd>{{ d.medicamento.nome_generico }} <span class="text-obs">{{ d.medicamento.concentracao }}</span></dd>
+            </div>
+
+            <div class="resumo-grid">
+                <div class="resumo-item">
+                    <dt>Lote</dt>
+                    <dd>{{ d.lote.numero_lote }}</dd>
+                </div>
+
+                <div class="resumo-item">
+                    <dt>Quantidade</dt>
+                    <dd>{{ d.quantidade }} {{ d.quantidade === 1 ? 'unidade' : 'unidades' }}</dd>
+                </div>
+            </div>
+
+            <div class="resumo-item">
+                <dt>Dispensado em</dt>
+                <dd>{{ d.dispensado_em | date:"dd/MM/yyyy 'às' HH:mm" }}</dd>
+            </div>
+        </dl>
+    }
+
+    <ng-template #footer>
+        <p-button label="Fechar" severity="secondary" (click)="fecharResumo()" />
+    </ng-template>
+</p-dialog>

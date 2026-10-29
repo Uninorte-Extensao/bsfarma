@@ -10,12 +10,10 @@ import { Router } from '@angular/router';
 import { LoadingService } from '../../shared/services/loading.service';
 import { DispersationService } from '../../shared/services/dispersation.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { IDispensacao } from '../../shared/models/IDispersation';
-import { MovementService } from '../../shared/services/movement.service';
-import { IMovimentacao } from '../../shared/models/IMovement';
-import { LoteService } from '../../shared/services/batch.service';
-import { IBatch } from '../../shared/models/IBatch';
+import { IDispensacaoDetalhada } from '../../shared/models/IDispersation';
 import { Tooltip } from "primeng/tooltip";
+import { Dialog } from 'primeng/dialog';
+import { AuthService } from '../../shared/services/auth.service';
 @Component({
   selector: 'app-dispersation',
   imports: [
@@ -25,45 +23,24 @@ import { Tooltip } from "primeng/tooltip";
     DatePipe,
     InputText,
     Paginator,
-    Tooltip
+    Tooltip,
+    Dialog
 ],
   templateUrl: './dispersation.component.html',
   styleUrl: './dispersation.component.scss',
 })
 export class DispersationComponent implements OnInit {
   protected isMobile = inject(IS_MOBILE)
+  protected authService = inject(AuthService)
+  protected isCreate = signal(this.authService.hasPermission('dispersation.create'));
   private router = inject(Router)
 
   private loading = inject(LoadingService)
   private service = inject(DispersationService)
   private toast = inject(ToastService)
-  private movimentacaoService = inject(MovementService)
-  private loteService = inject(LoteService)
 
-  protected lotes = signal<IBatch[]>([])
-  protected dispensacoes = signal<IDispensacao[]>([])
-  protected dispensacoesComputed = computed(() => {
-    return this.dispensacoes().map((dispensacao) => {
-
-      const movimentacao = this.movimentacoes().find(
-        item => item.id === dispensacao.movimentacao_id
-      );
-
-      const lote = this.lotes().find(
-        item => item.id === movimentacao?.lote_id
-      );
-
-      return {
-        ...dispensacao,
-
-        numero_lote: lote?.numero_lote,
-
-        quantidade: movimentacao?.quantidade,
-
-      };
-    });
-  });
-  protected movimentacoes = signal<IMovimentacao[]>([])
+  protected dispensacoes = signal<IDispensacaoDetalhada[]>([])
+  protected dispensacaoSelecionada = signal<IDispensacaoDetalhada | null>(null)
 
   protected searchTerm = signal('');
   protected first = signal(0);
@@ -71,13 +48,14 @@ export class DispersationComponent implements OnInit {
 
   protected filteredList = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
-    const list = this.dispensacoesComputed();
+    const list = this.dispensacoes();
 
     if (!term) return list;
 
     return list.filter(item =>
-      item.paciente_id.toLowerCase().includes(term) ||
-      (item.numero_lote ?? '').toLowerCase().includes(term)
+      item.paciente.codigo.toLowerCase().includes(term) ||
+      item.lote.numero_lote.toLowerCase().includes(term) ||
+      item.medicamento.nome_generico.toLowerCase().includes(term)
     );
   });
 
@@ -95,46 +73,30 @@ export class DispersationComponent implements OnInit {
     this.rows.set(event.rows ?? 8);
   }
 
+  protected abrirResumo(dispensacao: IDispensacaoDetalhada) {
+    this.dispensacaoSelecionada.set(dispensacao)
+  }
+
+  protected fecharResumo() {
+    this.dispensacaoSelecionada.set(null)
+  }
+
   goToAdd() {
     this.router.navigate(['/dispersation/create'])
   }
 
   ngOnInit() {
     this.getDispensacoes()
-    this.getMovimentacoes()
-    this.getLotes()
   }
 
   private getDispensacoes(pacienteId?: string) {
     this.loading.show()
     this.service.getAllDispersacoes(pacienteId)
-      .then((res: IDispensacao[]) => {
+      .then((res: IDispensacaoDetalhada[]) => {
         this.dispensacoes.set(res)
       })
       .catch(() => {
         this.toast.showToastError('Erro ao buscar dispensações')
-      })
-      .finally(() => {
-        this.loading.hide()
-      })
-  }
-
-  private getMovimentacoes() {
-    this.loading.show()
-    this.movimentacaoService.getMovimentacao()
-      .then((res: IMovimentacao[]) => {
-        this.movimentacoes.set(res)
-      })
-      .finally(() => {
-        this.loading.hide()
-      })
-  }
-
-  private getLotes() {
-    this.loading.show()
-    this.loteService.getLotes()
-      .then((res: IBatch[]) => {
-        this.lotes.set(res)
       })
       .finally(() => {
         this.loading.hide()
