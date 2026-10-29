@@ -5,51 +5,32 @@ import { Permission } from "./permissions.enum";
 // ATENDENTE = REGISTRAR DISPENSAÇÕES, CONSULTAR ESTOQUE
 // FARMACEUTICO = TUDO DO ATENDENTE + GERENCIAR LOTES E ALERTAS
 // GESTOR = ACESSO TOTAL, INCLUINDO USUÁRIOS E RELATÓRIO
+//
+// Espelha o require_perfil() de cada router do backend: uma permissão só
+// existe aqui se o backend aceitar a requisição correspondente.
 
 export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
     atendente: [
         'catalog.view',
-        'catalog.create',
-        'catalog.update',
-        'catalog.delete',
 
         'batch.view',
-        'batch.create',
-        'batch.update',
-        'batch.delete',
 
         'dispersation.view',
         'dispersation.create',
-        'dispersation.update',
-        'dispersation.delete',
 
         'alerts.view',
-
-        // 'management.view',
-        // 'management.create',
-        // 'management.update',
-        // 'management.delete',
 
         'patient.view',
         'patient.create',
         'patient.update',
-        'patient.delete',
-
-        // 'movement.create',
-        // 'movement.delete',
-        // 'movement.update',
-        // 'movement.view'
     ],
 
     farmaceutico: [
         'catalog.view',
-        'catalog.create',
-        'catalog.update',
 
         'batch.view',
         'batch.create',
         'batch.update',
-        'batch.delete',
 
         'dispersation.view',
         'dispersation.create',
@@ -59,12 +40,9 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'patient.view',
         'patient.create',
         'patient.update',
-        'patient.delete',
 
+        'movement.view',
         'movement.create',
-        'movement.delete',
-        'movement.update',
-        'movement.view'
     ],
 
     gestor: [
@@ -76,33 +54,25 @@ export const ROLE_PERMISSIONS: Record<IProfileEnum, Permission[]> = {
         'batch.view',
         'batch.create',
         'batch.update',
-        'batch.delete',
 
         'dispersation.view',
         'dispersation.create',
-        'dispersation.update',
-        'dispersation.delete',
 
         'alerts.view',
 
         'management.view',
         'management.create',
         'management.update',
-        'management.delete',
 
         'patient.view',
         'patient.create',
         'patient.update',
         'patient.delete',
 
-        'movement.create',
-        'movement.delete',
-        'movement.update',
         'movement.view',
+        'movement.create',
+        'movement.update',
 
-        'report.create',
-        'report.delete',
-        'report.update',
-        'report.view'
+        'report.view',
     ]
 }

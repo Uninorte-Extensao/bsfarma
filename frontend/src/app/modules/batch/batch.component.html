@@ -76,6 +76,7 @@
                 </p-select>
             </div>
 
+            @if (isCreate()) {
             <div class="col-12 md:col-3">
                 <p-button
                     label="Adicionar lote"
@@ -84,6 +85,7 @@
                     fluid
                 />
             </div>
+            }
         </div>
 
         <div class="cards-grid">
@@ -100,9 +102,11 @@
                             <small class="entity-subtitle">{{ item.fabricante }}</small>
                         </div>
 
+                        @if (isEdit()) {
                         <div class="entity-actions">
                             <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
                         </div>
+                        }
                     </div>
 
                     <div class="entity-tags">

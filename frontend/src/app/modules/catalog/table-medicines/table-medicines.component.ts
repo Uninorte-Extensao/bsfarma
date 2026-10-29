@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { IS_MOBILE } from '../../../shared/services/is-mobile.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { TableModule, TablePageEvent } from 'primeng/table'
+import { ConfirmPopup } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 @Component({
   selector: 'app-table-medicines',
   imports: [
@@ -21,7 +23,8 @@ import { TableModule, TablePageEvent } from 'primeng/table'
     Tag,
     Select,
     FormsModule,
-    TableModule
+    TableModule,
+    ConfirmPopup
   ],
   templateUrl: './table-medicines.component.html',
   styleUrl: './table-medicines.component.scss',
@@ -32,6 +35,7 @@ export class TableMedicinesComponent {
   public onItemDelete = output<IMedicine>()
   public isMobile = inject(IS_MOBILE)
   protected authService = inject(AuthService)
+  private confirmationService = inject(ConfirmationService)
 
   protected searchTerm = signal('');
   protected first = signal(0);
@@ -101,7 +105,18 @@ export class TableMedicinesComponent {
     this.router.navigate(['/catalog/create'])
   }
 
-  public deleteItem(medicamento: IMedicine) {
-    this.onItemDelete.emit(medicamento)
+  public deleteItem(medicamento: IMedicine, event: Event) {
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+      message: `Deseja realmente excluir o medicamento ${medicamento.nome_generico}?`,
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      acceptButtonProps: { severity: 'danger' },
+      rejectButtonProps: { severity: 'secondary', outlined: true },
+      accept: () => {
+        this.onItemDelete.emit(medicamento)
+      }
+    })
   }
 }

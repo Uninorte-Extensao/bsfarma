@@ -1,3 +1,5 @@
+<p-confirmpopup />
+
 <div class="list-toolbar">
     <div class="list-toolbar-filters">
         <p-iconfield iconPosition="left">
@@ -81,11 +83,13 @@
                 </div>
             </th>
 
+            @if (isEdit() || isDelete()) {
             <th>
                 <div class="flex items-center gap-2">
                     Ação
                 </div>
             </th>
+            }
         </tr>
     </ng-template>
 
@@ -101,6 +105,7 @@
             <td>
                 <p-tag [value]="item.ativo ? 'Ativo' : 'Inativo'" [severity]="item.ativo ? 'success' : 'danger'" />
             </td>
+            @if (isEdit() || isDelete()) {
             <td>
                 <div class="flex gap-1">
                     @if(isEdit()) {
@@ -119,18 +124,23 @@
                         rounded
                         text
                         severity="danger"
-                        (click)="deleteItem(item)"
+                        (click)="deleteItem(item, $event)"
                     />
                     }
                 </div>
             </td>
+            }
         </tr>
     </ng-template>
 
     <ng-template #emptymessage>
         <tr>
-            <td [attr.colspan]="isMobile() ? 3 : 7" class="empty-state">Nenhum medicamento encontrado.</td>
+            <td [attr.colspan]="(isMobile() ? 2 : 6) + (isEdit() || isDelete() ? 1 : 0)" class="empty-state">Nenhum medicamento encontrado.</td>
         </tr>
+    </ng-template>
+
+    <ng-template #paginatorleft>
+        <span class="paginator-total">{{ filteredList().length }} {{ filteredList().length === 1 ? 'registro' : 'registros' }}</span>
     </ng-template>
 </p-table>
 </div>

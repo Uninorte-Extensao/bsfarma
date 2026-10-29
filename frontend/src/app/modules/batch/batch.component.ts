@@ -18,6 +18,7 @@ import { ICard } from '../../shared/models/ICard';
 import { MedicineService } from '../../shared/services/medicine.service';
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 import { CardViewComponent } from "../../shared/components/card-view/card-view.component";
+import { AuthService } from '../../shared/services/auth.service';
 @Component({
   selector: 'app-batch',
   imports: [
@@ -74,6 +75,9 @@ export class BatchComponent implements OnInit {
   private toast = inject(ToastService)
   private medicamentoService = inject(MedicineService)
   protected isMobile = inject(IS_MOBILE)
+  protected authService = inject(AuthService)
+  protected isCreate = signal(this.authService.hasPermission('batch.create'));
+  protected isEdit = signal(this.authService.hasPermission('batch.update'));
 
   protected medicamentos = signal<IMedicine[]>([])
   protected checked: boolean | null = null;
