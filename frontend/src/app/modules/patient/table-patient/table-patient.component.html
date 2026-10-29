@@ -7,16 +7,6 @@
         </p-inputicon>
         <input pInputText type="text" (input)="onSearch($event.target.value)" placeholder="Buscar" />
     </p-iconfield>
-
-    <p-select
-        class="status-filter"
-        [options]="filterOptions"
-        optionLabel="label"
-        optionValue="value"
-        [ngModel]="statusFilter()"
-        (ngModelChange)="onStatusChange($event)"
-        placeholder="Status"
-    />
 </div>
 
 <div class="cards-grid">
@@ -34,8 +24,12 @@
                 </div>
 
                 <div class="entity-actions">
+                    @if (isEdit()) {
                     <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item)" />
+                    }
+                    @if (isDelete()) {
                     <p-button icon="pi pi-trash" rounded text severity="danger" (click)="deleteItem(item, $event)" />
+                    }
                 </div>
             </div>
 

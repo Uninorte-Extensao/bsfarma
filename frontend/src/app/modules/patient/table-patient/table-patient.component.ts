@@ -6,14 +6,13 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { Button } from 'primeng/button';
 import { Tag } from 'primeng/tag';
-import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { Tooltip} from 'primeng/tooltip'
 import { ConfirmPopup } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-table-patient',
@@ -22,8 +21,6 @@ import { ConfirmationService } from 'primeng/api';
     InputIcon,
     Button,
     Tag,
-    Select,
-    FormsModule,
     Paginator,
     DatePipe,
     InputText,
@@ -36,6 +33,9 @@ import { ConfirmationService } from 'primeng/api';
 export class TablePatientComponent {
 
   protected isMobile = inject(IS_MOBILE);
+  protected authService = inject(AuthService)
+  protected isEdit = signal(this.authService.hasPermission('patient.update'));
+  protected isDelete = signal(this.authService.hasPermission('patient.delete'));
   private confirmationService = inject(ConfirmationService);
 
   public isVisible = model<boolean>(false);
@@ -51,22 +51,6 @@ export class TablePatientComponent {
   protected searchTerm = signal('');
   protected first = signal(0);
   protected rows = signal(12);
-
-  public onFilter = output<boolean | undefined>()
-
-  protected statusFilter = signal<boolean | undefined>(undefined);
-
-  protected filterOptions = [
-    { label: 'Todos', value: undefined },
-    { label: 'Ativos', value: true },
-    { label: 'Inativos', value: false }
-  ];
-
-  protected onStatusChange(value: boolean | undefined) {
-    this.statusFilter.set(value);
-    this.first.set(0);
-    this.onFilter.emit(value);
-  }
 
   protected filteredList = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
