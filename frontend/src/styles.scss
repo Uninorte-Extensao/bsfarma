@@ -48,6 +48,12 @@
         height: 40px !important;
     }
 
+    // total de registros exibido à esquerda dos paginadores
+    .paginator-total {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
     .box-card {
         background: var(--bg-surface);
         box-shadow: var(--shadow-card);

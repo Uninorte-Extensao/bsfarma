@@ -52,6 +52,10 @@
     [first]="first()"
     [rows]="rows()"
     [totalRecords]="filteredList().length"
-    [rowsPerPageOptions]="[12, 24, 36]"
+    [templateLeft]="totalRegistros"
     (onPageChange)="onPageChange($event)"
 />
+
+<ng-template #totalRegistros>
+    <span class="paginator-total">{{ filteredList().length }} {{ filteredList().length === 1 ? 'registro' : 'registros' }}</span>
+</ng-template>
