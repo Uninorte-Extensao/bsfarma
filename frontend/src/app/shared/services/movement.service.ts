@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { ICreateMovimentacao, IMovimentacao, IUpdateMovimentacao } from "../models/IMovement";
+import { ICreateMovimentacao, IMovimentacao, IUpdateMovimentacao, IMovimentacaoDetalhada } from "../models/IMovement";
 import { lastValueFrom } from "rxjs";
 import { environment } from "../../../environments/environment";
 
@@ -21,11 +21,11 @@ export class MovementService {
         if (loteId) {
             params = params.set('lote_id', loteId)
         }
-        return lastValueFrom(this.http.get<IMovimentacao[]>(`${environment.apiUrl}/movimentacoes`, { params }))
+        return lastValueFrom(this.http.get<IMovimentacaoDetalhada[]>(`${environment.apiUrl}/movimentacoes`, { params }))
     }
 
     getMovimentacaoById(movimentacaoId: string) {
-        return lastValueFrom(this.http.get<IMovimentacao>(`${environment.apiUrl}/movimentacoes/${movimentacaoId}`))
+        return lastValueFrom(this.http.get<IMovimentacaoDetalhada>(`${environment.apiUrl}/movimentacoes/${movimentacaoId}`))
     }
 
     updateMovimentacao(movimentacaoId: string, movimentacao: IUpdateMovimentacao) {

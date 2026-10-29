@@ -23,6 +23,11 @@ export interface IMovimentacao {
     ocorrido_em: Date
 }
 
+export interface IMovimentacaoDetalhada extends IMovimentacao {
+    lote: { id: string, numero_lote: string },
+    usuario: { id: string, nome: string }
+}
+
 export interface IUpdateMovimentacao {
     justificativa: string
 }

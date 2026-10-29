@@ -50,6 +50,7 @@
                 </p-select>
             </div>
 
+            @if (isCreate()) {
             <div class="col-12 md:col-3">
                 <p-button
                     label="Adicionar movimentação"
@@ -58,6 +59,7 @@
                     fluid
                 />
             </div>
+            }
 
         </div>
 
@@ -71,13 +73,15 @@
                         </div>
 
                         <div class="entity-info">
-                            <div class="entity-title">Lote {{ item.lote?.numero_lote ?? '-' }}</div>
+                            <div class="entity-title">Lote {{ item.lote.numero_lote }}</div>
                             <small class="entity-subtitle">{{ item.ocorrido_em | date:'dd/MM/yyyy' }}</small>
                         </div>
 
+                        @if (isEdit()) {
                         <div class="entity-actions">
                             <p-button icon="pi pi-pencil" rounded text severity="warn" (click)="goToEdit(item.id)" />
                         </div>
+                        }
                     </div>
 
                     <div class="entity-tags">
@@ -87,7 +91,7 @@
                     <div class="entity-meta">
                         <small>Quantidade: {{ item.quantidade }}</small>
                         @if (!isMobile()) {
-                            <small>Usuário: {{ item.usuario?.nome ?? '-' }}</small>
+                            <small>Usuário: {{ item.usuario.nome }}</small>
                             @if (item.justificativa) {
                                 <small>Justificativa: {{ item.justificativa }}</small>
                             }

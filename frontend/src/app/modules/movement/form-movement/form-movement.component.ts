@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from "primeng/autocomplete";
@@ -9,12 +9,10 @@ import { LoadingService } from '../../../shared/services/loading.service';
 import { LoteService } from '../../../shared/services/batch.service';
 import { ToastService } from '../../../shared/services/toast.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { MedicineService } from '../../../shared/services/medicine.service';
 import { MovementService } from '../../../shared/services/movement.service';
-import { IBatch } from '../../../shared/models/IBatch';
+import { IBatchDetalhado } from '../../../shared/models/IBatch';
 import { ICreateMovimentacao, IMovimentacao, ITypeMovimentacao, IUpdateMovimentacao } from '../../../shared/models/IMovement';
 import { IUser } from '../../../shared/models/IUser';
-import { IMedicine } from '../../../shared/models/IMedicine';
 import { Textarea} from 'primeng/textarea'
 import { AlertService } from '../../../shared/services/alert.service';
 @Component({
@@ -33,18 +31,8 @@ import { AlertService } from '../../../shared/services/alert.service';
 })
 export class FormMovementComponent implements OnInit {
   protected form: FormGroup
-  public listLotes = signal<IBatch[]>([])
-  public filteredLote = signal<(IBatch & { medicamento?: IMedicine })[]>([]);
-  public listMedicine = signal<IMedicine[]>([])
-
-  public lotesComMedicamento = computed(() => {
-    return this.listLotes().map(lote => ({
-      ...lote,
-      medicamento: this.listMedicine().find(
-        med => med.id === lote.medicamento_id
-      )
-    }));
-  });
+  public listLotes = signal<IBatchDetalhado[]>([])
+  public filteredLote = signal<IBatchDetalhado[]>([]);
 
   private router = inject(Router)
   private route = inject(ActivatedRoute)
@@ -53,7 +41,6 @@ export class FormMovementComponent implements OnInit {
   private toast = inject(ToastService)
   private auth = inject(AuthService)
   private service = inject(MovementService)
-  private medicamentoService = inject(MedicineService)
   private alertService = inject(AlertService)
 
   protected isEdit = signal<boolean>(false)
@@ -102,7 +89,6 @@ export class FormMovementComponent implements OnInit {
   async ngOnInit() {
     this.loading.show()
     Promise.all([
-      await this.getAllMedicamentos(),
       await this.getLotes()
     ]).catch(() => {
       this.toast.showToastError('Erro ao buscar dados.')
@@ -114,9 +100,9 @@ export class FormMovementComponent implements OnInit {
   filterLote(event: AutoCompleteCompleteEvent) {
     const query = event.query.toLowerCase();
 
-    const filtered = this.lotesComMedicamento().filter(item =>
+    const filtered = this.listLotes().filter(item =>
       item.numero_lote.toLowerCase().includes(query) ||
-      item.medicamento?.nome_generico.toLowerCase().includes(query)
+      item.medicamento.nome_generico.toLowerCase().includes(query)
     );
 
     this.filteredLote.set(filtered);
@@ -128,7 +114,7 @@ export class FormMovementComponent implements OnInit {
     this.loading.show()
 
     await this.loteService.getLotes()
-      .then((res: IBatch[]) => {
+      .then((res: IBatchDetalhado[]) => {
         this.listLotes.set(res)
       })
       .finally(() => {
@@ -202,20 +188,6 @@ export class FormMovementComponent implements OnInit {
 
   close() {
     this.router.navigate(['/movement'])
-  }
-
-  async getAllMedicamentos() {
-    this.loading.show()
-    await this.medicamentoService.getMedicamentos()
-      .then((res: IMedicine[]) => {
-        this.listMedicine.set(res)
-      })
-      .catch(() => {
-        this.toast.showToastError('Erro ao buscar medicamentos.')
-      })
-      .finally(() => {
-        this.loading.hide()
-      })
   }
 
   getMovimentacaoById(movimentacaoId: string) {

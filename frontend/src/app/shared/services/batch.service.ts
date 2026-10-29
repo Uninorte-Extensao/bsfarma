@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { IBatch, ICreateLote, IUpdateLote } from "../models/IBatch";
+import { IBatch, ICreateLote, IUpdateLote, IBatchDetalhado } from "../models/IBatch";
 import { lastValueFrom } from "rxjs";
 import { environment } from "../../../environments/environment";
 
@@ -24,11 +24,11 @@ export class LoteService {
         if (comSaldo !== undefined) {
             params = params.set('apenas_com_saldo', comSaldo)
         }
-        return lastValueFrom(this.http.get<IBatch[]>(`${environment.apiUrl}/lotes`, { params }))
+        return lastValueFrom(this.http.get<IBatchDetalhado[]>(`${environment.apiUrl}/lotes`, { params }))
     }
 
     public getLoteById(loteId: string) {
-        return lastValueFrom(this.http.get<IBatch>(`${environment.apiUrl}/lotes/${loteId}`))
+        return lastValueFrom(this.http.get<IBatchDetalhado>(`${environment.apiUrl}/lotes/${loteId}`))
     }
 
     public updateLote(loteId: string, lote: IUpdateLote) {

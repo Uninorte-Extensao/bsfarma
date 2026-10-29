@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { IBatch } from '../../shared/models/IBatch';
-import { IMovimentacao } from '../../shared/models/IMovement';
+import { IMovimentacaoDetalhada } from '../../shared/models/IMovement';
 import { ICard } from '../../shared/models/ICard';
 import { MovementService } from '../../shared/services/movement.service';
 import { LoteService } from '../../shared/services/batch.service';
@@ -18,8 +18,7 @@ import { LoadingService } from '../../shared/services/loading.service';
 import { Router } from '@angular/router';
 import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { UserService } from '../../shared/services/user.service';
-import { IUser } from '../../shared/models/IUser';
+import { AuthService } from '../../shared/services/auth.service';
 
 type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast';
 
@@ -103,27 +102,20 @@ export class MovementComponent implements OnInit {
       }
     ];
   });
-  protected movimentacoes = signal<IMovimentacao[]>([])
+  protected movimentacoes = signal<IMovimentacaoDetalhada[]>([])
   protected lotes = signal<IBatch[]>([])
   protected loteId: string | null = null
-  protected users = signal<IUser[]>([])
 
   private service = inject(MovementService)
   private LoteService = inject(LoteService)
   private loading = inject(LoadingService)
   private router = inject(Router)
   private toast = inject(ToastService)
-  private userService = inject(UserService)
 
   protected isMobile = inject(IS_MOBILE)
-
-  protected movimentacoesComUsuario = computed(() => {
-    return this.movimentacoes().map(mov => ({
-      ...mov,
-      usuario: this.users().find(user => user.id === mov.usuario_id),
-      lote: this.lotes().find(lote => lote.id === mov.lote_id)
-    }));
-  });
+  protected authService = inject(AuthService)
+  protected isCreate = signal(this.authService.hasPermission('movement.create'));
+  protected isEdit = signal(this.authService.hasPermission('movement.update'));
 
   protected searchTerm = signal('');
   protected first = signal(0);
@@ -131,14 +123,14 @@ export class MovementComponent implements OnInit {
 
   protected filteredList = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
-    const list = this.movimentacoesComUsuario();
+    const list = this.movimentacoes();
 
     if (!term) return list;
 
     return list.filter(item =>
-      (item.lote?.numero_lote ?? '').toLowerCase().includes(term) ||
+      item.lote.numero_lote.toLowerCase().includes(term) ||
       item.tipo.toLowerCase().includes(term) ||
-      (item.usuario?.nome ?? '').toLowerCase().includes(term) ||
+      item.usuario.nome.toLowerCase().includes(term) ||
       (item.justificativa ?? '').toLowerCase().includes(term)
     );
   });
@@ -175,7 +167,6 @@ export class MovementComponent implements OnInit {
   ngOnInit() {
     this.getMovimentacoes()
     this.getLotes()
-    this.getUsers()
   }
 
   goToCreate() {
@@ -196,7 +187,7 @@ export class MovementComponent implements OnInit {
   private getMovimentacoes(loteId?: string) {
     this.loading.show()
     this.service.getMovimentacao(loteId)
-      .then((res: IMovimentacao[]) => {
+      .then((res: IMovimentacaoDetalhada[]) => {
         this.movimentacoes.set(res)
       })
       .catch(() => {
@@ -212,17 +203,6 @@ export class MovementComponent implements OnInit {
     this.LoteService.getLotes()
       .then((res: IBatch[]) => {
         this.lotes.set(res)
-      })
-      .finally(() => {
-        this.loading.hide()
-      })
-  }
-
-  private getUsers() {
-    this.loading.show()
-    this.userService.getAllUsers()
-      .then((res: IUser[]) => {
-        this.users.set(res)
       })
       .finally(() => {
         this.loading.hide()
