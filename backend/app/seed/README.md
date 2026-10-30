@@ -45,8 +45,8 @@ uma dose, e retira a cada ~30 dias, com variações:
 - 8% abandonam.
 
 Salbutamol e budesonida nasal têm uso eventual, 2,2× mais frequente de julho a
-outubro, a época de queimadas no Acre. As dispensações acontecem em dias úteis,
-das 7h30 às 16h30 (UTC−5).
+outubro, a época de queimadas e fumaça no Amazonas. As dispensações acontecem
+em dias úteis, das 7h30 às 16h30 no horário de Manaus (UTC−4).
 
 O resultado é uma demanda intermitente, com quantidades variadas: o tipo de
 série para o qual servem métodos de previsão como Croston/SBA.

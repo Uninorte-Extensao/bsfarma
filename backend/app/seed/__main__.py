@@ -3,10 +3,10 @@ import asyncio
 import os
 import secrets
 import sys
-from datetime import date
 
 import app.db.models  # noqa: F401
 from app.core.config import settings
+from app.core.fuso import hoje_ubs
 from app.db.base import SessionLocal
 from app.paciente.service import gerar_codigo
 from app.seed.carga import banco_vazio, carregar, limpar
@@ -79,7 +79,7 @@ def _relatorio(carga: CargaDemo, alertas: dict, senhas: dict[str, str], geradas:
 
 
 async def _executar(args: argparse.Namespace) -> int:
-    hoje = date.today()
+    hoje = hoje_ubs()
     async with SessionLocal() as session:
         if not await banco_vazio(session):
             if not args.recriar:

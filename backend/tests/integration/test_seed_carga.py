@@ -1,9 +1,9 @@
-from datetime import date
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.alertas.model import Alertas
+from app.core.fuso import hoje_ubs
 from app.dispensacao.model import Dispensacao
 from app.lote.model import Lote
 from app.paciente.service import gerar_codigo
@@ -19,7 +19,7 @@ async def _contar(session: AsyncSession, modelo) -> int:
 
 
 async def test_carregar_banco_vazio_persiste_carga_e_gera_alertas(session: AsyncSession):
-    carga = gerar_carga(date.today(), gerar_codigo)
+    carga = gerar_carga(hoje_ubs(), gerar_codigo)
     assert await banco_vazio(session)
 
     resultado = await carregar(session, carga, SENHAS)
@@ -33,7 +33,7 @@ async def test_carregar_banco_vazio_persiste_carga_e_gera_alertas(session: Async
 
 
 async def test_limpar_apos_carga_deixa_banco_vazio(session: AsyncSession):
-    await carregar(session, gerar_carga(date.today(), gerar_codigo), SENHAS)
+    await carregar(session, gerar_carga(hoje_ubs(), gerar_codigo), SENHAS)
 
     await limpar(session)
 

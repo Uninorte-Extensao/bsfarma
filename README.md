@@ -170,8 +170,11 @@ Farmacêutico e gestor podem disparar a mesma verificação na hora, por
 `POST /alertas/verificar`. Se a API estiver fora do ar às 00:30 e voltar em até
 1 hora, o job ainda roda.
 
-O fuso está fixo no `scheduler.py`; o Acre, por exemplo, é
-`America/Rio_Branco`. Com vários processos da API, cada um roda o seu
+O fuso da UBS (`America/Manaus`) fica em
+[`app/core/fuso.py`](backend/app/core/fuso.py). Ele vale para o job e para todo
+"hoje" da API: validade na dispensação, alertas, períodos padrão e limites de
+dia dos relatórios. Assim, às 21h de Manaus o sistema ainda está no mesmo dia,
+mesmo com o servidor em UTC. Com vários processos da API, cada um roda o seu
 scheduler. A verificação não duplica alertas.
 
 ## Perfis de acesso

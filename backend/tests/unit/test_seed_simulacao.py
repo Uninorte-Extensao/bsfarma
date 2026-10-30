@@ -1,8 +1,9 @@
 from collections import defaultdict
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, timedelta
 
 import pytest
 
+from app.core.fuso import inicio_do_dia
 from app.movimentacao.model import TipoMovimentacao
 from app.paciente.service import gerar_codigo
 from app.seed.catalogo import MEDICAMENTOS
@@ -44,7 +45,7 @@ def test_gerar_carga_toda_saida_tem_dispensacao(carga):
 
 
 def test_gerar_carga_dispensacoes_cobrem_um_ano_sem_datas_futuras(carga):
-    agora = datetime.combine(HOJE, datetime.min.time(), tzinfo=timezone.utc) + timedelta(hours=5)
+    agora = inicio_do_dia(HOJE)
     datas = [d["dispensado_em"] for d in carga.dispensacoes]
     assert max(datas) < agora
     assert (agora - min(datas)).days >= JANELA_DIAS - 10

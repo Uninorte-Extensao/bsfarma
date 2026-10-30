@@ -1,5 +1,5 @@
 import asyncio
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
 from sqlalchemy import select
@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 import app.alertas.scheduler as modulo_scheduler
 from app.alertas.model import Alertas, StatusAlerta, TipoAlerta
+from app.core.fuso import hoje_ubs
 from app.db.base import Base
 from app.lote.model import Lote
 from app.main import app as aplicacao
@@ -58,7 +59,7 @@ async def test_job_disparado_pelo_scheduler_gera_alerta_no_banco(monkeypatch):
         sessao.add(Lote(
             medicamento_id=medicamento.id,
             numero_lote="SCHED-10D",
-            validade=date.today() + timedelta(days=10),
+            validade=hoje_ubs() + timedelta(days=10),
             quantidade_inicial=100,
             quantidade_atual=80,
         ))

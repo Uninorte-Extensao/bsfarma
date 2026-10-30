@@ -28,6 +28,7 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_session, require_perfil
+from app.core.fuso import hoje_ubs
 from app.movimentacao.model import TipoMovimentacao
 from app.relatorio.schema import (
     ConsumoMensalItem,
@@ -66,8 +67,8 @@ async def dashboard(session: AsyncSession = Depends(get_session)):
     dependencies=_ACESSO_RELATORIO,
 )
 async def consumo_mensal(
-    data_inicio:    date = Query(default_factory=lambda: date.today().replace(day=1) - timedelta(days=180)),
-    data_fim:       date = Query(default_factory=date.today),
+    data_inicio:    date = Query(default_factory=lambda: hoje_ubs().replace(day=1) - timedelta(days=180)),
+    data_fim:       date = Query(default_factory=hoje_ubs),
     medicamento_id: str | None = Query(default=None),
     session: AsyncSession = Depends(get_session),
 ):
@@ -111,8 +112,8 @@ async def itens_criticos(session: AsyncSession = Depends(get_session)):
     dependencies=_ACESSO_RELATORIO,
 )
 async def movimentacoes(
-    data_inicio:    date = Query(default_factory=lambda: date.today() - timedelta(days=30)),
-    data_fim:       date = Query(default_factory=date.today),
+    data_inicio:    date = Query(default_factory=lambda: hoje_ubs() - timedelta(days=30)),
+    data_fim:       date = Query(default_factory=hoje_ubs),
     tipo:           TipoMovimentacao | None = Query(default=None),
     medicamento_id: str | None             = Query(default=None),
     page:           int                    = Query(default=1, ge=1),

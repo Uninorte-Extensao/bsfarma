@@ -3,9 +3,10 @@ import random
 import uuid
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date, datetime, time, timedelta
 from typing import Callable
 
+from app.core.fuso import instante_ubs
 from app.movimentacao.model import TipoMovimentacao
 from app.seed.catalogo import (
     DESABASTECIMENTOS,
@@ -18,7 +19,6 @@ from app.seed.catalogo import (
 )
 from app.usuario.model import PerfilUsuario
 
-FUSO_UBS = timezone(timedelta(hours=-5))
 JANELA_DIAS = 365
 CICLO_PEDIDO = 60
 ESTOQUE_SEGURANCA_DIAS = 25
@@ -103,8 +103,7 @@ class _Gerador:
         return dia
 
     def _instante(self, dia: int, minuto: int) -> datetime:
-        local = datetime.combine(self._data(dia), time(minuto // 60, minuto % 60), tzinfo=FUSO_UBS)
-        return local.astimezone(timezone.utc)
+        return instante_ubs(self._data(dia), time(minuto // 60, minuto % 60))
 
     def _minuto_expediente(self) -> int:
         return self.rng.randint(7 * 60 + 30, 16 * 60 + 30)

@@ -2,7 +2,7 @@
 Scheduler de alertas — job diário automático.
 
 Usa APScheduler integrado ao ciclo de vida do FastAPI via lifespan.
-O job roda diariamente à 00:30 (horário de Brasília) para garantir
+O job roda diariamente à 00:30 (horário de Manaus) para garantir
 que os alertas do dia estejam disponíveis quando a UBS abrir.
 
 INTEGRAÇÃO COM main.py:
@@ -19,21 +19,20 @@ INTEGRAÇÃO COM main.py:
 
 FUSO HORÁRIO:
     America/Manaus (UTC-4) — sem horário de verão.
-    Ajuste para America/Sao_Paulo (UTC-3) se a UBS for em outra região.
+    Definido em app/core/fuso.py, junto com o "hoje" usado no resto da API.
 """
 
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from pytz import timezone
 
+from app.core.fuso import FUSO_UBS
 from app.db.session import AsyncSessionLocal
 from app.alertas.service import AlertaService
 
 logger = logging.getLogger(__name__)
 
 # Instância única do scheduler — criada no módulo, gerenciada pelo lifespan
-FUSO_UBS = timezone("America/Manaus")
 scheduler = AsyncIOScheduler(timezone=FUSO_UBS)
 
 
