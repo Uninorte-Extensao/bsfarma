@@ -61,6 +61,7 @@ class CargaDemo:
     movimentacoes: list[dict] = field(default_factory=list)
     dispensacoes: list[dict] = field(default_factory=list)
     demanda_nao_atendida: dict[str, int] = field(default_factory=dict)
+    demanda: list[dict] = field(default_factory=list)
     pacientes_exemplo: list[tuple[str, str]] = field(default_factory=list)
 
 
@@ -348,6 +349,13 @@ class _Gerador:
                     })
                     restante -= retirada
                 nao_atendida += restante
+                self.carga.demanda.append({
+                    "medicamento_id": med_id,
+                    "paciente_id": pedido.paciente_id,
+                    "solicitado_em": self._instante(dia, pedido.minuto),
+                    "quantidade": pedido.quantidade,
+                    "atendida": pedido.quantidade - restante,
+                })
 
             utilizaveis = [l for l in utilizaveis if l.saldo > 0]
             if utilizaveis and self.rng.random() < PROB_AVARIA_DIA and self._data(dia).weekday() < 5:

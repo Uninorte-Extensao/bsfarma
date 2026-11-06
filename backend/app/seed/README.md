@@ -55,7 +55,9 @@ série para o qual servem métodos de previsão como Croston/SBA.
 - **Pedidos:** a cada ~60 dias, completando ciclo, prazo de entrega e 25 dias
   de segurança, arredondados para a embalagem.
 - **Consumo:** FEFO, saindo primeiro do lote que vence antes.
-- **Sem estoque:** a demanda fica sem atender e não é registrada.
+- **Sem estoque:** a demanda fica sem atender e não vai para o banco. Em
+  memória, `CargaDemo.demanda` guarda cada pedido e quanto dele foi atendido,
+  para a [análise de previsão](../previsao/README.md).
 - **Lote vencido:** descartado como `PERDA` alguns dias depois.
 - **Inventário trimestral:** gera `AJUSTE`.
 - **Estoque mínimo:** 20 dias de consumo médio.
