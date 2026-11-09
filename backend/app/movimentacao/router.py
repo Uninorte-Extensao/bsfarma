@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.dependencies import get_session, require_perfil
 from app.movimentacao.schema import (
     MovimentacaoCreate,
+    MovimentacaoDetalhadaResponse,
     MovimentacaoResponse,
     MovimentacaoUpdate
 )
@@ -41,7 +42,7 @@ async def criar_movimentacao(
 
 @router.get(
     "/movimentacoes",
-    response_model=list[MovimentacaoResponse],
+    response_model=list[MovimentacaoDetalhadaResponse],
     summary="Listar movimentações",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico"))],
 )
@@ -55,7 +56,7 @@ async def listar_movimentacoes(
 
 @router.get(
     "/movimentacoes/{movimentacao_id}",
-    response_model=MovimentacaoResponse,
+    response_model=MovimentacaoDetalhadaResponse,
     summary="Buscar movimentação por ID",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico"))],
 )

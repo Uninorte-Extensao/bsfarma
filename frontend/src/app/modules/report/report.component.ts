@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Dialog } from "primeng/dialog";
 import { DatePicker } from 'primeng/datepicker';
 import { ITypeMovimentacao } from '../../shared/models/IMovement';
+import { ICard } from '../../shared/models/ICard';
 import { Select } from 'primeng/select';
 
 @Component({
@@ -22,7 +23,7 @@ import { Select } from 'primeng/select';
 export class ReportComponent implements OnInit {
   private reportService = inject(ReportService)
 
-  public cards = signal<any[]>([])
+  public cards = signal<ICard[]>([])
 
   public movimentacoes = signal<IMovimentacaoRelatorio[]>([])
   public itensCriticos = signal<IItemCritico[]>([]);
@@ -115,13 +116,13 @@ export class ReportComponent implements OnInit {
 
 
   async getMovimentacoes() {
-    const movimentacoes = await this.reportService.getMovimentacoes()
     try {
+      const movimentacoes = await this.reportService.getMovimentacoes()
       console.log('movimentacoes', movimentacoes)
       this.movimentacoes.set(movimentacoes.data)
     }
-    catch (err) {
-
+    catch (error) {
+      console.error(error);
     }
 
   }

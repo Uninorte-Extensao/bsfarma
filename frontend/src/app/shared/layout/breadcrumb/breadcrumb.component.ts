@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
-import { NavigationEnd, Router, RouterModule, Route } from '@angular/router';
+import { Data, NavigationEnd, Router, RouterModule, Route } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
@@ -50,7 +50,7 @@ export class BreadcrumbComponent implements OnInit {
     this.subLabel = subLabel;
   }
 
-  private findRouteData(routes: Route[], fullPath: string): { [key: string]: any } | null {
+  private findRouteData(routes: Route[], fullPath: string): Data | null {
     for (const route of routes) {
       const routePath = route.path ?? '';
 

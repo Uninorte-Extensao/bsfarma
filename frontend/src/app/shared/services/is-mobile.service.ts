@@ -1,4 +1,4 @@
-import { computed, Injectable, InjectionToken, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, InjectionToken, Signal } from '@angular/core';
 import { fromEvent, map, Observable, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -14,8 +14,6 @@ export class IsMobileService {
   );
   private readonly _windowWidth: Signal<number> = toSignal(this.resize$, {initialValue: 0});
   private readonly _isMobile: Signal<boolean> = computed(() => this.checkIsMobile(this._windowWidth()));
-
-  constructor() {}
 
   get isMobile(): Signal<boolean> {
     return this._isMobile;

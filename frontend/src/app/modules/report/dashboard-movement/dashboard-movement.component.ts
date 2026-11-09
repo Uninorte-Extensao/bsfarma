@@ -1,5 +1,6 @@
-import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject, effect, input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, ChangeDetectorRef, inject, input, SimpleChanges, OnChanges } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import { ChartData, ChartOptions } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
 import { IMovimentacaoRelatorio } from '../../../shared/models/IReport';
 import { Button } from "primeng/button";
@@ -11,16 +12,16 @@ import { RouterLink } from '@angular/router';
   styleUrl: './dashboard-movement.component.scss',
 })
 export class DashboardMovementComponent implements OnInit, OnChanges {
-  data: any;
+  data?: ChartData<'bar'>;
 
-  options: any;
+  options?: ChartOptions<'bar'>;
 
   platformId = inject(PLATFORM_ID);
 
   movimentacoes = input<IMovimentacaoRelatorio[]>([]);
 
 
-  constructor(private cd: ChangeDetectorRef) { }
+  private cd = inject(ChangeDetectorRef);
 
   ngOnChanges(changes: SimpleChanges) {
 

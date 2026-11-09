@@ -12,14 +12,16 @@ Os dois gatilhos rodam os mesmos jobs, em paralelo:
 |---|---|
 | Backend - testes | `poetry run pytest` (Python 3.12) |
 | Backend - migrations | `alembic upgrade head`, `check`, `downgrade base` e `upgrade head` num Postgres 16 temporário |
-| Frontend - build | `npm ci` e `npm run build` (Node 22), que faz a checagem de tipos e de templates |
+| Frontend - build | `npm run lint`, `npm run test:ci` e `npm run build` (Node 22) |
+
+O job do frontend ainda se chama `Frontend - build` por compatibilidade com a
+proteção de branch, mas roda os três passos. O build faz a checagem de tipos e
+de templates; os testes rodam no Chrome headless já instalado no runner.
 
 **Fora do CI, por enquanto:**
-- **Lint:** não há linter configurado em nenhum dos lados.
-- **Testes do frontend:** a suíte não compila (F-2 em
-  [`PRE-PUBLICACAO.md`](../../deploy/PRE-PUBLICACAO.md)).
+- **Lint do backend:** não há linter configurado nesse lado.
 
-Cada um vira um passo a mais no `ci.yml` quando existir.
+Vira um passo a mais no `ci.yml` quando existir.
 
 ## Variáveis de ambiente
 
@@ -52,7 +54,7 @@ cd backend && DATABASE_URL="postgresql+asyncpg://ci:ci@localhost:5432/ci" SECRET
 ```
 
 ```bash
-cd frontend && npm ci && npm run build
+cd frontend && npm ci && npm run lint && npm run test:ci && npm run build
 ```
 
 Para testar as migrations, use sempre um Postgres descartável. O

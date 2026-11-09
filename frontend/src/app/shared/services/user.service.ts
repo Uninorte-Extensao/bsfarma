@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ICreateUser, IResponseUser, IUpdateUser, IUser } from '../models/IUser'
+import { ICreateUser, IResponseUser, IUpdateUser } from '../models/IUser'
 @Injectable({
   providedIn: 'root',
 })

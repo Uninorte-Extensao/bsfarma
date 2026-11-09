@@ -9,7 +9,7 @@ PADRÃO DO PROJETO:
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AliasPath, BaseModel, ConfigDict, Field
 
 
 class DispensacaoCreate(BaseModel):
@@ -31,3 +31,39 @@ class DispensacaoResponse(BaseModel):
     paciente_id: str
     movimentacao_id: str
     dispensado_em: datetime
+
+
+class PacienteResumo(BaseModel):
+    """Dados mínimos do paciente embutidos na resposta da dispensação."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    codigo: str
+
+
+class LoteResumo(BaseModel):
+    """Dados mínimos do lote embutidos na resposta da dispensação."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    numero_lote: str
+
+
+class MedicamentoResumo(BaseModel):
+    """Dados mínimos do medicamento embutidos na resposta da dispensação."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    nome_generico: str
+    concentracao: str
+
+
+class DispensacaoDetalhadaResponse(DispensacaoResponse):
+    """
+    Dispensação com paciente, lote, medicamento e quantidade embutidos,
+    para a listagem não precisar buscar movimentações e lotes à parte.
+    Quantidade, lote e medicamento vêm da movimentação vinculada.
+    """
+    paciente: PacienteResumo
+    quantidade: int = Field(validation_alias=AliasPath("movimentacao", "quantidade"))
+    lote: LoteResumo = Field(validation_alias=AliasPath("movimentacao", "lote"))
+    medicamento: MedicamentoResumo = Field(
+        validation_alias=AliasPath("movimentacao", "lote", "medicamento")
+    )

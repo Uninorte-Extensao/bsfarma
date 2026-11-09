@@ -1,18 +1,110 @@
-.box-icon {
-    width: 45px;
-    height: 45px;
-    background: #9acfe773;
-    border-radius: 12px;
+.section-header {
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 18px;
+    gap: 12px;
 }
 
-.custom-container {
+.step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: 14px;
+    background: var(--hover-surface);
+    color: var(--text-primary);
+
+    &.done {
+        background: var(--p-primary-color);
+        color: var(--p-primary-contrast-color);
+    }
+}
+
+.patient-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+}
+
+.patient-code {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
+
+.text-primary-color {
+    color: var(--text-primary);
+}
+
+.item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: calc(100dvh - 410px);
-    overflow-y: auto;
+    gap: 8px;
+}
+
+.item-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+}
+
+.item-info {
+    flex: 1 1 240px;
+    min-width: 0;
+}
+
+:host ::ng-deep .qty-input {
+    width: 56px;
+    text-align: center;
+}
+
+.saldo-esgota {
+    color: var(--text-color-yellow);
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 32px 16px;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.summary {
+    position: sticky;
+    top: 0;
+}
+
+.summary-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-secondary);
+}
+
+.divider {
+    height: 1px;
+    background: var(--border-color);
+}
+
+.total {
+    font-size: 22px;
+    font-weight: 700;
 }

@@ -15,6 +15,7 @@ import { IS_MOBILE } from '../../shared/services/is-mobile.service';
 import { PatientService } from '../../shared/services/patient.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { LoadingService } from '../../shared/services/loading.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 import {
   ICreatePaciente,
@@ -39,6 +40,8 @@ type ITypeDialog = 'criar' | 'recuperar' | 'editar';
 export class PatientComponent implements OnInit {
 
   protected isMobile = inject(IS_MOBILE);
+  protected authService = inject(AuthService)
+  protected isCreate = signal(this.authService.hasPermission('patient.create'));
 
   private patientService = inject(PatientService);
   private toast = inject(ToastService);
@@ -46,7 +49,6 @@ export class PatientComponent implements OnInit {
 
   public pacientes = signal<IPaciente[]>([]);
 
-  private currentFilter: boolean | undefined = undefined;
 
   public isVisible = model<boolean>(false);
   public typeDialog = signal<ITypeDialog>('criar');
@@ -59,16 +61,11 @@ export class PatientComponent implements OnInit {
     this.loadPacientes();
   }
 
-  public onFilter(filter: boolean | undefined) {
-    this.currentFilter = filter;
-    this.loadPacientes();
-  }
-
   private loadPacientes(): void {
 
     this.loading.show();
 
-    this.patientService.getPacientes(this.currentFilter)
+    this.patientService.getPacientes(true)
       .then((res: IPaciente[]) => {
         this.pacientes.set(res);
       })

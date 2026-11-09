@@ -101,7 +101,7 @@ export const routes: Routes = [
             },
             {
                 path: 'alerts',
-                data: { breadcrumb: 'Notificações', subLabel: 'Lista de Alertas', permission: 'alerts.view' },
+                data: { breadcrumb: 'Alertas', subLabel: 'Lista de Alertas', permission: 'alerts.view' },
                 loadComponent: () =>
                     import('./modules/alerts/alerts.component').then(r => r.AlertsComponent)
             },

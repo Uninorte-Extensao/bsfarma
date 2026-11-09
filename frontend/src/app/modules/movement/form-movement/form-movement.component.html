@@ -23,13 +23,13 @@
                             <ng-template pTemplate="item" let-item>
                                 {{ item.numero_lote }}
                                 -
-                                {{ item.medicamento?.nome_generico }}
+                                {{ item.medicamento.nome_generico }}
                             </ng-template>
     
                             <ng-template pTemplate="selectedItem" let-item>
                                 {{ item.numero_lote }}
                                 -
-                                {{ item.medicamento?.nome_generico }}
+                                {{ item.medicamento.nome_generico }}
                             </ng-template>
     
                         </p-autocomplete>

@@ -13,6 +13,15 @@ export interface IBatch {
     entrada_em: Date;
 }
 
+export interface IBatchDetalhado extends IBatch {
+    medicamento: {
+        id: string;
+        nome_generico: string;
+        concentracao: string;
+        via_administracao: string;
+    };
+}
+
 export interface ICreateLote {
     medicamento_id: string;
     registrado_por: string;

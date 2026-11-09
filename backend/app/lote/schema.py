@@ -50,3 +50,20 @@ class LoteResponse(BaseModel):
     quantidade_inicial: int
     quantidade_atual: int
     entrada_em: datetime
+
+
+class MedicamentoResumo(BaseModel):
+    """Dados mínimos do medicamento embutidos na resposta do lote."""
+    model_config = ConfigDict(from_attributes=True)
+    id: str
+    nome_generico: str
+    concentracao: str
+    via_administracao: str
+
+
+class LoteDetalhadoResponse(LoteResponse):
+    """
+    Lote com o medicamento embutido, para os formulários não precisarem
+    buscar todos os medicamentos só para exibir o nome ao lado do lote.
+    """
+    medicamento: MedicamentoResumo

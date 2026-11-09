@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { ICreateDispensacao, IDispensacao } from '../models/IDispersation';
+import { ICreateDispensacao, IDispensacao, IDispensacaoDetalhada } from '../models/IDispersation';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class DispersationService {
     if (pacienteId) {
       params = params.set('paciente_id', pacienteId)
     }
-    return lastValueFrom(this.http.get<IDispensacao[]>(`${environment.apiUrl}/dispensacoes`, { params }))
+    return lastValueFrom(this.http.get<IDispensacaoDetalhada[]>(`${environment.apiUrl}/dispensacoes`, { params }))
   }
 
   createDispensacao(dispensacao: ICreateDispensacao) {
@@ -24,6 +24,6 @@ export class DispersationService {
   }
 
   getDispensacoesById(dispensacaoId: string) {
-    return lastValueFrom(this.http.get<IDispensacao>(`${environment.apiUrl}/dispensacoes/${dispensacaoId}`))
+    return lastValueFrom(this.http.get<IDispensacaoDetalhada>(`${environment.apiUrl}/dispensacoes/${dispensacaoId}`))
   }
 }

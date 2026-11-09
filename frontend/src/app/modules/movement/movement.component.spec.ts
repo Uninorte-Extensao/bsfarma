@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MovementComponent } from './movement.component';
+import { testProviders } from '../../../testing/test-providers';
 
 describe('MovementComponent', () => {
   let component: MovementComponent;
@@ -8,7 +9,8 @@ describe('MovementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MovementComponent]
+      imports: [MovementComponent],
+      providers: testProviders
     })
     .compileComponents();
 

@@ -14,7 +14,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_session, require_perfil
-from app.lote.schema import LoteCreate, LoteResponse, LoteUpdate
+from app.lote.schema import LoteCreate, LoteDetalhadoResponse, LoteResponse, LoteUpdate
 from app.lote.service import LoteService
 
 router = APIRouter(tags=["Lotes"])
@@ -37,7 +37,7 @@ async def criar_lote(
 
 @router.get(
     "/lotes",
-    response_model=list[LoteResponse],
+    response_model=list[LoteDetalhadoResponse],
     summary="Listar lotes",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico", "atendente"))],
 )
@@ -55,7 +55,7 @@ async def listar_lotes(
 
 @router.get(
     "/lotes/{lote_id}",
-    response_model=LoteResponse,
+    response_model=LoteDetalhadoResponse,
     summary="Buscar lote por ID",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico", "atendente"))],
 )

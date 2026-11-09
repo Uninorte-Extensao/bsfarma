@@ -10,8 +10,15 @@ PADRÃO DO PROJETO — regras do repositório:
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.movimentacao.model import Movimentacao
+
+# Carrega lote e usuário junto com a movimentação (ver MovimentacaoDetalhadaResponse).
+_DETALHES = (
+    selectinload(Movimentacao.lote),
+    selectinload(Movimentacao.usuario),
+)
 
 
 class MovimentacaoRepository:
@@ -21,7 +28,9 @@ class MovimentacaoRepository:
     async def get_by_id(self, movimentacao_id: str) -> Movimentacao | None:
         """Busca uma movimentação pelo UUID. Retorna None se não existir."""
         result = await self.session.execute(
-            select(Movimentacao).where(Movimentacao.id == movimentacao_id)
+            select(Movimentacao)
+            .where(Movimentacao.id == movimentacao_id)
+            .options(*_DETALHES)
         )
         return result.scalar_one_or_none()
 
@@ -33,7 +42,11 @@ class MovimentacaoRepository:
             lote_id: Se fornecido, filtra as movimentações de um lote específico.
         """
         # Traz as movimentações mais recentes primeiro (padrão em extratos/estoque)
-        stmt = select(Movimentacao).order_by(Movimentacao.ocorrido_em.desc())
+        stmt = (
+            select(Movimentacao)
+            .options(*_DETALHES)
+            .order_by(Movimentacao.ocorrido_em.desc())
+        )
         
         if lote_id:
             stmt = stmt.where(Movimentacao.lote_id == lote_id)

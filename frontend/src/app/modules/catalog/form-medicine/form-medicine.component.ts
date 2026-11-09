@@ -1,4 +1,4 @@
-import { Component, effect, inject, model, OnInit, output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { SelectModule } from "primeng/select";
 import { InputNumber } from "primeng/inputnumber";
@@ -12,7 +12,6 @@ import { ICreateMedicine, IMedicine } from '../../../shared/models/IMedicine';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ActivatedRoute, Router } from '@angular/router';
 
-type ITypeDialog = 'create' | 'update'
 @Component({
   selector: 'app-form-medicine',
   imports: [
@@ -28,7 +27,7 @@ type ITypeDialog = 'create' | 'update'
   styleUrl: './form-medicine.component.scss',
 })
 export class FormMedicineComponent implements OnInit {
-  checked: boolean = false;
+  checked = false;
   listConcentracao = signal(UNIDADE_CONCENTRACAO)
   listViaAdm = signal(VIA_ADMINISTRACAO)
   listFormaFarm = signal(FORMA_FARMACEUTICA)
@@ -92,7 +91,10 @@ export class FormMedicineComponent implements OnInit {
   }
 
   private setValues(medicine: IMedicine) {
-    const [valor, unidade] = medicine.concentracao.split(' ')
+    const [valor, unidadeBanco] = medicine.concentracao.split(' ')
+    const unidade = UNIDADE_CONCENTRACAO.find(
+      u => u.value.toLowerCase() === unidadeBanco?.toLowerCase()
+    )?.value ?? unidadeBanco
 
     this.form.patchValue({
       nome_generico: medicine.nome_generico,
@@ -100,7 +102,7 @@ export class FormMedicineComponent implements OnInit {
       forma_farmaceutica: medicine.forma_farmaceutica,
       via_administracao: medicine.via_administracao,
       estoque_minimo: medicine.estoque_minimo,
-      valor: Number(valor),
+      valor: Number(valor.replace(',', '.')),
       unidade: unidade
     })
 

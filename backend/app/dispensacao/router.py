@@ -14,7 +14,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_session, require_perfil
 from app.core.dependencies import get_current_user
-from app.dispensacao.schema import DispensacaoCreate, DispensacaoResponse
+from app.dispensacao.schema import (
+    DispensacaoCreate,
+    DispensacaoDetalhadaResponse,
+    DispensacaoResponse,
+)
 from app.dispensacao.service import DispensacaoService
 
 router = APIRouter(tags=["Dispensações"])
@@ -40,7 +44,7 @@ async def criar_dispensacao(
 
 @router.get(
     "/dispensacoes",
-    response_model=list[DispensacaoResponse],
+    response_model=list[DispensacaoDetalhadaResponse],
     summary="Listar histórico de dispensações",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico", "atendente"))],
 )
@@ -54,7 +58,7 @@ async def listar_dispensacoes(
 
 @router.get(
     "/dispensacoes/{dispensacao_id}",
-    response_model=DispensacaoResponse,
+    response_model=DispensacaoDetalhadaResponse,
     summary="Buscar dispensação específica",
     dependencies=[Depends(require_perfil("gestor", "farmaceutico", "atendente"))],
 )

@@ -11,3 +11,10 @@ export interface IDispensacao {
     dispensado_em: Date
 }
 
+export interface IDispensacaoDetalhada extends IDispensacao {
+    paciente: { id: string, codigo: string },
+    quantidade: number,
+    lote: { id: string, numero_lote: string },
+    medicamento: { id: string, nome_generico: string, concentracao: string }
+}
+

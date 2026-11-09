@@ -4,9 +4,9 @@
         (onItemDelete)="delete($event)"
         (onItemEdit)="handleEdit($event)"
         [(isVisible)]="isVisible"
-        (onFilter)="onFilter($event)"
         [(codigo)]="codigo"/>
 
+        @if (isCreate()) {
         <div class="btn-add flex gap-2">
             <p-button
                 [label]="isMobile() ? '':'Adicionar Paciente'"
@@ -20,6 +20,7 @@
             (click)="showModal('recuperar')"
             />
         </div>
+        }
 
 
 </div>

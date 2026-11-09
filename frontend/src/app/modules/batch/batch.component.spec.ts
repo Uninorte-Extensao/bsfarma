@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BatchComponent } from './batch.component';
+import { testProviders } from '../../../testing/test-providers';
 
 describe('BatchComponent', () => {
   let component: BatchComponent;
@@ -8,7 +9,8 @@ describe('BatchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BatchComponent]
+      imports: [BatchComponent],
+      providers: testProviders
     })
     .compileComponents();
 
