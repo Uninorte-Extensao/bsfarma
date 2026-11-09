@@ -57,9 +57,18 @@ src/app/
   `esbuild`, `@angular/cli` e `@angular/build` são de ferramentas de build e
   não chegam ao navegador. Os que contam são os de `dependencies`.
 
-**Situação (outubro de 2026):** restam 2 avisos, `braces` e
-`@modelcontextprotocol/sdk`. Os dois vêm de ferramentas de desenvolvimento e
-nenhum tem correção que não seja downgrade.
+**Situação (8 de novembro de 2026):** o `npm audit` conta 42 avisos, que são
+17 problemas distintos repetidos por caminho de dependência. **Um** chega ao
+navegador e precisa de ação:
+
+| Pacote | Aviso | Correção |
+|---|---|---|
+| `@angular/common` | vazamento do token XSRF pelo HTTP Client, por divergência na análise da URL (correção incompleta da CVE-2025-66035) | `20.3.34`, uma versão de patch à frente |
+
+Suba o conjunto junto, com `npx ng update @angular/core@20 @angular/cli@20`, e
+confira com `npm run build`. Os outros 16 são de ferramentas de build e de
+lint — `vite`, `undici`, `zod`, `@modelcontextprotocol/sdk`, utilitários do
+próprio npm — e não vão para o bundle.
 
 **Dívida conhecida:**
 - o Karma está em fim de vida, e migrar para Vitest elimina a maior parte dos avisos;

@@ -1,6 +1,6 @@
 # Pendências antes de publicar
 
-Levantamento de 2026-10-06, atualizado em 2026-10-23.
+Levantamento de 2026-10-06, atualizado em 2026-11-08.
 
 Prioridades:
 - 🔴 não publicar sem resolver;
@@ -15,35 +15,43 @@ Prioridades:
 | 🔴 B-2 | Segredos expostos num transcript em 2026-08-23 | ✅ Credenciais do Supabase e `SECRET_KEY` trocadas |
 | 🔴 B-3 | Sem TLS | 🔄 Caddy com HTTPS automático em [`DEPLOY.md`](DEPLOY.md). Validar no primeiro deploy |
 | 🟡 F-1 | `console.log` com dados do usuário e permissões | ⏳ Pendente |
-| 🟡 F-2 | Suíte de testes do frontend não compila | ⏳ Pendente |
+| 🟡 F-2 | Suíte de testes do frontend não compila | ✅ 29 testes passam; `npm run test:ci` roda no CI |
 | 🟡 B-4 | `/docs`, `/redoc` e `/openapi.json` públicos | ⏳ Pendente |
 | 🟡 B-5 | CORS fixo em `localhost:4200` | ✅ Variável `CORS_ORIGINS` |
 | 🟡 I-1 | Sem cabeçalhos de segurança | 🔄 Adicionados no Caddy (HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy`). Validar no primeiro deploy |
 | 🟡 B-6 | Duas engines SQLAlchemy | ⏳ Pendente |
 | 🟡 I-2 | `node:20-alpine` no Dockerfile do frontend | ⏳ Pendente |
 | 🔵 D-1 | `.browserslistrc` com navegadores sem suporte | ⏳ Pendente |
-| 🔵 D-2 | `ng lint` documentado sem existir | ✅ Removido do README do frontend |
+| 🔵 D-2 | `ng lint` documentado sem existir | ✅ ESLint configurado; `npm run lint` existe e roda no CI |
 | 🔵 D-3 | Regra morta no `.gitignore` do backend | ⏳ Pendente |
-| 🔵 D-4 | 2 avisos do `npm audit` | Sem ação possível: vêm de ferramentas de build e não têm correção. Ver [`frontend/README.md`](../frontend/README.md) |
+| 🟡 D-4 | `@angular/common` vaza token XSRF pelo HTTP Client | ⏳ Pendente: corrigido na `20.3.34`, uma versão de patch à frente. Ver [`frontend/README.md`](../frontend/README.md) |
 | 🔵 D-5 | Karma em fim de vida | ⏳ Pendente (migrar para Vitest) |
 | 🔵 D-6 | JWT em `localStorage` | Risco aceito (ver abaixo) |
 | 🔵 D-7 | Bundle inicial de 1,08 MB, com budget afrouxado | ⏳ Pendente |
 
 ## Detalhes dos pendentes
 
-**F-1: `console.log` em produção.** O build não os remove. `app.config.ts`,
-`authGuard.ts` e `permissionGuard.ts` mostram no DevTools o usuário logado e o
-mapa de permissões, e `auth.component.ts` mostra a resposta do login. Remova as
-ocorrências fora dos specs, que podem ser listadas com:
+**F-1: `console.log` em produção.** O build não os remove. São 10 ocorrências
+fora dos specs: `app.config.ts` e `authGuard.ts` mostram no DevTools o usuário
+logado e o perfil dele, `auth.component.ts` mostra a resposta do login
+(inclusive o erro), e `form-user`, `form-movement` e `report.component.ts`
+despejam objetos de domínio. Liste todas com:
 
 ```bash
 grep -rn "console\.\(log\|debug\)" frontend/src --include=*.ts | grep -v spec
 ```
 
-**F-2: testes do frontend.** O `app.component.spec.ts` ainda é o do starter do
-Angular: espera `app.title` e um `<h1>Hello, bsfarma</h1>` que não existem mais.
-Remova os dois testes obsoletos, mantenha o `should create the app` e então
-inclua `npm test -- --watch=false --browsers=ChromeHeadless` no CI.
+Agora que o `npm run lint` roda no CI, ligar a regra `no-console` no
+`frontend/eslint.config.js` faz o próprio CI barrar reincidência.
+
+**D-4: aviso do `npm audit` que chega ao navegador.** Dos 42 avisos que o
+`npm audit` conta, 17 são distintos e só o do `@angular/common` está em
+`dependencies`: o HTTP Client vaza o token XSRF para outra origem quando a URL
+é interpretada de forma divergente (correção incompleta da CVE-2025-66035).
+Exige uma requisição a uma URL montada pelo atacante, então não é exploração
+remota direta, mas é código que vai para produção. Suba o Angular com
+`npx ng update @angular/core@20 @angular/cli@20`. Os outros 16 são de
+ferramentas de build e de lint.
 
 **B-4: documentação da API pública.** Decida se fica aberta, fechada em
 produção (`docs_url=None if settings.is_production else "/docs"`, o mesmo para
