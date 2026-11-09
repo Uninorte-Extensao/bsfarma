@@ -19,6 +19,7 @@ import pandas as pd
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.fuso import hoje_ubs
 from app.movimentacao.model import TipoMovimentacao
 from app.relatorio.repository import RelatorioRepository
 
@@ -186,7 +187,7 @@ class RelatorioService:
                 aba = str(indicacao)[:31]   # Excel limita nome de aba a 31 chars
                 grupo.to_excel(writer, index=False, sheet_name=aba)
 
-        nome = f"estoque_{date.today().isoformat()}.xlsx"
+        nome = f"estoque_{hoje_ubs().isoformat()}.xlsx"
         return buf.getvalue(), nome
 
     async def exportar_movimentacoes_csv(

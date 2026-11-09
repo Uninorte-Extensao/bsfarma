@@ -41,6 +41,7 @@ from sqlalchemy.orm import selectinload
 
 from app.alertas.model import Alertas, StatusAlerta, TipoAlerta
 from app.core.exceptions import RecursoNaoEncontrado, RegraDeNegocioViolada
+from app.core.fuso import hoje_ubs
 from app.lote.model import Lote
 from app.medicamentos.model import Medicamento
 
@@ -75,7 +76,7 @@ class AlertaService:
         criados   = 0
         escalados = 0
         expirados = 0
-        hoje = date.today()
+        hoje = hoje_ubs()
 
         # Carrega todos os lotes com saldo > 0, junto com o medicamento
         lotes = await self._lotes_ativos()

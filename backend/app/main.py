@@ -7,9 +7,14 @@ Responsabilidades deste arquivo:
   - Registrar handlers de exceção globais
   - Configurar middlewares (CORS etc.)
 """
+from contextlib import asynccontextmanager
+
 import app.db.models
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.alertas.scheduler import iniciar_scheduler, parar_scheduler
+from app.core.config import settings
 
 from app.core.exceptions import (
     ErroDeFormulario,
@@ -33,15 +38,23 @@ from app.dispensacao.router import router as dispensacao_router
 from app.alertas.router import router as alertas_router
 from app.relatorio.router import router as relatorio_router
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    iniciar_scheduler()
+    yield
+    parar_scheduler()
+
+
 app = FastAPI(
     title="RemédioEmDia API",
     description="Sistema de controle de estoque da UBS Saúde Sempre.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=settings.cors_origins_lista,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "DELETE"],
     allow_headers=["*"],

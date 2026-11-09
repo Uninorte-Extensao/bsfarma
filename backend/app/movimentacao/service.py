@@ -12,6 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import RecursoNaoEncontrado, EstoqueInsuficiente, RegraDeNegocioViolada
+from app.core.fuso import hoje_ubs
 from app.lote.model import Lote
 from app.movimentacao.model import Movimentacao, TipoMovimentacao
 from app.movimentacao.repository import MovimentacaoRepository
@@ -106,8 +107,6 @@ class MovimentacaoService:
     @staticmethod
     async def _validar(dados: MovimentacaoCreate, lote: Lote) -> None:
         """Aplica regras de negócio antes de qualquer escrita."""
-        from datetime import date
-
         # Ajuste e perda exigem justificativa (requisito do briefing)
         if dados.tipo in (TipoMovimentacao.AJUSTE, TipoMovimentacao.PERDA):
             if not dados.justificativa or not dados.justificativa.strip():
@@ -116,14 +115,14 @@ class MovimentacaoService:
                 )
 
         # Não permite entrada em lote vencido
-        if dados.tipo == TipoMovimentacao.ENTRADA and lote.validade < date.today():
+        if dados.tipo == TipoMovimentacao.ENTRADA and lote.validade < hoje_ubs():
             raise RegraDeNegocioViolada(
                 f"Lote {lote.numero_lote} está vencido ({lote.validade}). "
                 "Não é permitido registrar entrada em lote vencido."
             )
 
         # Não permite dispensação de lote vencido
-        if dados.tipo == TipoMovimentacao.SAIDA and lote.validade < date.today():
+        if dados.tipo == TipoMovimentacao.SAIDA and lote.validade < hoje_ubs():
             raise RegraDeNegocioViolada(
                 f"Lote {lote.numero_lote} está vencido ({lote.validade}). "
                 "Selecione um lote dentro da validade."

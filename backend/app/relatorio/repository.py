@@ -12,11 +12,13 @@ QUERIES IMPLEMENTADAS:
   - alertas_abertos:  contagem por tipo para o dashboard
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Any
 
 from sqlalchemy import and_, case, func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.fuso import fim_do_dia, hoje_ubs, inicio_do_dia
 
 from app.alertas.model import Alertas, StatusAlerta, TipoAlerta
 from app.lote.model import Lote
@@ -56,8 +58,8 @@ class RelatorioRepository:
             .where(
                 and_(
                     Movimentacao.tipo == TipoMovimentacao.SAIDA,
-                    Movimentacao.ocorrido_em >= datetime.combine(data_inicio, datetime.min.time()),
-                    Movimentacao.ocorrido_em <= datetime.combine(data_fim,    datetime.max.time()),
+                    Movimentacao.ocorrido_em >= inicio_do_dia(data_inicio),
+                    Movimentacao.ocorrido_em <= fim_do_dia(data_fim),
                 )
             )
             .group_by(
@@ -88,7 +90,7 @@ class RelatorioRepository:
                quantidade_inicial, estoque_minimo, medicamento_id,
                nome_generico, concentracao, motivo }]
         """
-        hoje = date.today()
+        hoje = hoje_ubs()
 
         stmt = (
             select(
@@ -211,8 +213,8 @@ class RelatorioRepository:
             .join(Medicamento, Lote.medicamento_id == Medicamento.id)
             .where(
                 and_(
-                    Movimentacao.ocorrido_em >= datetime.combine(data_inicio, datetime.min.time()),
-                    Movimentacao.ocorrido_em <= datetime.combine(data_fim, datetime.max.time()),
+                    Movimentacao.ocorrido_em >= inicio_do_dia(data_inicio),
+                    Movimentacao.ocorrido_em <= fim_do_dia(data_fim),
                 )
             )
         )
