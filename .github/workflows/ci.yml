@@ -116,5 +116,11 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes
+        run: npm run test:ci
+
       - name: Build de produção
         run: npm run build
